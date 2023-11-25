@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+
+    <link href="./contact.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="background"></div>
+    <nav class="navbar">
+      <img class="navbar-logo" src="./assets/logo.webp" />
+    </nav>
+    <button class="navbar-burger" onclick="toggleMenu()"></button>
+    <nav class="menu">
+      <a href="./index.html" style="animation-delay: 0.1s">Home</a>
+      <a href="./about-us.html" style="animation-delay: 0.2s">About Us</a>
+      <a href="./contact.html" style="animation-delay: 0.5s" class="active">Contact</a>
+    </nav>
+
+    <div class="container">
+      <img src="./public/contact/shape.png" class="square" alt="" />
+      <div class="form">
+        <div class="contact-info">
+          <h3 class="title">Let's get in touch</h3>
+          <p class="text">
+            <b>WANT TO KNOW MORE?<BR>
+            REACH TO US!</b>
+          </p>
+
+          <div class="info">
+            <div class="information">
+              <img src="./public/contact/location.png" class="icon" alt="" />
+              <p>KOLKATA, WEST BENGAL</p>
+            </div>
+            <div class="information">
+              <img src="./public/contact/email.png" class="icon" alt="" />
+              <p>innovativeproj@gmail.com</p>
+            </div>
+            <div class="information">
+              <img src="./public/contact/phone.png" class="icon" alt="" />
+              <p>91546728986</p>
+            </div>
+          </div>
+
+          
+        </div>
+
+        <div class="contact-form">
+          <span class="circle one"></span>
+          <span class="circle two"></span>
+
+          <form action="index.html" autocomplete="off">
+            <h3 class="title">Contact us</h3>
+            <div class="input-container">
+              <input type="text" name="name" class="input" />
+              <label for="">Username</label>
+              <span>Username</span>
+            </div>
+            <div class="input-container">
+              <input type="email" name="email" class="input" />
+              <label for="">Email</label>
+              <span>Email</span>
+            </div>
+            <div class="input-container">
+              <input type="tel" name="phone" class="input" />
+              <label for="">Phone</label>
+              <span>Phone</span>
+            </div>
+            <div class="input-container textarea">
+              <textarea name="message" class="input"></textarea>
+              <label for="">Message</label>
+              <span>Message</span>
+            </div>
+            <input type="submit" value="Send" class="btn" />
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script type="text/javascript">
+      const toggleMenu = () => {
+        document.body.classList.toggle("open");
+      };
+    </script>
+
+    <div class="footer">
+      <p align="center" class="style1"><strong>Copyright &copy; 2023. All Rights Reserved</strong></p>
+  </div>
+  </body>
+</html>

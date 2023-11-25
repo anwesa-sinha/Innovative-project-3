@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+ 
+    <link href="./styles.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="background"></div>
+    <nav class="navbar">
+      <img class="navbar-logo" src="./assets/logo.webp" />
+    </nav>
+    <button class="navbar-burger" onclick="toggleMenu()"></button>
+    <nav class="menu">
+      <a href="./index.html" style="animation-delay: 0.1s" class="active">Home</a>
+      <a href="./about-us.html" style="animation-delay: 0.2s">About Us</a>
+      <a href="./contact.html" style="animation-delay: 0.5s">Contact</a>
+    </nav>
+
+    <div class="info">
+      <h1>Welcome!</h1>
+      <p>Our user-friendly interface makes it easy for anyone to utilize our sign language detection tool that translate your gestures into real-time spoken words.</p>
+  </div>
+
+  <table style="width:80%">
+      <tr>
+          <td class="camera">screen for integrating the camera</td>
+          <td class="message">screen for showing output / messsages</td>
+      </tr>
+  </table>
+</div>
+
+<div class="footer">
+<p align="center" class="style1"><strong>Copyright &copy; 2023. All Rights Reserved</strong></p>
+</div>
+    <script type="text/javascript">
+      const toggleMenu = () => {
+        document.body.classList.toggle("open");
+      };
+    </script>
+  </body>
+</html>
