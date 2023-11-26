@@ -17,6 +17,9 @@
     />
  
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
   </head>
 
   <body>
@@ -39,10 +42,8 @@
   <table style="width:80%">
       <tr>
           <td class="camera">
-          <video id="video" width="640" height="480" autoplay playsinline></video>
-          <canvas id="canvas" width="640" height="480"></canvas>
-          <button id="capture" onclick="capture()">Capture</button>
-          <img id="captured-image" alt="Captured Image">
+            <video id="video" width="640" height="480" autoplay playsinline></video>
+            <canvas id="canvas" width="640" height="480"></canvas>
           </td>
           <td class="message">screen for showing output / messsages</td>
       </tr>
@@ -58,41 +59,59 @@
       };
     </script>
     <script>
-      navigator.mediaDevices.getUserMedia({ video: true })
-          .then(function (stream) {
-              var video = document.getElementById('video');
-              video.srcObject = stream;
-          })
-          .catch(function (err) {
-              console.log("An error occurred: " + err);
-          });
+      var video = document.getElementById('video');
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
 
-      function capture() {
-          var video = document.getElementById('video');
-          var canvas = document.getElementById('canvas');
-          var context = canvas.getContext('2d');
-          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        async function setupCamera() {
+            const stream = await navigator.mediaDevices.getUserMedia({ 'video': true });
+            video.srcObject = stream;
 
-          // Convert canvas content to data URL
-          var dataURL = canvas.toDataURL('image/png');
+            return new Promise((resolve) => {
+                video.onloadedmetadata = () => {
+                    resolve(video);
+                };
+            });
+        }
 
-          // Update the src attribute of the captured-image element
-          var capturedImage = document.getElementById('captured-image');
-          capturedImage.src = dataURL;
+        async function loadHandpose() {
+            const handpose = await handpose.load();
+            return handpose;
+        }
 
-          // Optional: You can send the captured image data to the server using AJAX
-          // Example: Send the dataURL to the server using fetch
-          // fetch('/upload', {
-          //     method: 'POST',
-          //     headers: {
-          //         'Content-Type': 'application/json',
-          //     },
-          //     body: JSON.stringify({ image: dataURL }),
-          // })
-          // .then(response => response.json())
-          // .then(data => console.log(data))
-          // .catch(error => console.error('Error:', error));
-      }
+        async function detectHands(video, handpose) {
+            const predictions = await handpose.estimateHands(video);
+
+            if (predictions.length > 0) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                handpose.renderResult(predictions, canvas, {
+                    flipHorizontal: false,
+                    drawLandmarks: true,
+                    drawBoundingBox: true,
+                });
+
+                // Process the frame and send it to the server for prediction
+                const frameData = canvas.toDataURL('image/jpeg').split(',')[1];
+                fetch('/process_frame', {
+                    method: 'POST',
+                    body: frameData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector('.message').innerText = `Predicted: ${data.prediction}`;
+                });
+            }
+
+            requestAnimationFrame(() => detectHands(video, handpose));
+        }
+
+        async function bindPage() {
+            const video = await setupCamera();
+            const handpose = await loadHandpose();
+            detectHands(video, handpose);
+        }
+
+        window.onload = bindPage;
   </script>
   </body>
 </html>
