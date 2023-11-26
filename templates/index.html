@@ -16,13 +16,13 @@
       rel="stylesheet"
     />
  
-    <link href="./styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
 
   <body>
     <div class="background"></div>
     <nav class="navbar">
-      <img class="navbar-logo" src="./assets/logo.webp" />
+      <img class="navbar-logo" src="{{ url_for('static', filename='assets/logo.webp') }}" alt="Logo">
     </nav>
     <button class="navbar-burger" onclick="toggleMenu()"></button>
     <nav class="menu">
@@ -38,7 +38,12 @@
 
   <table style="width:80%">
       <tr>
-          <td class="camera">screen for integrating the camera</td>
+          <td class="camera">
+          <video id="video" width="640" height="480" autoplay playsinline></video>
+          <canvas id="canvas" width="640" height="480"></canvas>
+          <button id="capture" onclick="capture()">Capture</button>
+          <img id="captured-image" alt="Captured Image">
+          </td>
           <td class="message">screen for showing output / messsages</td>
       </tr>
   </table>
@@ -52,5 +57,42 @@
         document.body.classList.toggle("open");
       };
     </script>
+    <script>
+      navigator.mediaDevices.getUserMedia({ video: true })
+          .then(function (stream) {
+              var video = document.getElementById('video');
+              video.srcObject = stream;
+          })
+          .catch(function (err) {
+              console.log("An error occurred: " + err);
+          });
+
+      function capture() {
+          var video = document.getElementById('video');
+          var canvas = document.getElementById('canvas');
+          var context = canvas.getContext('2d');
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+          // Convert canvas content to data URL
+          var dataURL = canvas.toDataURL('image/png');
+
+          // Update the src attribute of the captured-image element
+          var capturedImage = document.getElementById('captured-image');
+          capturedImage.src = dataURL;
+
+          // Optional: You can send the captured image data to the server using AJAX
+          // Example: Send the dataURL to the server using fetch
+          // fetch('/upload', {
+          //     method: 'POST',
+          //     headers: {
+          //         'Content-Type': 'application/json',
+          //     },
+          //     body: JSON.stringify({ image: dataURL }),
+          // })
+          // .then(response => response.json())
+          // .then(data => console.log(data))
+          // .catch(error => console.error('Error:', error));
+      }
+  </script>
   </body>
 </html>
