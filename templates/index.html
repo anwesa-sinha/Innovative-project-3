@@ -42,69 +42,33 @@
   <table style="width:80%">
       <tr>
           <td class="camera">
-            <video id="video" width="640" height="480" autoplay playsinline></video>
-            <canvas id="canvas" width="640" height="480"></canvas>
+            <!-- <button id="startBtn" onclick="openCam()">Open Webcam</button>  
+            <video id="video" width="640" height="480" autoplay playsinline></video> -->
+            <img id="video_feed" src="{{ url_for('video_feed') }}" alt="Hand Sign Detection">
+
+    <script>
+        // Optionally, you can use JavaScript to automatically update the image source
+        // to get real-time updates from the video feed.
+        const videoFeed = document.getElementById('video_feed');
+        setInterval(() => {
+            videoFeed.src = "{{ url_for('video_feed') }}?time=" + new Date().getTime();
+        }, 10000); // Update every 1000 milliseconds (1 second)
+    </script>
           </td>
           <td class="message">screen for showing output / messsages</td>
       </tr>
   </table>
 </div>
 
-<!-- <div class="footer">
+<div class="footer">
 <p align="center" class="style1"><strong>Copyright &copy; 2023. All Rights Reserved</strong></p>
-</div> -->
+</div>
     <script type="text/javascript">
       const toggleMenu = () => {
         document.body.classList.toggle("open");
       };
     </script>
-    <script>
-      async function setupCamera() {
-            const video = document.getElementById('video');
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            video.srcObject = stream;
-
-            return new Promise((resolve) => {
-                video.onloadedmetadata = () => {
-                    resolve(video);
-                };
-            });
-        }
-
-        async function loadHandpose() {
-            return await handpose.load();
-        }
-
-        async function detectHands(video, handpose) {
-            const predictions = await handpose.estimateHands(video);
-
-            if (predictions.length > 0) {
-                const canvas = document.getElementById('canvas');
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // Process the frame and send it to the server for prediction
-                const frameData = canvas.toDataURL('image/jpeg').split(',')[1];
-                fetch('/process_frame', {
-                    method: 'POST',
-                    body: frameData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Predicted:', data.prediction);
-                });
-            }
-
-            requestAnimationFrame(() => detectHands(video, handpose));
-        }
-
-        async function bindPage() {
-            const video = await setupCamera();
-            const handpose = await loadHandpose();
-            detectHands(video, handpose);
-        }
-
-        window.onload = bindPage;
-  </script>
+    
+    
   </body>
 </html>
