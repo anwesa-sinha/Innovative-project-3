@@ -5,7 +5,7 @@ import pickle
 
 app = Flask(__name__)
 
-model_dict = pickle.load(open('ML/model.pickle', 'rb'))
+model_dict = pickle.load(open('./ML/model.pickle', 'rb'))
 model = model_dict['model']
 
 cap = cv2.VideoCapture(0)
