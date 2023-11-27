@@ -42,6 +42,7 @@
   <table style="width:80%">
       <tr>
           <td class="camera">
+            <video id="video" width="640" height="480" autoplay playsinline></video>
             <canvas id="canvas" width="640" height="480"></canvas>
           </td>
           <td class="message">screen for showing output / messsages</td>
@@ -58,52 +59,52 @@
       };
     </script>
     <script>
-      async function detectHands() {
-            const model = await handpose.load();
-            const video = document.createElement('video');
-            const canvas = document.getElementById('canvas');
-            const ctx = canvas.getContext('2d');
-
+      async function setupCamera() {
+            const video = document.getElementById('video');
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
             video.srcObject = stream;
 
             return new Promise((resolve) => {
                 video.onloadedmetadata = () => {
-                    video.play();
-                    resolve();
+                    resolve(video);
                 };
             });
         }
 
-        function drawLandmarks(predictions, ctx) {
-            for (const hand of predictions) {
-                for (const landmark of hand.landmarks) {
-                    const [x, y] = landmark;
-                    ctx.beginPath();
-                    ctx.arc(x, y, 5, 0, 2 * Math.PI);
-                    ctx.fillStyle = 'red';
-                    ctx.fill();
-                }
-            }
+        async function loadHandpose() {
+            return await handpose.load();
         }
 
-        async function runHandpose() {
-            const video = document.querySelector('video');
-            const model = await handpose.load();
+        async function detectHands(video, handpose) {
+            const predictions = await handpose.estimateHands(video);
 
-            video.addEventListener('loadeddata', async () => {
+            if (predictions.length > 0) {
                 const canvas = document.getElementById('canvas');
                 const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                const predictions = await model.estimateHands(video);
-                drawLandmarks(predictions, ctx);
-            });
+                // Process the frame and send it to the server for prediction
+                const frameData = canvas.toDataURL('image/jpeg').split(',')[1];
+                fetch('/process_frame', {
+                    method: 'POST',
+                    body: frameData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Predicted:', data.prediction);
+                });
+            }
+
+            requestAnimationFrame(() => detectHands(video, handpose));
         }
 
-        window.onload = async () => {
-            await detectHands();
-            runHandpose();
-        };
+        async function bindPage() {
+            const video = await setupCamera();
+            const handpose = await loadHandpose();
+            detectHands(video, handpose);
+        }
+
+        window.onload = bindPage;
   </script>
   </body>
 </html>
