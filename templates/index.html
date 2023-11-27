@@ -42,7 +42,8 @@
   <table style="width:80%">
       <tr>
           <td class="camera">
-            <video id="video" width="640" height="480" autoplay playsinline></video>
+            <!-- <video id="video" width="640" height="480" autoplay playsinline></video> -->
+            <video id="camera-preview" width="640" height="480" autoplay></video>
             <canvas id="canvas" width="640" height="480"></canvas>
           </td>
           <td class="message">screen for showing output / messsages</td>
@@ -58,7 +59,7 @@
         document.body.classList.toggle("open");
       };
     </script>
-    <script>
+    <!-- <script>
       var video = document.getElementById('video');
         var canvas = document.getElementById('canvas');
         var ctx = canvas.getContext('2d');
@@ -112,6 +113,6 @@
         }
 
         window.onload = bindPage;
-  </script>
+  </script> -->
   </body>
 </html>

@@ -11,8 +11,6 @@ model = model_dict['model']
 cap = cv2.VideoCapture(0)
 
 @app.route('/')
-def home():
-    return render_template('index.html')
 
 def generate_frames():
     while True:
@@ -21,10 +19,12 @@ def generate_frames():
             break
         else:
             # Process the frame and send it to the client
-            _, buffer = cv2.imencode('.jpg', frame)
+            ret, buffer = cv2.imencode('.jpg', frame)
             frame_data = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame_data + b'\r\n')
+def home():
+    return render_template('index.html')
 
 @app.route('/video_feed')
 def video_feed():
