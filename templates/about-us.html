@@ -20,16 +20,16 @@
   </head>
 
   <body>
-    <div class="background"></div>
     <nav class="navbar">
-      <img class="navbar-logo" src="./assets/logo.webp" />
+      <!-- <img class="navbar-logo" src="./assets/logo.webp" alt="Logo">          // try this if the code below doesn't work -->
+      <img class="navbar-logo" src="./public/about-us/logo.webp" alt="Logo">
     </nav>
-    <button class="navbar-burger" onclick="toggleMenu()"></button>
-    <nav class="menu">
-      <a href="./index.html" style="animation-delay: 0.1s">Home</a>
-      <a href="./about-us.html" style="animation-delay: 0.2s" class="active">About Us</a>
-      <a href="./contact.html" style="animation-delay: 0.5s">Contact</a>
-    </nav>
+
+    <ul>
+        <li><a href="./contact.html">Contact</a></li>   <!-- change the contact page link if link is different / not working --> 
+        <li><a class="active" href="./about-us.html">About Us</a></li>   <!-- change the about-us page link if link is different / not working -->
+        <li><a href="./index.html">Home</a></li>   <!-- change the home page link if if link is different / not working possible-->
+    </ul>
 
     <div class="info">
       <h1>Our Team</h1>
@@ -153,10 +153,6 @@
 <div class="footer">
     <p align="center" class="style1"><strong>Copyright &copy; 2023. All Rights Reserved</strong></p>
 </div>
-<script type="text/javascript">
-    const toggleMenu = () => {
-      document.body.classList.toggle("open");
-    };
-  </script>
+
 </body>
 </html>
