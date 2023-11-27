@@ -16,14 +16,14 @@
       rel="stylesheet"
     />
 
-    <link href="./contact.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='contact.css') }}" rel="stylesheet" >
   </head>
 
   <body>
     <div class="background"></div>
     <nav class="navbar">
       <!-- <img class="navbar-logo" src="./assets/logo.webp" alt="Logo">          // try this if the code below doesn't work -->
-      <img class="navbar-logo" src="./public/contact/logo.webp" alt="Logo">
+      <img class="navbar-logo" src="{{ url_for('static', filename='assets/logo.webp') }}" alt="Logo">
     </nav>
 
     <ul>
@@ -33,7 +33,7 @@
   </ul>
 
     <div class="container">
-      <img src="./public/contact/shape.png" class="square" alt="" />
+      <img src="{{ url_for('static', filename='assets/contact/shape.png') }}" class="square" alt="" />
       <div class="form">
         <div class="contact-info">
           <h3 class="title">Let's get in touch</h3>
@@ -44,15 +44,15 @@
 
           <div class="info">
             <div class="information">
-              <img src="./public/contact/location.png" class="icon" alt="" />
+              <img src="{{ url_for('static', filename='assets/contact/location.png') }}" class="icon" alt="" />
               <p>KOLKATA, WEST BENGAL</p>
             </div>
             <div class="information">
-              <img src="./public/contact/email.png" class="icon" alt="" />
+              <img src="{{ url_for('static', filename='assets/contact/email.png') }}" class="icon" alt="" />
               <p>innovativeproj@gmail.com</p>
             </div>
             <div class="information">
-              <img src="./public/contact/phone.png" class="icon" alt="" />
+              <img src="{{ url_for('static', filename='assets/contact/phone.png') }}" class="icon" alt="" />
               <p>91546728986</p>
             </div>
           </div>
@@ -99,8 +99,5 @@
       };
     </script>
 
-    <div class="footer">
-      <p align="center" class="style1"><strong>Copyright &copy; 2023. All Rights Reserved</strong></p>
-  </div>
   </body>
 </html>

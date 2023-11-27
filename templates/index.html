@@ -16,8 +16,7 @@
       rel="stylesheet"
     />
  
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
@@ -29,8 +28,8 @@
     </nav>
 
     <ul>
-      <li><a href="#">Contact</a></li>   <!-- insert the contact page link --> 
-      <li><a href="#">About Us</a></li>   <!-- insert the about-us page link -->
+      <li><a href="{{ url_for('contact') }}">Contact</a></li>   <!-- insert the contact page link --> 
+      <li><a href="{{ url_for('about') }}">About Us</a></li>   <!-- insert the about-us page link -->
       <li><a class="active" href="#">Home</a></li>   <!-- insert the home page link if possible-->
     </ul>
 
@@ -45,6 +44,7 @@
             <!-- <button id="startBtn" onclick="openCam()">Open Webcam</button>  
             <video id="video" width="640" height="480" autoplay playsinline></video> -->
             <img id="video_feed" src="{{ url_for('video_feed') }}" alt="Hand Sign Detection">
+          </td>
 
     <script>
         // Optionally, you can use JavaScript to automatically update the image source
@@ -55,7 +55,7 @@
         }, 10000); // Update every 1000 milliseconds (1 second)
     </script>
           </td>
-          <td class="message">screen for showing output / messsages</td>
+          <td class="message"><img src="{{ url_for('static', filename='assets/asl.jpg') }}"></td>
       </tr>
   </table>
 </div>

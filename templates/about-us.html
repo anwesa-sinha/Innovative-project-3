@@ -16,13 +16,13 @@
       rel="stylesheet"
     />
  
-    <link href="./about-us.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='about-us.css') }}" rel="stylesheet" >
   </head>
 
   <body>
     <nav class="navbar">
       <!-- <img class="navbar-logo" src="./assets/logo.webp" alt="Logo">          // try this if the code below doesn't work -->
-      <img class="navbar-logo" src="./public/about-us/logo.webp" alt="Logo">
+      <img class="navbar-logo" src="{{ url_for('static', filename='assets/logo.webp') }}" alt="Logo">
     </nav>
 
     <ul>
@@ -43,7 +43,7 @@
                     <div class="box">
                     <div class="top-bar"></div>
                         <div class="details">
-                            <img src="./public/about-us/anwesa.webp" alt="">
+                            <img src="{{ url_for('static', filename='assets/about-us/anwesa.webp') }}" alt="">
                             <strong>Anwesa Sinha</strong>
                             <p>Team Lead</p>
                         </div>
@@ -53,7 +53,7 @@
                     <div class="box">
                         <div class="top-bar"></div>
                         <div class="details">
-                            <img src="./public/about-us/satyaki.webp" alt="">
+                            <img src="{{ url_for('static', filename='assets/about-us/satyaki.webp') }}" alt="">
                             <strong>Satyaki Dawn</strong>
                             <p>Frontend Developer</p>
                         </div>
@@ -63,7 +63,7 @@
                     <div class="box">
                     <div class="top-bar"></div>
                         <div class="details">
-                            <img src="./public/about-us/samriddhi.webp" alt="">
+                            <img src="{{ url_for('static', filename='assets/about-us/samriddhi.webp') }}" alt="">
                             <strong>Samriddhi Dubey</strong>
                             <p>App Developer</p>
                         </div>
@@ -73,7 +73,7 @@
                     <div class="box">
                     <div class="top-bar"></div>
                         <div class="details">
-                            <img src="./public/about-us/anubhab.webp" alt="">
+                            <img src="{{ url_for('static', filename='assets/about-us/anubhab.webp') }}" alt="">
                             <strong>Anubhab Pal</strong>
                             <p>UI/UX Designer</p>
                         </div>
@@ -85,7 +85,7 @@
                     <div class="box">
                     <div class="top-bar"></div>
                     <div class="details">
-                        <img src="./public/about-us/draksha.webp" alt="">
+                        <img src="{{ url_for('static', filename='assets/about-us/draksha.webp') }}" alt="">
                         <strong>Draksha</strong>
                         <p>ML Lead</p>
                     </div>              
@@ -95,7 +95,7 @@
                     <div class="box">
                     <div class="top-bar"></div>
                     <div class="details">
-                        <img src="./public/about-us/subhadip.webp" alt="">
+                        <img src="{{ url_for('static', filename='assets/about-us/subhadip.webp') }}" alt="">
                         <strong>Subhadip Das</strong>
                         <p>Database Administrator</p>
                     </div>
@@ -105,7 +105,7 @@
                     <div class="box">
                     <div class="top-bar"></div>    
                     <div class="details">            
-                        <img src="./public/about-us/asmita.webp" alt="">            
+                        <img src="{{ url_for('static', filename='assets/about-us/asmita.webp') }}" alt="">            
                         <strong>Asmita Sarkhel</strong>            
                         <p>Documentarian</p>            
                     </div>                          
@@ -115,7 +115,7 @@
                     <div class="box">
                     <div class="top-bar"></div>
                     <div class="details">            
-                        <img src="./public/about-us/arijit.webp" alt="">            
+                        <img src="{{ url_for('static', filename='assets/about-us/arijit.webp') }}" alt="">            
                         <strong>Arijit Dey</strong>            
                         <p>Interface Designer</p>            
                     </div>                
@@ -128,7 +128,7 @@
                     <div class="box">
                     <div class="top-bar"></div>
                     <div class="details">
-                        <img src="./public/about-us/adrija.webp" alt="">
+                        <img src="{{ url_for('static', filename='assets/about-us/adrija.webp') }}" alt="">
                         <strong>Adrija Nag</strong>
                         <p>Presentation Designer</p>                              
                     </div>
@@ -138,7 +138,7 @@
                     <div class="box">
                     <div class="top-bar"></div>
                     <div class="details">
-                        <img src="./public/about-us/pramit.webp" alt="">
+                        <img src="{{ url_for('static', filename='assets/about-us/pramit.webp') }}" alt="">
                         <strong>Pramit Roy</strong>
                         <p>Presentation Designer</p>
                     </div>                                  
@@ -148,10 +148,6 @@
         </table>
 </div>
 </section>
-</div>
-
-<div class="footer">
-    <p align="center" class="style1"><strong>Copyright &copy; 2023. All Rights Reserved</strong></p>
 </div>
 
 </body>

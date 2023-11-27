@@ -20,10 +20,12 @@ ul {
   padding: 1vh;
   overflow: hidden;
   background-color: rgb(252, 186, 189);
+  justify-content: space-between;
 }
 
 li {
   float: right;
+  padding: 0px 10px 10px 0px;
 }
 
 li a {
@@ -56,7 +58,6 @@ li a:hover:not(.active) {
 }
 
 .table {
-  border-collapse: collapse;
   position: relative;
   border-spacing: 30px;
   margin-left: auto;
@@ -82,6 +83,11 @@ td, .message {
   border-radius: 10px;
 }
 
+.message img{
+  width: 100%;
+}
+
 table, td {
   border: 0px solid none;
+  border-spacing: 5px;
 }
