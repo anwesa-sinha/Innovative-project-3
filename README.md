@@ -1,5 +1,8 @@
 # SignSage
 
+![](https://github.com/anwesa-sinha/Innovative-project-3/assets/94695669/dd6520fd-3c8e-4f62-95a0-2b1872462e69)
+
+
 ## ℹ️ About 
 SignSage uses advanced technology to create a real-time sign language interpreter that accurately recognizes and translates sign language gestures. Its goal is to make sign language accessible to everyone, regardless of their familiarity with the language.
 
