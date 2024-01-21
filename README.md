@@ -23,6 +23,8 @@ Create a copy of this repository on your local system and run the following comm
   pip install opencv-python==4.7.0.68
   pip install mediapipe==0.9.0.1
   pip install scikit-learn==1.2.1
+
+  python app.py
 ```
  ### 🔗 Link 
  Flask 3.0.1 : [Click Here](https://pypi.org/project/Flask/)<br>
