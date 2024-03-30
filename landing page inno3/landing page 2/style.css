@@ -157,12 +157,13 @@ nav ul li a.active {
     background-color: rgba(216, 227, 255, 1);
     width: auto;
     height: auto;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px;
+    border-radius: 26px;
+    margin: 10vh 3vw;
+    padding-top: 10vh;
 }
 
 .about-us h1, .members h1{
+    margin: 3vw;
     font-size: 5vh;
     padding: 20px;
 }
@@ -219,9 +220,10 @@ hr{
 }
 
 .text{
-    margin-top: 20px;
+    /* margin-top: 20px; */
     display: flex;
-    margin-left: 20px;
+    /* margin-left: 20px; */
+    margin: 3vw;
 }
 
 .child{
@@ -233,9 +235,9 @@ hr{
     background-color: rgba(254, 254, 190, 1);
     width: auto;
     height: auto;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px;
+    border-radius: 26px;
+    margin: 4vh 3vw;
+    padding-top: 20vh;
 }
 
 .row{
@@ -245,21 +247,60 @@ hr{
 .item{
     flex-basis: 100%;
     padding: 20px;
-    margin: 20px;
+    margin: 3vw;
     background-color: rgb(255, 247, 175);
     border: 2px solid gray;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 3px 3px 3px rgba(96, 97, 97, 0.674);
+    box-shadow: 3px 3px 3px rgba(96, 97, 97, 0.308);
+    height: 30vh;
 }
 
-.item-img{
+.item-img {
     background-color: gray;
     border-radius: 50%;
     height: 100px;
     width: 100px;
     margin: 0 auto;
     text-align: center;
+}
+
+.item-img .member-pic {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+
+.details {
+    background-color: #F4F4F4;
+    border: 0.4px solid black;
+    border-radius: 16px;
+    margin: 2vh 0vw;
+    padding-top: 2vh;
+    height: 150px;
+}
+
+.details p {
+    margin-top: -10px;
+    font-size: 14px;
+}
+
+.details .email , .linkedin {
+    background-color: #D9D9D9;
+    color: #000000;
+    border-radius: 18px;
+    border: 0;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-size: 1.4vh;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.details .email:hover,
+.details .linkedin:hover {
+    background-color: #A0A0A0; 
+    color: #FFFFFF;
 }
 
 /* footer */
