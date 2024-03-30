@@ -168,12 +168,41 @@ nav ul li a.active {
 }
 
 .abt-img{
-    background-color: rgba(217, 217, 217, 1);
-    width: 450px;
-    height: 150px;
-    margin: 20px;
-    text-align: center;
-    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* min-height: 50vh; */
+}
+
+.abt-img .carousel{
+    display: grid;
+    /* grid-auto-columns: calc((100% / 6) + 100px); */
+    /* gap: 3px; */
+    overflow: hidden;
+    grid-auto-flow: column;
+    margin: 10px;
+}
+
+.carousel{
+    width: 100%;
+    /* margin-left: -200px; */
+}
+
+.carousel .card{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.card img{
+    width: 300px;
+    height: 250px;
+    object-fit: cover;
+    justify-content: center;
+    border-radius: 8px;
+    /* box-shadow: 3px 1px 3px rgba(96, 97, 97, 0.674); */
 }
 
 hr{
@@ -183,6 +212,10 @@ hr{
     margin-left: 0;
     color: rgb(0, 0, 0); 
     background-color: rgb(0, 0, 0)
+}
+
+.about-us h3{
+    font-size: 3vh;
 }
 
 .text{
