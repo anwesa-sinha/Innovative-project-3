@@ -9,10 +9,6 @@
     /* border: 1px solid red; */
 }
 
-body {
-    margin: 0;
-}
-
 
 /*header*/
 
@@ -34,6 +30,7 @@ header {
 nav ul {
     list-style-type: none;
     margin: 0;
+    margin-right: 3.6vw;
     padding: 0;
     display: flex;
     justify-content: center;
@@ -71,7 +68,7 @@ nav ul li a.active {
     color: #1877F2;
 }
 
-.right-buttons {
+/* .right-buttons {
     margin-right: 20px;
 }
 
@@ -81,10 +78,9 @@ nav ul li a.active {
     cursor: pointer;
     border-bottom: none;
     mix-blend-mode: hard-light;
-}
+} */
 
 /* home */
-
 
 .containerHome {
     display: flex;
@@ -128,11 +124,10 @@ nav ul li a.active {
     height: 100vh;
 }
 
-
 /* features */
 
 .containerFeatures {
-    height: 100vh;
+    height: auto;
     background-image: url(./assets/backgroundFeatures.png);
     box-shadow: inset 0px 20px 15px #ffffff;
     background-size: cover;
@@ -143,12 +138,25 @@ nav ul li a.active {
     width: 40%;
     font-size: 4vh;
     margin: 20vh 6vw;
-    padding-top: 20vh;
+    margin-bottom: 5%;
+    padding-top: 16vh;
 }
 
 .containerFeatures .left .p-text {
     width: 100%;
     font-size: 2vh;
+}
+
+.containerFeatures .features-demo {
+    margin: 0 auto;
+    height: 100%;
+    width: 60vw;
+    display: flex;
+    border: 1px solid black;
+    border-radius: 24px;
+    position: static;
+    align-items: center;
+    justify-content: center;
 }
 
 /*About Us*/
@@ -159,7 +167,7 @@ nav ul li a.active {
     height: auto;
     border-radius: 26px;
     margin: 10vh 3vw;
-    padding-top: 10vh;
+    padding-top: 8vh;
 }
 
 .about-us h1, .members h1{
@@ -172,13 +180,10 @@ nav ul li a.active {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* min-height: 50vh; */
 }
 
 .abt-img .carousel{
     display: grid;
-    /* grid-auto-columns: calc((100% / 6) + 100px); */
-    /* gap: 3px; */
     overflow: hidden;
     grid-auto-flow: column;
     margin: 10px;
@@ -186,7 +191,6 @@ nav ul li a.active {
 
 .carousel{
     width: 100%;
-    /* margin-left: -200px; */
 }
 
 .carousel .card{
@@ -203,7 +207,6 @@ nav ul li a.active {
     object-fit: cover;
     justify-content: center;
     border-radius: 8px;
-    /* box-shadow: 3px 1px 3px rgba(96, 97, 97, 0.674); */
 }
 
 hr{
@@ -220,9 +223,7 @@ hr{
 }
 
 .text{
-    /* margin-top: 20px; */
     display: flex;
-    /* margin-left: 20px; */
     margin: 3vw;
 }
 
@@ -231,13 +232,15 @@ hr{
     padding: 20px;
 }
 
+/* members */
+
 .members{
     background-color: rgba(254, 254, 190, 1);
     width: auto;
     height: auto;
     border-radius: 26px;
     margin: 4vh 3vw;
-    padding-top: 20vh;
+    padding-top: 4vh;
 }
 
 .row{
@@ -253,52 +256,54 @@ hr{
     border-radius: 10px;
     text-align: center;
     box-shadow: 3px 3px 3px rgba(96, 97, 97, 0.308);
-    height: 30vh;
+    height: 31vh;
 }
 
-.item-img {
+.item-img{
+    height: 100px;
+    width: 100px;
+    margin: 0 auto;
+}
+
+.item img {
     background-color: gray;
     border-radius: 50%;
     height: 100px;
     width: 100px;
-    margin: 0 auto;
-    text-align: center;
 }
 
-.item-img .member-pic {
-    height: 100px;
-    width: 100px;
-    border-radius: 50%;
+.item-text{
+    background-color: white;
+    margin-top: 10px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    height: 15vh;
+    padding: 5px;
 }
 
-.details {
-    background-color: #F4F4F4;
-    border: 0.4px solid black;
-    border-radius: 16px;
-    margin: 2vh 0vw;
-    padding-top: 2vh;
-    height: 150px;
+.item-text h4{
+    padding: 8px;
 }
 
-.details p {
-    margin-top: -10px;
-    font-size: 14px;
+.item-text p {
+    margin-bottom: 10px;
+    font-size: 16px;
 }
 
-.details .email , .linkedin {
+.item-text .email , .linkedin {
     background-color: #D9D9D9;
     color: #000000;
     border-radius: 18px;
     border: 0;
-    padding: 4px 12px;
+    padding: 4px 10px;
     cursor: pointer;
     font-size: 1.4vh;
     text-decoration: none;
     transition: transform 0.3s ease;
 }
 
-.details .email:hover,
-.details .linkedin:hover {
+.item-text .email:hover,
+.item-text .linkedin:hover {
     background-color: #A0A0A0; 
     color: #FFFFFF;
 }
@@ -351,7 +356,6 @@ hr{
 
 .footer a{
     font-size: large;
-    /* font-weight: 600; */
     color: black;
     text-decoration: none;
 }
@@ -376,6 +380,11 @@ hr{
     font-size: large;
     right: 10px;
     cursor: pointer;
+}
+
+.footer .form button:hover {
+    background: #003f92;
+    transition: 0.3s ease;
 }
 
 .line{
