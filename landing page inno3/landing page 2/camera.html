@@ -1,15 +1,16 @@
+<!-- Satyaki's code :  -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Camera</title>
-
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <title>Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" /> -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
     <link href="./camera.css" rel="stylesheet" />
   </head>
@@ -22,7 +23,7 @@
             <img src="./assets/cam/backBtn.png" alt="Back">
           </a>
         </button>
-          <div class="logo"><img src="./assets/logo.png" alt="logo"></div>
+        <div class="logo"><img src="./assets/logo.png" alt="logo"></div>
       </div>
         <nav>
             <ul>
@@ -32,42 +33,46 @@
             </ul>
         </nav>
         <div class="right-buttons">
-
-            <!-- <button class="rightBtn1"><img src="./assets/notification.png" alt="notifications"></button>
-            <button class="rightBtn2"><img src="./assets/myaccBtn.png" alt="my account"></button> -->
-
+            <button class="rightBtn1"><img src="./assets/notification.png" alt="notifications"></button>
+            <button class="rightBtn2"><img src="./assets/myaccBtn.png" alt="my account"></button>
         </div>
     </header>
+    <div class="info">
+      <h1>Welcome!</h1>
+      <p>Our user-friendly interface makes it easy for anyone to utilize our sign language detection tool that translate your gestures into real-time spoken words.</p>
+  </div>
 
-    <div class="container">
-      <div class="left-section">
-          <div class="buttons">
-              <button class="bt1"><img src="./assets/cam/GTH.png" alt="notifications"></button>
-              <button class="bt2"><img src="./assets/cam/STT.png" alt="notifications"></button>
-              <button class="bt3"><img src="./assets/cam/TTS.png" alt="notifications"></button>
-          </div>
-          <div class="camera-screen">
-              <!-- Placeholder for camera screen -->
-          </div>
-      </div>
-      <div class="right-section">
-          <div class="text-window">
-              <!-- Placeholder for text display -->
-          </div>
-          <div class="sliding-image">
-              <img class="pic" src="./assets/cam/gestures.png" />
-          </div>
-      </div>
-  </div>
-  
-  <div class="footer">
-      <p align="center" class="style1"><strong>Copyright &copy; 2024. All Rights Reserved</strong></p>
-  </div>
-  
-  <script type="text/javascript">
+  <table class="tb1">
+      <tr class="camera">
+
+        <img class="rec" src="./assets/cam/Rectangle 8.png" />
+          <td class="camera" >screen for integrating the camera</td>
+      </tr>
+        <button class="bt1"><img src="./assets/cam/GTH.png" alt="notifications"></button>
+        &nbsp;&nbsp;
+        <button class="bt2"><img src="./assets/cam/TTS.png" alt="notifications"></button>&nbsp;&nbsp;
+        <button class="bt3"><img src="./assets/cam/STT.png" alt="notifications"></button>
+  </table>
+  <table class="tb2">
+    <tr class="message">
+        <td class="message">screen for showing output / messsages</td>
+    </tr>
+  </table>
+<table class="pic">
+  <tr class="pic">
+    <img class="pic" src="./assets/cam/gestures.png" />
+    </tr>
+</table>
+
+</div>
+
+<div class="footer">
+<p align="center" class="style1"><strong>Copyright &copy; 2023. All Rights Reserved</strong></p>
+</div>
+    <script type="text/javascript">
       const toggleMenu = () => {
-          document.body.classList.toggle("open");
+        document.body.classList.toggle("open");
       };
-  </script>
+    </script>
   </body>
-  </html>
+</html>
