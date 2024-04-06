@@ -23,46 +23,67 @@
         </button>
         <div class="logo"><img src="./assets/logo.png" alt="logo"></div>
       </div>
-        <nav>
-            <ul>
-                <li><a href="./index.html#home">Home</a></li>
-                <li><a href="./index.html#features">Features</a></li>
-                <li><a href="./index.html#about">About</a></li>
-            </ul>
-        </nav>
-        <div class="right-buttons"></div>    <!-- keeping it otherwise the "nav ul li a" alignemnt is getting messed up -->
+      <nav>
+        <ul>
+          <li><a href="./index.html#home">Home</a></li>
+          <li><a href="./index.html#features">Features</a></li>
+          <li><a href="./index.html#about">About</a></li>
+        </ul>
+      </nav>
+      <div class="right-buttons"></div>    <!-- keeping it otherwise the "nav ul li a" alignemnt is getting messed up -->
     </header>
-    <div class="table-container">
-      <table class="table-1">
+    <div class="cam-page">
+      <div class="left-main">
+        <div class="camera-outer">
+          <div class="controls">
+            <button class="camButton"><img src="./assets/cam/GTH.png" alt="Gesture To text"></button>
+            <button class="camButton"><img src="./assets/cam/TTS.png" alt="Text To Speech"></button>
+            <button class="camButton"><img src="./assets/cam/STT.png" alt="Speech To Text"></button>
+          </div>
+          <div class="camera">
+            Camera here
+          </div>
+        </div>
+      </div>
+
+      <div class="right-main">
+        <div class="text-box">
+          Text generated here
+        </div>
+        <div class="template">
+          <button id="openBtn"><img src="./assets/cam/openBtn.png" alt="Open Gestures"></button>
+          <div class="sliding-window" id="slidingWindow">
+            <div class="content">
+              <img class="gesturesPic" src="./assets/cam/gestures.png">
+              <button id="closeBtn"><img src="./assets/cam/closeBtn.png" alt="Close Gestures"></button>
+            </div>
+          </div>
+        </div> 
+      </div>
+      <!-- <table class="table-1">
         <tr class="buttons">
           <td><button class="camButton"><img src="./assets/cam/GTH.png" alt="Gesture To Hear"></button></td>&nbsp;&nbsp;
           <td><button class="camButton"><img src="./assets/cam/TTS.png" alt="Test To Speech"></button></td>&nbsp;&nbsp;
           <td><button class="camButton"><img src="./assets/cam/STT.png" alt="Speech To Text"></button></td><br>
           </tr>
-          <tr class="cameraScreen"> <!-- Move cameraScreen div inside table-1 -->
-            <td colspan="3"> <!-- Spanning across all columns -->
+          <tr class="cameraScreen"> <!-- Move cameraScreen div inside table-1
+            <td colspan="3"> <!-- Spanning across all columns
               <div class="cameraScreen">
                 <p>screen for integrating the camera</p>
               </div>
             </td>
           </tr>
-        </table>
+        </table> -->
     
-    <table class="table-2">
-      <tr class="chatbox">
+      <!-- <table class="table-2">
+        <tr class="chatbox">
           <td class="message">screen for showing output / messsages</td>
-      </tr>
-  </table>
+        </tr>
+      </table> -->
     </div>
 </div>
 
-  <button id="openBtn"><img src="./assets/cam/openBtn.png" alt="Open Gestures"></button>
-        <div class="sliding-window" id="slidingWindow">
-        <div class="content">
-          <img class="gesturesPic" src="./assets/cam/gestures.png">
-            <button id="closeBtn"><img src="./assets/cam/closeBtn.png" alt="Close Gestures"></button>
-        </div>
-    </div>  
+ 
 
 <div class="footer">
 <p align="center" class="style1"><strong>Copyright &copy; 2024. All Rights Reserved</strong></p>

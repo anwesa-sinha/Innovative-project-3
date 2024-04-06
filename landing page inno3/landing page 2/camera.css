@@ -3,10 +3,8 @@
   padding: 0;
   background-size: cover;
   font-family: 'Poppins';
-  scroll-behavior: smooth;  /* if needed */
-  /* overflow: hidden; */
+  scroll-behavior: smooth;  
 }
-
 
 header {
   background-color: white;
@@ -76,53 +74,90 @@ nav ul li a.active {
   margin-right: 8vw;
 }
 
-
-/* table*/
-
-.table-container {
+.cam-page{
+  padding: 2%;
   display: flex;
 }
 
-.table1, .table2 {
-  flex: 1;
+.left-main{
+  width: 60%;
+  padding: 2%;
+  border-radius: 10px;
+  border: #333 2px solid;
+  background-color: rgba(217, 217, 217, 0.668);
 }
 
-.table-container .table-1 {
+.controls{
+  border-radius: 10px;
   display: flex;
-  position: relative;
-  height: 60vh;
-  border-radius: 24px;
-  width: 60vw;
-  background-color: #F0F0F0;
-  bottom: 5vh;
-  margin: 14vh 6vw;
-  text-align: center;
-}
-
-.table-1 .cameraScr {
+  justify-content: space-between;
   padding: 20px;
-  text-align: center;
-  align-content: center;
 }
 
-.table-1 .buttons {
-  width: fit-content;
-}
-
-.table-1 .buttons .camButton {
-  margin: 2px;
-  align-items: center;
-  display: flex;
-  position: relative;
-  background: none;
+.controls button{
   border: none;
-  padding: 1vh 3vw;
+  border-radius: 40px;
+}
+
+.camera{
+  background-color: rgba(217, 217, 217, 1);
+  height: 45vh;
+  border-radius: 10px;
+}
+
+.right-main{
+  margin-left: 1.5%;
+  /* border: red 2px solid; */
+  width: 40%;
+}
+
+.text-box{
+  height: 50vh;
+  width: 20wh;
+  background-color: rgb(255, 234, 159);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.template{
+  position: absolute;
+  bottom: 8%;
+  width: 36%;
+}
+
+#openBtn {
+  display: flex;
+  width: 100%;
+  border: 1px solid black;
+  color: #000000;
+  background-color: #D9D9D9;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
 }
 
+.sliding-window {
+  position: fixed;
+  width: 30vw;
+  height: 65vh;
+  background-color: #D9D9D9;
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.3);
+  transition: bottom 0.7s ease; /* Smooth sliding transition */
+}
+
+.gesturesPic {
+  width: 88%;
+}
+
+.content {
+  padding: 20px;
+}
+
+#closeBtn{
+  border: None;
+}
 
 /* buttons - hovering */
-
 
 .camButton img {
   transition: transform 0.5s ease;
@@ -147,55 +182,6 @@ nav ul li a.active {
   display: flex;
   height: 40vh;
   background-color: #D9D9D9;
-}
-
-.table-container .table-2 {
-  display: flex;
-  position: relative;
-  background-color: #FFEA9F;
-  height: 30vh;
-  width: 40vw;
-  border-radius: 24px;
-  margin-top: 9vh; 
-  margin-right: 6vw;
-}
-
-.table-container .table-2 .gestures .openBtn {
-  border: none;
-  background: none;
-}
-
-#openBtn {
-  display: flex;
-  height: 20vh;
-  width: 200px;
-  margin: 20px top; /* Adjust margin as needed */
-  padding: 28vh top;
-  border: 1px solid black;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.sliding-window {
-  position: fixed;
-  bottom: -1000px; /* Start below the viewport */
-  right: inherit;
-  width: 30vw;
-  height: 700px;
-  background-color: #ffffff;
-  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.3);
-  transition: bottom 0.5s ease; /* Smooth sliding transition */
-  z-index: 9999;
-}
-
-.gesturesPic {
-  width: 20vw;
-}
-
-.content {
-  padding: 20px;
 }
 
 /* for footer */
