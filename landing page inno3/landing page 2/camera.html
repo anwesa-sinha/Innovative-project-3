@@ -1,18 +1,16 @@
-<!-- Satyaki's code :  -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-
+    <title>Camera</title>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href="./camera.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/ico/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/ico/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/ico/favicon-16x16.png">
+    <link rel="manifest" href="./assets/ico/site.webmanifest">
   </head>
 
   <body>
@@ -32,47 +30,65 @@
                 <li><a href="./index.html#about">About</a></li>
             </ul>
         </nav>
-        <div class="right-buttons">
-            <button class="rightBtn1"><img src="./assets/notification.png" alt="notifications"></button>
-            <button class="rightBtn2"><img src="./assets/myaccBtn.png" alt="my account"></button>
-        </div>
+        <div class="right-buttons"></div>    <!-- keeping it otherwise the "nav ul li a" alignemnt is getting messed up -->
     </header>
-    <div class="info">
-      <h1>Welcome!</h1>
-      <p>Our user-friendly interface makes it easy for anyone to utilize our sign language detection tool that translate your gestures into real-time spoken words.</p>
-  </div>
-
-  <table class="tb1">
-      <tr class="camera">
-
-        <img class="rec" src="./assets/cam/Rectangle 8.png" />
-          <td class="camera" >screen for integrating the camera</td>
+    <div class="table-container">
+      <table class="table-1">
+        <tr class="buttons">
+          <td><button class="camButton"><img src="./assets/cam/GTH.png" alt="Gesture To Hear"></button></td>&nbsp;&nbsp;
+          <td><button class="camButton"><img src="./assets/cam/TTS.png" alt="Test To Speech"></button></td>&nbsp;&nbsp;
+          <td><button class="camButton"><img src="./assets/cam/STT.png" alt="Speech To Text"></button></td><br>
+          </tr>
+          <tr class="cameraScreen"> <!-- Move cameraScreen div inside table-1 -->
+            <td colspan="3"> <!-- Spanning across all columns -->
+              <div class="cameraScreen">
+                <p>screen for integrating the camera</p>
+              </div>
+            </td>
+          </tr>
+        </table>
+    
+    <table class="table-2">
+      <tr class="chatbox">
+          <td class="message">screen for showing output / messsages</td>
       </tr>
-        <button class="bt1"><img src="./assets/cam/GTH.png" alt="notifications"></button>
-        &nbsp;&nbsp;
-        <button class="bt2"><img src="./assets/cam/TTS.png" alt="notifications"></button>&nbsp;&nbsp;
-        <button class="bt3"><img src="./assets/cam/STT.png" alt="notifications"></button>
   </table>
-  <table class="tb2">
-    <tr class="message">
-        <td class="message">screen for showing output / messsages</td>
-    </tr>
-  </table>
-<table class="pic">
-  <tr class="pic">
-    <img class="pic" src="./assets/cam/gestures.png" />
-    </tr>
-</table>
-
+    </div>
 </div>
+
+  <button id="openBtn"><img src="./assets/cam/openBtn.png" alt="Open Gestures"></button>
+        <div class="sliding-window" id="slidingWindow">
+        <div class="content">
+          <img class="gesturesPic" src="./assets/cam/gestures.png">
+            <button id="closeBtn"><img src="./assets/cam/closeBtn.png" alt="Close Gestures"></button>
+        </div>
+    </div>  
 
 <div class="footer">
-<p align="center" class="style1"><strong>Copyright &copy; 2023. All Rights Reserved</strong></p>
+<p align="center" class="style1"><strong>Copyright &copy; 2024. All Rights Reserved</strong></p>
 </div>
-    <script type="text/javascript">
-      const toggleMenu = () => {
-        document.body.classList.toggle("open");
-      };
-    </script>
-  </body>
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+const openBtn = document.getElementById('openBtn');
+const closeBtn = document.getElementById('closeBtn');
+const slidingWindow = document.getElementById('slidingWindow');
+
+    // Function to open the sliding window
+function openSlidingWindow() {
+  slidingWindow.style.bottom = '0';    
+}
+
+    // Function to close the sliding window
+function closeSlidingWindow() {
+  slidingWindow.style.bottom = `-${slidingWindow.offsetHeight}vh`;
+}
+
+    // Event listeners for open and close buttons
+openBtn.addEventListener('click', openSlidingWindow);    
+closeBtn.addEventListener('click', closeSlidingWindow);
+});
+
+</script>
+</body>
 </html>

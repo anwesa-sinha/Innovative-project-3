@@ -1,127 +1,10 @@
-/* Satyaki's code : */
-
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-  min-width: none;
-}
-
-.tb1{
-  border-spacing: 30px;
-  margin-left: 17vh;
-  /* margin-right: auto; */
-  margin-top: 10vh;
-  height: 80px;
-}
-
-.tb2{
-  border-spacing: 50px;
-  margin-left: 116vh;
-  margin-right: 100px;
-  margin-top: -103vh;
-  
-}
-.tb2{
-  width: 40%;
-}
-table ,.pic{
-  border-spacing: 50px;
-  margin-left: 125vh;
-  margin-right: 250px;
-  margin-top: -40px;
-  /* width: 30%; */
-}
-.pic{
-  width: 33%;
-}
-th, td.camera{
-  text-align: center;
-  padding: 20px;
-  align-items: center;
-  height: 55vh;
-}
-th, td.message{
-  text-align: center;
-  padding: 30px;
-  align-items: center;
-  height: 30vh;
-}
-
-td, .camera {
-  
-  width: 45%;
-  background-color: #D9D9D9;
-  border-radius: 10px;
-  z-index: 1;
-}
-img.rec{
-  position: absolute;
-  border-spacing: 50px;
-  margin-left: 18vh;
-  margin-right: 150vh;
-  margin-top: -20vh;
-  /* margin-bottom: -1vh; */
-  width: 48%;
-  z-index: -1;
-}
-/* .pic{
-  width: 50vh;
-  margin-left: 130vh;
-  margin-right: 100px;
-  margin-top: -100vh;
-  height: 45vh;
-} */
-
-/* td.camera {
-  height: 30cm;
-} */
-
-/* table > tbody > tr > td.message {
-  height: 10cm;
-} */
-.bt1{
-  margin-left: 22vh;
-  margin-top: -20vh;
-  /* margin-bottom: -10vh; */
-}
-.bt2{
-  margin-left: 14vh;
-  /* margin-right: 150vh; */
-  margin-top: -20vh;
-  /* margin-bottom: -10vh; */
-}
-.bt3{
-  margin-left: 13vh;
-  /* margin-right: 150vh; */
-  margin-top: -20vh;
-  /* margin-bottom: -10vh; */
-}
-td, .message {
-  width: 70%;
-  background-color: #FEFEBE;
-  border-radius: 10px;
-}
-
-h3 {
-  text-align: right;
-}
-
-table, td {
-  border: 0px solid none;
-}
-
-.info {
-  margin: 10% 0%;
-  padding-left: 10%;
-}
-
-button {
-  border: 0;
-  padding: 0;
-  background: transparent;
-  cursor: pointer;
+  background-size: cover;
+  font-family: 'Poppins';
+  scroll-behavior: smooth;  /* if needed */
+  /* overflow: hidden; */
 }
 
 
@@ -136,8 +19,17 @@ header {
   top: 0;
 }
 
-.logo {
-  margin-left: 20px;
+.left-buttons {
+  display: flex;
+}
+
+.left-buttons .backBtn {
+  border: 0;
+  background: none;
+}
+
+.left-buttons .logo {
+  margin-left: 2vw;
 }
 
 nav ul {
@@ -181,20 +73,136 @@ nav ul li a.active {
 }
 
 .right-buttons {
-  margin-right: 20px;
+  margin-right: 8vw;
 }
 
-.rightBtn1, .rightBtn2 {
+
+/* table*/
+
+.table-container {
+  display: flex;
+}
+
+.table1, .table2 {
+  flex: 1;
+}
+
+.table-container .table-1 {
+  display: flex;
+  position: relative;
+  height: 60vh;
+  border-radius: 24px;
+  width: 60vw;
+  background-color: #F0F0F0;
+  bottom: 5vh;
+  margin: 14vh 6vw;
+  text-align: center;
+}
+
+.table-1 .cameraScr {
+  padding: 20px;
+  text-align: center;
+  align-content: center;
+}
+
+.table-1 .buttons {
+  width: fit-content;
+}
+
+.table-1 .buttons .camButton {
+  margin: 2px;
+  align-items: center;
+  display: flex;
+  position: relative;
+  background: none;
   border: none;
-  margin-left: 10px;
+  padding: 1vh 3vw;
   cursor: pointer;
-  border-bottom: none;
-  mix-blend-mode: hard-light;
 }
 
+
+/* buttons - hovering */
+
+
+.camButton img {
+  transition: transform 0.5s ease;
+}
+
+.camButton:hover img[src="./assets/cam/GTH.png"] {
+  content: url('./assets/cam/GTH-hover.png');
+}
+
+.camButton:hover img[src="./assets/cam/TTS.png"] {
+  content: url('./assets/cam/TTS-hover.png');
+}
+
+.camButton:hover img[src="./assets/cam/STT.png"] {
+  content: url('./assets/cam/STT-hover.png');
+}
+
+/* end of hovering buttons */
+
+.cameraScreen {
+  margin: 0 2vw;
+  display: flex;
+  height: 40vh;
+  background-color: #D9D9D9;
+}
+
+.table-container .table-2 {
+  display: flex;
+  position: relative;
+  background-color: #FFEA9F;
+  height: 30vh;
+  width: 40vw;
+  border-radius: 24px;
+  margin-top: 9vh; 
+  margin-right: 6vw;
+}
+
+.table-container .table-2 .gestures .openBtn {
+  border: none;
+  background: none;
+}
+
+#openBtn {
+  display: flex;
+  height: 20vh;
+  width: 200px;
+  margin: 20px top; /* Adjust margin as needed */
+  padding: 28vh top;
+  border: 1px solid black;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sliding-window {
+  position: fixed;
+  bottom: -1000px; /* Start below the viewport */
+  right: inherit;
+  width: 30vw;
+  height: 700px;
+  background-color: #ffffff;
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.3);
+  transition: bottom 0.5s ease; /* Smooth sliding transition */
+  z-index: 9999;
+}
+
+.gesturesPic {
+  width: 20vw;
+}
+
+.content {
+  padding: 20px;
+}
+
+/* for footer */
 
 .footer {
   position: fixed;
+  display: block;
   left: 0;
   bottom: 0%;
   padding: 14px;
@@ -204,8 +212,8 @@ nav ul li a.active {
   z-index: 1;
 }
 
+
 .style1{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
 }
-
