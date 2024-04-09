@@ -99,7 +99,7 @@ closeBtn.addEventListener('click', closeSlidingWindow);
                 .then(response => response.json())
                 .then(data => {
                     // Update the HTML content with the received text
-                    document.getElementById('text_placeholder').textContent = data.text;
+                    document.getElementById('text-box').textContent = data.text;
                 })
                 .catch(error => {
                     console.error('Error:', error);
