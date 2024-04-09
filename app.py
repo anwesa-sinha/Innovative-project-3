@@ -137,15 +137,12 @@ def speech_text():
 
 @app.route('/camera')
 def camera():
-    # return render_template('camera.html')
-    text = "Hello, world!"  # Replace this with the text you want to display
     return render_template('camera.html')
 
 @app.route('/get_text')
 def get_text():
     # Function to dynamically generate or fetch the text
-    text_to_send = predicted_character + str(time.time())  # Example: Adding timestamp
-    return jsonify({'text': text_to_send})
+    return jsonify({'text': predicted_character})
 
 @app.route('/')
 def index():
