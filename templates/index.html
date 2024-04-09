@@ -20,49 +20,263 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/ico/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/ico/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/ico/favicon-16x16.png">
+    <link rel="manifest" href="./assets/ico/site.webmanifest">
   </head>
 
   <body>
-    <nav class="navbar">
-      <img class="navbar-logo" src="{{ url_for('static', filename='assets/logo.webp') }}" alt="Logo">
-    </nav>
+    <header>
+      <div class="logo">
+        <img src="{{ url_for('static', filename='assets/logo.webp') }}" alt="Logo">
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+    </header>
+      
+    <div class="container">
 
-    <ul>
-      <li><a href="{{ url_for('contact') }}">Contact</a></li>   <!-- insert the contact page link --> 
-      <li><a href="{{ url_for('about') }}">About Us</a></li>   <!-- insert the about-us page link -->
-      <li><a class="active" href="#">Home</a></li>   <!-- insert the home page link if possible-->
-    </ul>
+      <!-- home -->
 
-    <div class="info">
-      <h1>Welcome!</h1>
-      <p>Our user-friendly interface makes it easy for anyone to utilize our sign language detection tool that translate your gestures into real-time spoken words.</p>
-  </div>
+      <section id="home">
+        <div class="containerHome">
+            <div class="left">
+                <h1>Welcome to<br><span>SignSage</span></h1>
+                <p class="p-text">Our user-friendly interface makes it easy for anyone to utilize our sign language detection tool that translate your gestures into real-time spoken words.</p><br>
+                <button type="button" class="cameraBtn"><a href="{{ url_for('camera') }}">Open Camera</a></button>  <!-- redirects to the camera page -->
+            </div>
+            <div class="right">
+                <img src="{{ url_for('static', filename='assets/doctor.png') }}" alt="vector-art">
+            </div>
+        </div>
+      </section>
 
-  <table class="table" style="width:80%">
-      <tr>
-          <td class="camera">
-            <!-- <button id="startBtn" onclick="openCam()">Open Webcam</button>  
-            <video id="video" width="640" height="480" autoplay playsinline></video> -->
-            <img id="video_feed" src="{{ url_for('video_feed') }}" alt="Hand Sign Detection">
-          </td>
+      <!-- features -->
 
-    <script>
-        // Optionally, you can use JavaScript to automatically update the image source
-        // to get real-time updates from the video feed.
-        const videoFeed = document.getElementById('video_feed');
-        setInterval(() => {
-            videoFeed.src = "{{ url_for('video_feed') }}?time=" + new Date().getTime();
-        }, 10000); // Update every 1000 milliseconds (1 second)
-    </script>
-          </td>
-          <td class="message"><img src="{{ url_for('static', filename='assets/asl.jpg') }}"></td>
-      </tr>
-  </table>
-</div>
+      <section id="features">
+        <div class="containerFeatures">
+            <div class="left">
+                <h1>Features</h1>
+                <p class="p-text">SignSage integrates ASL to text conversion with innovative features to bridge the communication gap between the Deaf and hearing communities. It promotes inclusivity in digital interactions and empowers individuals with diverse communication needs. Discover our cutting-edge functionalities for effective communication.</p><br>
+            </div>
+            <img src="{{ url_for('static', filename='assets/features-demo.png') }}" class="features-demo" alt="features">
+        </div>
+      </section>
 
-<!-- <div class="footer">
-<p align="center" class="style1"><strong>Copyright &copy; 2023. All Rights Reserved</strong></p>
-</div> -->
+      <!-- about us -->
+
+      <section id="about">
+        <div class="about-us">
+          <h1>About Us</h1>
+          <div class="abt-img">
+            <ul class="carousel">
+              <li class="card">
+                <img src="{{ url_for('static', filename='assets/carousel1-wobg.png') }}" alt="img">
+              </li>
+              <li class="card">
+                <img src="{{ url_for('static', filename='assets/carousel2-wobg.png') }}" alt="img">
+              </li>
+              <li class="card">
+                <img src="{{ url_for('static', filename='assets/carousel3-wobg.png') }}" alt="img">
+              </li>
+              <li class="card">
+                <img src="{{ url_for('static', filename='assets/carousel4-wobg.png') }}" alt="img">
+              </li>
+            </ul>
+          </div>
+
+          <div class="text">
+            <div class="child left-text">
+              <h3>About the project</h3>
+              <hr><br>
+              <p>SignSage is a pioneering initiative dedicated to fostering inclusivity and empowerment. Rooted in the mission to bridge communication divides between disabled minorities and the digital landscape, SignSage leverages cutting-edge technology to dismantle barriers. Our unwavering objective is to ensure equitable opportunities for all to seamlessly connect, communicate, and flourish within social and virtual spheres. With SignSage, we are championing a future defined by accessibility and inclusiveness.</p>
+            </div>
+            <div class="child right-text">
+              <div id="what1">
+                <h3>Who We Are</h3>
+                <hr><br>
+                <p>"We" are a professional team driving SignSage forward. As innovators, advocates, and allies, we're committed to empowering disabled minorities in the digital sphere.</p>
+              </div>
+              <br>
+              <div id="what2">
+                <h3>What We Do</h3>
+                <hr><br>
+                <p>Our mission revolves around the development and implementation of SignSage, a comprehensive solution designed to address the communication challenges faced by disabled minorities within virtual environments.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+       <!-- Members -->
+
+        <div class="members">
+          <h1>Our Members</h1>
+          <div class="member-rows">
+            <div class="row row1">
+              <div class="item">
+                <div class="item-img">
+                  <img src="{{ url_for('static', filename='assets/members/anwesa.webp') }}" alt="Anwesa Sinha" style="width:100%">
+                </div>
+                <div class="item-text">
+                  <h4>Anwesa Sinha</h4>
+                  <p>Team Lead</p>
+                  <a href="mailto:sinhaanwesa@gmail.com" target="_blank" class="email">Email</a>&emsp;
+                  <a href="https://www.linkedin.com/in/anwesa-sinha-035168229/" target="_blank" class="linkedin">LinkedIn</a>
+                </div>
+              </div>
+              <div class="item">
+                <div class="item-img">
+                  <img src="{{ url_for('static', filename='assets/members/satyaki.webp') }}" alt="Satyaki Dawn" style="width:100%">
+                </div>
+                <div class="item-text">
+                  <h4>Satyaki Dawn</h4>
+                  <p>Web Developer</p>
+                  <a href="mailto:satyakidawn@gmail.com" target="_blank" class="email">Email</a>&emsp;
+                  <a href="https://www.linkedin.com/in/satyaki-dawn-116420230/" target="_blank" class="linkedin">LinkedIn</a>
+                </div>
+              </div>
+              <div class="item">
+                <div class="item-img">
+                  <img src="{{ url_for('static', filename='assets/members/samriddhi.webp') }}" alt="Samriddhi Dubey" style="width:100%">
+                </div>
+                <div class="item-text">
+                  <h4>Samriddhi Dubey</h4>
+                    <p>App Developer</p>
+                    <a href="mailto:samriddhidubey798@gmail.com" target="_blank" class="email">Email</a>&emsp;
+                    <a href="https://www.linkedin.com/in/samriddhi-dubey/" target="_blank" class="linkedin">LinkedIn</a>
+                </div>
+              </div>
+              <div class="item">
+                <div class="item-img">
+                  <img src="{{ url_for('static', filename='assets/members/anubhab.webp') }}" alt="Anubhab Pal" style="width:100%">
+                </div>
+                <div class="item-text">
+                  <h4>Anubhab Pal</h4>
+                  <p>UI/UX Designer</p>
+                  <a href="mailto:anubhabpal1@gmail.com" target="_blank" class="email">Email</a>&emsp;
+                  <a href="https://www.linkedin.com/in/therandomuser03/" target="_blank" class="linkedin">LinkedIn</a>
+                </div>
+              </div>
+              <div class="item">
+                <div class="item-img">
+                  <img src="{{ url_for('static', filename='assets/members/draksha.webp') }}" alt="Draksha" style="width:100%">
+                </div>
+                <div class="item-text">
+                  <h4>Draksha</h4>
+                  <p>ML Lead</p>
+                  <a href="mailto:draksha138@gmail.com" target="_blank" class="email">Email</a>&emsp;
+                  <a href="http://www.linkedin.com/in/draksha-aa3164227" target="_blank" class="linkedin">LinkedIn</a>
+                </div>
+              </div>
+            </div>
+              
+            <div class="row row2">
+              <div class="item">
+                <div class="item-img">
+                  <img src="{{ url_for('static', filename='assets/members/subhadip.webp') }}" alt="Subhadip Das" style="width:100%">
+                </div>
+                <div class="item-text">
+                  <h4>Subhadip Das</h4>
+                  <p>ML Engineer</p>
+                  <a href="mailto:subhadipd2003@gmail.com" target="_blank" class="email">Email</a>&emsp;
+                  <a href="https://www.linkedin.com/in/subhadip-das-7a150319b/" target="_blank" class="linkedin">LinkedIn</a>
+                </div>
+              </div>
+              <div class="item">
+                <div class="item-img">
+                  <img src="{{ url_for('static', filename='assets/members/asmita.webp') }}" alt="Asmita Sarkhel" style="width:100%">
+                </div>
+                <div class="item-text">
+                  <h4>Asmita Sarkhel</h4>
+                  <p>Frontend</p>
+                  <a href="mailto:asmitasarkhel005@gmail.com" target="_blank" class="email">Email</a>&emsp;
+                  <a href="http://linkedin.com/in/asmita-s-b55817218" target="_blank" class="linkedin">LinkedIn</a>
+                </div>
+              </div>
+              <div class="item">
+                <div class="item-img">
+                  <img src="{{ url_for('static', filename='assets/members/arijit.webp') }}" alt="Arijit Dey" style="width:100%">
+                </div>
+                <div class="item-text">
+                  <h4>Arijit Dey</h4>
+                  <p>Frontend</p>
+                  <a href="mailto:deyarijit212@gmail.com" target="_blank" class="email">Email</a>&emsp;
+                  <a href="https://www.linkedin.com/in/arijit-dey-22931621b/" target="_blank" class="linkedin">LinkedIn</a>
+                </div>
+              </div>
+              <div class="item">
+                <div class="item-img">
+                  <img src="{{ url_for('static', filename='assets/members/adrija.webp') }}" alt="Adrija Nag" style="width:100%">
+                </div>
+                <div class="item-text">
+                  <h4>Adrija Nag</h4>
+                  <p>Frontend</p>
+                  <a href="mailto:adrijanag2003@gmail.com" target="_blank" class="email">Email</a>&emsp;
+                  <a href="https://www.linkedin.com/in/adrija-nag-0a01b8301/" target="_blank" class="linkedin">LinkedIn</a>
+                </div>
+              </div>
+              <div class="item">
+                <div class="item-img">
+                  <img src="{{ url_for('static', filename='assets/members/pramit.webp') }}" alt="Pramit Roy" style="width:100%">
+                </div>
+                <div class="item-text">
+                  <h4>Pramit Roy</h4>
+                  <p>Frontend</p>
+                  <a href="mailto:roypramit600@gmail.com" target="_blank" class="email">Email</a>&emsp;
+                  <a href="https://www.linkedin.com/in/pramit-roy-a4581b227/" target="_blank" class="linkedin">LinkedIn</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- footer -->
+
+      <footer class="footer">
+        <div class="logo">
+          <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="logo">
+        </div>
+        <div class="about">
+          <h2>ABOUT SIGNSAGE</h2>
+          <div class="aboutBody">
+            <a href="#home">Home</a><br>
+            <a href="#">Get In Touch</a><br>
+            <a href="./error.html">Support Us</a>
+          </div>
+        </div>
+        <div class="product">
+          <h2>PRODUCT</h2>
+          <div class="productBody">
+            <a href="./error.html">Testimonials</a><br>
+            <a href="./error.html">How it Works</a><br>
+          </div>
+        </div>
+        <div class="line">
+
+        </div>
+        <div class="form">
+          <form action="" method="POST">
+            <h2>WANT TO KNOW MORE?</h2>
+            <h2>REACH OUT TO US!</h2>
+            <input type="text" placeholder="Name" required name="name"><br>
+            <input type="email" placeholder="Email" required name="email"><br>
+            <input type="text" placeholder="Subject" required name="subject"><br>
+            <input type="text" placeholder="Message" required name="Message"><br>
+            <button type="submit" name="submit">Submit</button>
+          </form>
+        </div>
+        <h3>Copyright © 2024. All Rights Reserved</h3>
+      </footer>
+    
+    </div>
 
   </body>
 </html>
