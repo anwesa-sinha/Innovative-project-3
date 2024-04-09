@@ -1,30 +1,29 @@
-import pytest
 import numpy as np
+import pytest
 import scipy.sparse as sp
-
-from scipy import linalg
-from numpy.testing import assert_array_almost_equal, assert_array_equal
 from numpy.random import RandomState
+from numpy.testing import assert_array_almost_equal, assert_array_equal
+from scipy import linalg
 
 from sklearn.datasets import make_classification
+from sklearn.utils._testing import assert_allclose
 from sklearn.utils.sparsefuncs import (
-    mean_variance_axis,
+    count_nonzero,
+    csc_median_axis_0,
     incr_mean_variance_axis,
     inplace_column_scale,
     inplace_row_scale,
-    inplace_swap_row,
     inplace_swap_column,
+    inplace_swap_row,
+    mean_variance_axis,
     min_max_axis,
-    count_nonzero,
-    csc_median_axis_0,
 )
 from sklearn.utils.sparsefuncs_fast import (
     assign_rows_csr,
+    csr_row_norms,
     inplace_csr_row_normalize_l1,
     inplace_csr_row_normalize_l2,
-    csr_row_norms,
 )
-from sklearn.utils._testing import assert_allclose
 
 
 def test_mean_variance_axis0():
@@ -456,9 +455,9 @@ def test_incr_mean_variance_axis_equivalence_mean_variance(X1, X2):
         X2, axis=axis, last_mean=updated_mean, last_var=updated_var, last_n=updated_n
     )
     X = sp.vstack([X1, X2])
-    assert_allclose(updated_mean, np.nanmean(X.A, axis=axis))
-    assert_allclose(updated_var, np.nanvar(X.A, axis=axis))
-    assert_allclose(updated_n, np.count_nonzero(~np.isnan(X.A), axis=0))
+    assert_allclose(updated_mean, np.nanmean(X.toarray(), axis=axis))
+    assert_allclose(updated_var, np.nanvar(X.toarray(), axis=axis))
+    assert_allclose(updated_n, np.count_nonzero(~np.isnan(X.toarray()), axis=0))
 
 
 def test_incr_mean_variance_no_new_n():

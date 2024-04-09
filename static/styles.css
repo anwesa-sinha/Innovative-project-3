@@ -91,6 +91,11 @@ nav ul li a.active {
   font-size: 2vh;
 }
 
+.cameraBtn a{
+  text-decoration: none;
+  color: white;
+}
+
 .containerHome .left button {
   background-color: #1877F2;
   color: white;
@@ -264,12 +269,12 @@ hr{
   margin-top: 10px;
   border: 2px solid gray;
   border-radius: 10px;
-  height: 15vh;
+  height: 16vh;
   padding: 5px;
 }
 
 .item-text h4{
-  padding: 8px;
+  padding: 5px;
 }
 
 .item-text p {
