@@ -54,6 +54,7 @@ def detect_hand_sign(frame):
 
         prediction = model.predict([np.asarray(data_aux)])
 
+        # character generated (output of gesture recognition)
         predicted_character = labels_dict[int(prediction[0])]
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
@@ -77,14 +78,12 @@ def generate_frames():
 
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        
+        
 
-@app.route('/about')
-def about():
-    return render_template('about-us.html')
-
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
+@app.route('/camera')
+def camera():
+    return render_template('camera.html')
 
 @app.route('/')
 def index():

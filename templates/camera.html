@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Camera</title>
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-    <link href="./camera.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='camera.css') }}" rel="stylesheet" >
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/ico/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/ico/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/ico/favicon-16x16.png">
@@ -17,17 +17,17 @@
     <header>
       <div class="left-buttons">
         <button type="button" class="backBtn">
-          <a href="./index.html">
-            <img src="./assets/cam/backBtn.png" alt="Back">
+          <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='assets/cam/backBtn.png') }}" alt="Back">
           </a>
         </button>
-        <div class="logo"><img src="./assets/logo.png" alt="logo"></div>
+        <div class="logo"><img src="{{ url_for('static', filename='assets/logo.png') }}" alt="logo"></div>
       </div>
       <nav>
         <ul>
-          <li><a href="./index.html#home">Home</a></li>
-          <li><a href="./index.html#features">Features</a></li>
-          <li><a href="./index.html#about">About</a></li>
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('index') }}">Features</a></li>
+          <li><a href="{{ url_for('index') }}">About</a></li>
         </ul>
       </nav>
       <div class="right-buttons"></div>    <!-- keeping it otherwise the "nav ul li a" alignemnt is getting messed up -->
@@ -36,9 +36,9 @@
       <div class="left-main">
         <div class="camera-outer">
           <div class="controls">
-            <button class="camButton"><img src="./assets/cam/GTH.png" alt="Gesture To text"></button>
-            <button class="camButton"><img src="./assets/cam/TTS.png" alt="Text To Speech"></button>
-            <button class="camButton"><img src="./assets/cam/STT.png" alt="Speech To Text"></button>
+            <button class="camButton"><img src="{{ url_for('static', filename='assets/cam/GTH.png') }}" alt="Gesture To text"></button>
+            <button class="camButton"><img src="{{ url_for('static', filename='assets/cam/TTS.png') }}" alt="Text To Speech"></button>
+            <button class="camButton"><img src="{{ url_for('static', filename='assets/cam/STT.png') }}" alt="Speech To Text"></button>
           </div>
           <div class="camera">
             Camera here
@@ -51,35 +51,15 @@
           Text generated here
         </div>
         <div class="template">
-          <button id="openBtn"><img src="./assets/cam/openBtn.png" alt="Open Gestures"></button>
+          <button id="openBtn"><img src="{{ url_for('static', filename='assets/cam/openBtn.png') }}" alt="Open Gestures"></button>
           <div class="sliding-window" id="slidingWindow">
             <div class="content">
-              <img class="gesturesPic" src="./assets/cam/gestures.png">
-              <button id="closeBtn"><img src="./assets/cam/closeBtn.png" alt="Close Gestures"></button>
+              <img class="gesturesPic" src="{{ url_for('static', filename='assets/cam/gestures.png') }}">
+              <button id="closeBtn"><img src="{{ url_for('static', filename='assets/cam/closeBtn.png') }}" alt="Close Gestures"></button>
             </div>
           </div>
         </div> 
       </div>
-      <!-- <table class="table-1">
-        <tr class="buttons">
-          <td><button class="camButton"><img src="./assets/cam/GTH.png" alt="Gesture To Hear"></button></td>&nbsp;&nbsp;
-          <td><button class="camButton"><img src="./assets/cam/TTS.png" alt="Test To Speech"></button></td>&nbsp;&nbsp;
-          <td><button class="camButton"><img src="./assets/cam/STT.png" alt="Speech To Text"></button></td><br>
-          </tr>
-          <tr class="cameraScreen"> <!-- Move cameraScreen div inside table-1
-            <td colspan="3"> <!-- Spanning across all columns
-              <div class="cameraScreen">
-                <p>screen for integrating the camera</p>
-              </div>
-            </td>
-          </tr>
-        </table> -->
-    
-      <!-- <table class="table-2">
-        <tr class="chatbox">
-          <td class="message">screen for showing output / messsages</td>
-        </tr>
-      </table> -->
     </div>
 </div>
 
