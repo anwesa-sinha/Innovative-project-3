@@ -34,6 +34,9 @@ def run_svm():
 	#print(pred)
 	np.savetxt('submission_svm.csv', np.c_[range(1,len(test)+1),pred,label_test], delimiter=',', header = 'ImageId,Label,TrueLabel', comments = '', fmt='%d')
 	calc_accuracy("SVM",label_test,pred)
+	f = open('model.pickle', 'wb')
+	pickle.dump({'model': clf}, f)
+	f.close()
 
 def run_lr():
 	clf = lr()

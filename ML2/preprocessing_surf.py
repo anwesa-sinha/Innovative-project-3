@@ -16,6 +16,7 @@ from sklearn.linear_model import LogisticRegression as lr
 from sklearn.neural_network import MLPClassifier as mlp
 import numpy as np
 import sklearn.metrics as sm
+import pickle
 
 #initialise
 path="train"
@@ -144,7 +145,9 @@ def predict_svm(X_train, X_test, y_train, y_test):
     y_pred=svc.predict(X_test)
     calc_accuracy("SVM",y_test,y_pred)
     np.savetxt('submission_surf_svm.csv', np.c_[range(1,len(y_test)+1),y_pred,y_test], delimiter=',', header = 'ImageId,Label,TrueLabel', comments = '', fmt='%d')
-    
+    f = open('model.pickle', 'wb')
+    pickle.dump({'model': svc}, f)
+    f.close()
 
 def predict_lr(X_train, X_test, y_train, y_test):
     clf = lr()
