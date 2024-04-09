@@ -4,10 +4,19 @@ import numpy as np
 import pickle
 import mediapipe as mp
 
+#to install library - pip3 install pyttsx3
+#to install library - pip3 install speechrecognition 
+#to install library - pip3 install pyaudio
+import speech_recognition
+import pyttsx3
+
 app = Flask(__name__)
 
 model_dict = pickle.load(open('./ML/model.pickle', 'rb'))
 model = model_dict['model']
+
+# global variable that will save the predicted texts
+predicted_character = ''
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -21,6 +30,8 @@ labels_dict = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H',
 
 
 def detect_hand_sign(frame):
+    global predicted_character
+
     data_aux = []
     x_ = []
     y_ = []
@@ -79,7 +90,49 @@ def generate_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
         
-        
+def text_speech():
+    #initialize the library
+    text_speech = pyttsx3.init()
+
+    # print("Enter your text to be converted to speech: ")
+    # text = input()
+
+    text = predicted_character
+
+    #get the speech rate property
+    rate = text_speech.getProperty('rate')
+
+    # Set a slower speech rate
+    text_speech.setProperty('rate', rate - 70)  # adjust the number to increase or decrease speech rate
+
+    text_speech.say(text) #voice out the text
+    text_speech.runAndWait() #Waits for speech to finish before continuing
+
+    #if continuous running of the program needed then put the code block in a while true loop
+
+def speech_text():
+    recognizer = speech_recognition.Recognizer()
+
+    while True:
+        try:
+            with speech_recognition.Microphone() as mic:
+                print("Speak please: \n")
+
+                #accessing microphone
+                recognizer.adjust_for_ambient_noise(mic, duration = 0.1)  #Duration for the amount of time it will take to recognize the speech
+                audio = recognizer.listen(mic, timeout=3)  #if the mic does not hear any voices ... it times out in 3 secs (subject to change)
+
+                #google supported english recognition
+                text = recognizer.recognize_google(audio)
+                text = text.lower()  #make all the text lowercase to handle grammatical errors.
+
+                print(f"Recognized: {text}")
+
+        except speech_recognition.UnknownValueError():
+            #if we get some error we will make the recognizer object again and proceed as required
+            recognizer = speech_recognition.Recognizer()
+            continue
+
 
 @app.route('/camera')
 def camera():
@@ -94,6 +147,10 @@ def index():
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/text_to_speech')
+def text_to_speech_route():
+    text_speech()
+    return 'Text to speech initiated'
 
 if __name__ == '__main__':
     app.run(debug=True)
