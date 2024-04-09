@@ -1,4 +1,5 @@
 from flask import Flask, render_template, Response
+from flask import Flask, render_template
 import cv2
 import numpy as np
 import pickle
@@ -151,6 +152,11 @@ def video_feed():
 def text_to_speech_route():
     text_speech()
     return 'Text to speech initiated'
+
+@app.route('/display')
+def display_text():
+    text = "Hello, world!"  # Replace this with the text you want to display
+    return render_template('camera.html', text=text)
 
 if __name__ == '__main__':
     app.run(debug=True)
