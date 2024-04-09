@@ -1,33 +1,28 @@
 """Testing for the boost module (sklearn.ensemble.boost)."""
 
-import numpy as np
-import pytest
 import re
 
-from scipy.sparse import csc_matrix
-from scipy.sparse import csr_matrix
-from scipy.sparse import coo_matrix
-from scipy.sparse import dok_matrix
-from scipy.sparse import lil_matrix
+import numpy as np
+import pytest
+from scipy.sparse import coo_matrix, csc_matrix, csr_matrix, dok_matrix, lil_matrix
 
-from sklearn.utils._testing import assert_array_equal, assert_array_less
-from sklearn.utils._testing import assert_array_almost_equal
-
-from sklearn.base import BaseEstimator
-from sklearn.base import clone
+from sklearn import datasets
+from sklearn.base import BaseEstimator, clone
 from sklearn.dummy import DummyClassifier, DummyRegressor
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import GridSearchCV
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.ensemble import AdaBoostRegressor
+from sklearn.ensemble import AdaBoostClassifier, AdaBoostRegressor
 from sklearn.ensemble._weight_boosting import _samme_proba
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.svm import SVC, SVR
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.utils import shuffle
 from sklearn.utils._mocking import NoSampleWeightWrapper
-from sklearn import datasets
-
+from sklearn.utils._testing import (
+    assert_allclose,
+    assert_array_almost_equal,
+    assert_array_equal,
+    assert_array_less,
+)
 
 # Common random state
 rng = np.random.RandomState(0)
@@ -481,9 +476,9 @@ def test_multidimensional_X():
     """
     rng = np.random.RandomState(0)
 
-    X = rng.randn(50, 3, 3)
-    yc = rng.choice([0, 1], 50)
-    yr = rng.randn(50)
+    X = rng.randn(51, 3, 3)
+    yc = rng.choice([0, 1], 51)
+    yr = rng.randn(51)
 
     boost = AdaBoostClassifier(DummyClassifier(strategy="most_frequent"))
     boost.fit(X, yc)
@@ -616,6 +611,27 @@ def test_base_estimator_argument_deprecated(AdaBoost, Estimator):
 # TODO(1.4): remove in 1.4
 @pytest.mark.parametrize(
     "AdaBoost",
+    [
+        AdaBoostClassifier,
+        AdaBoostRegressor,
+    ],
+)
+def test_base_estimator_argument_deprecated_none(AdaBoost):
+    X = np.array([[1, 2], [3, 4]])
+    y = np.array([1, 0])
+    model = AdaBoost(base_estimator=None)
+
+    warn_msg = (
+        "`base_estimator` was renamed to `estimator` in version 1.2 and "
+        "will be removed in 1.4."
+    )
+    with pytest.warns(FutureWarning, match=warn_msg):
+        model.fit(X, y)
+
+
+# TODO(1.4): remove in 1.4
+@pytest.mark.parametrize(
+    "AdaBoost",
     [AdaBoostClassifier, AdaBoostRegressor],
 )
 def test_base_estimator_property_deprecated(AdaBoost):
@@ -630,3 +646,63 @@ def test_base_estimator_property_deprecated(AdaBoost):
     )
     with pytest.warns(FutureWarning, match=warn_msg):
         model.base_estimator_
+
+
+# TODO(1.4): remove in 1.4
+def test_deprecated_base_estimator_parameters_can_be_set():
+    """Check that setting base_estimator parameters works.
+
+    During the deprecation cycle setting "base_estimator__*" params should
+    work.
+
+    Non-regression test for https://github.com/scikit-learn/scikit-learn/issues/25470
+    """
+    # This implicitly sets "estimator", it is how old code (pre v1.2) would
+    # have instantiated AdaBoostClassifier and back then it would set
+    # "base_estimator".
+    clf = AdaBoostClassifier(DecisionTreeClassifier())
+
+    with pytest.warns(FutureWarning, match="Parameter 'base_estimator' of"):
+        clf.set_params(base_estimator__max_depth=2)
+
+
+@pytest.mark.parametrize("algorithm", ["SAMME", "SAMME.R"])
+def test_adaboost_decision_function(algorithm, global_random_seed):
+    """Check that the decision function respects the symmetric constraint for weak
+    learners.
+
+    Non-regression test for:
+    https://github.com/scikit-learn/scikit-learn/issues/26520
+    """
+    n_classes = 3
+    X, y = datasets.make_classification(
+        n_classes=n_classes, n_clusters_per_class=1, random_state=global_random_seed
+    )
+    clf = AdaBoostClassifier(
+        n_estimators=1, random_state=global_random_seed, algorithm=algorithm
+    ).fit(X, y)
+
+    y_score = clf.decision_function(X)
+    assert_allclose(y_score.sum(axis=1), 0, atol=1e-8)
+
+    if algorithm == "SAMME":
+        # With a single learner, we expect to have a decision function in
+        # {1, - 1 / (n_classes - 1)}.
+        assert set(np.unique(y_score)) == {1, -1 / (n_classes - 1)}
+
+    # We can assert the same for staged_decision_function since we have a single learner
+    for y_score in clf.staged_decision_function(X):
+        assert_allclose(y_score.sum(axis=1), 0, atol=1e-8)
+
+        if algorithm == "SAMME":
+            # With a single learner, we expect to have a decision function in
+            # {1, - 1 / (n_classes - 1)}.
+            assert set(np.unique(y_score)) == {1, -1 / (n_classes - 1)}
+
+    clf.set_params(n_estimators=5).fit(X, y)
+
+    y_score = clf.decision_function(X)
+    assert_allclose(y_score.sum(axis=1), 0, atol=1e-8)
+
+    for y_score in clf.staged_decision_function(X):
+        assert_allclose(y_score.sum(axis=1), 0, atol=1e-8)
