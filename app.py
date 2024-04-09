@@ -1,4 +1,5 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, jsonify
+import time
 import cv2
 import numpy as np
 import pickle
@@ -136,7 +137,15 @@ def speech_text():
 
 @app.route('/camera')
 def camera():
+    # return render_template('camera.html')
+    text = "Hello, world!"  # Replace this with the text you want to display
     return render_template('camera.html')
+
+@app.route('/get_text')
+def get_text():
+    # Function to dynamically generate or fetch the text
+    text_to_send = predicted_character + str(time.time())  # Example: Adding timestamp
+    return jsonify({'text': text_to_send})
 
 @app.route('/')
 def index():
@@ -151,10 +160,10 @@ def text_to_speech_route():
     text_speech()
     return 'Text to speech initiated'
 
-@app.route('/display')
-def display_text():
-    text = "Hello, world!"  # Replace this with the text you want to display
-    return render_template('camera.html', text=text)
+# @app.route('/display',methods=['POST'])
+# def display_text():
+#     text = "Hello, world!"  # Replace this with the text you want to display
+#     return render_template('camera.html', text=text)
 
 
 if __name__ == '__main__':
