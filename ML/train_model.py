@@ -7,7 +7,7 @@ import numpy as np
 data_dict = pickle.load(open('./data.pickle', 'rb'))
 
 lengths = [len(item) for item in data_dict['data']]
-print(lengths)
+# print(lengths)
 
 min_length = min(lengths)
 data_trimmed = [item[:min_length] for item in data_dict['data']]
