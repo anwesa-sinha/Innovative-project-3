@@ -33,10 +33,13 @@ def func(path):
     print(len(h))
     
     '''
-    surf = cv2.xfeatures2d.SURF_create()
+    # surf = cv2.xfeatures2d.SURF_create()
+    surf = cv2.ORB_create()
     #surf.extended=True
     img2 = cv2.resize(img2,(256,256))
-    kp, des = surf.detectAndCompute(img2,None)
+    # kp, des = surf.detectAndCompute(img2,None)
+    kp, des = surf.detectAndCompute(img2, None)
+
     #print(len(des))
     img2 = cv2.drawKeypoints(img2,kp,None,(0,0,255),4)
     #plt.imshow(img2),plt.show()
