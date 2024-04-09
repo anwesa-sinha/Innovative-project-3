@@ -37,11 +37,11 @@
         <div class="camera-outer">
           <div class="controls">
             <button class="camButton"><img src="{{ url_for('static', filename='assets/cam/GTH.png') }}" alt="Gesture To text"></button>
-            <button class="camButton"><img src="{{ url_for('static', filename='assets/cam/TTS.png') }}" alt="Text To Speech"></button>>
+            <button class="camButton"><img src="{{ url_for('static', filename='assets/cam/TTS.png') }}" alt="Text To Speech"></button>
             <button class="camButton"><img src="{{ url_for('static', filename='assets/cam/STT.png') }}" alt="Speech To Text"></button>
           </div>
           <div class="camera">
-            Camera here
+            <img id="video_feed" src="{{ url_for('video_feed') }}" alt="Hand Sign Detection">
           </div>
         </div>
       </div>
@@ -91,5 +91,15 @@ closeBtn.addEventListener('click', closeSlidingWindow);
 });
 
 </script>
+
+<script>
+  // Optionally, you can use JavaScript to automatically update the image source
+  // to get real-time updates from the video feed.
+  const videoFeed = document.getElementById('video_feed');
+  setInterval(() => {
+      videoFeed.src = "{{ url_for('video_feed') }}?time=" + new Date().getTime();
+  }, 10000); // Update every 1000 milliseconds (1 second)
+</script>
+
 </body>
 </html>

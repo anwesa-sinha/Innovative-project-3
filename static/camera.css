@@ -87,22 +87,32 @@ nav ul li a.active {
   background-color: rgba(217, 217, 217, 0.668);
 }
 
+.camera-outer{
+  display: flex;
+}
+
 .controls{
   border-radius: 10px;
-  display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding-right: 50px;
+  padding-top: 20px;
 }
 
 .controls button{
   border: none;
   border-radius: 40px;
+  display: block;
+  margin: 10%;
 }
 
 .camera{
   background-color: rgba(217, 217, 217, 1);
-  height: 45vh;
   border-radius: 10px;
+}
+
+.camera #video-feed{
+  height: 45vh;
+  width: 100vw;
 }
 
 .right-main{
