@@ -141,6 +141,11 @@ def camera():
 
 @app.route('/get_text')
 def get_text():
+    # text_speech = pyttsx3.init()
+    # rate = text_speech.getProperty('rate')
+    # text_speech.setProperty('rate', rate - 70) 
+    # text_speech.say(predicted_character)
+    # text_speech.runAndWait()
     # Function to dynamically generate or fetch the text
     return jsonify({'text': predicted_character})
 
