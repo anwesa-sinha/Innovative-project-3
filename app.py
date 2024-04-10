@@ -141,22 +141,6 @@ def camera():
 
 @app.route('/get_text')
 def get_text():
-    text_speech = pyttsx3.init()
-    # print("Enter your text to be converted to speech: ")
-    # text = input()
-    text = predicted_character
-
-    #get the speech rate property
-    rate = text_speech.getProperty('rate')
-
-    # Set a slower speech rate
-    text_speech.setProperty('rate', rate - 70)  # adjust the number to increase or decrease speech rate
-
-    text_speech.say(text) #voice out the text
-    text_speech.runAndWait() #Waits for speech to finish before continuing
-
-    #if continuous running of the program needed then put the code block in a while true loop
-
     # Function to dynamically generate or fetch the text
     return jsonify({'text': predicted_character})
 

@@ -48,7 +48,6 @@
 
       <div class="right-main">
         <div class="text-box" id="text-box">
-      
         </div>
         <div class="template">
           <button id="openBtn"><img src="{{ url_for('static', filename='assets/cam/openBtn.png') }}" alt="Open Gestures"></button>
@@ -113,11 +112,7 @@ closeBtn.addEventListener('click', closeSlidingWindow);
   setInterval(() => {
       videoFeed.src = "{{ url_for('video_feed') }}?time=" + new Date().getTime();
       updateText();
-  }, 1000); // Update every 1000 milliseconds (1 second)
-        
-        var textFromFlask = "Hello from Flask!";
-        document.getElementById('text-box').innerHTML = textFromFlask;
-
+  }, 10000); // Update every 1000 milliseconds (1 second)
 </script>
 
 </body>
