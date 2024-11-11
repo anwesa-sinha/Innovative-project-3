@@ -42,10 +42,7 @@ def detect_hand_sign(frame):
 
     results = hands.process(frame_rgb)
     if results.multi_hand_landmarks:
-        if ( len(results.multi_hand_landmarks) >1):
-            cv2.imshow('frame', frame)
-            cv2.waitKey(1)
-        else:
+        if ( len(results.multi_hand_landmarks) <=1):
             for hand_landmarks in results.multi_hand_landmarks:
                 mp_drawing.draw_landmarks(
                     frame,  # image to draw
