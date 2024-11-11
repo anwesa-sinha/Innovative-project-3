@@ -31,3 +31,5 @@ print('{}% of samples were classified correctly !'.format(score * 100))
 f = open('model.pickle', 'wb')
 pickle.dump({'model': model}, f)
 f.close()
+
+print("Model written in file")
