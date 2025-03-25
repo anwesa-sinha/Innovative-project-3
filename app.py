@@ -162,7 +162,7 @@ def speech_text():
 
 @app.route('/camera')
 def camera():
-    return render_template('camera.html')
+    return render_template('new_camera.html')                   # for testing purpose. camera.html needs to be updated
 
 @app.route('/get_text')
 def get_text():
