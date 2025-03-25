@@ -1,5 +1,5 @@
 from flask import Flask, render_template, Response, jsonify
-import time
+# import time
 import cv2
 import numpy as np
 import pickle
@@ -13,24 +13,27 @@ import pyttsx3
 
 app = Flask(__name__)
 
-model_dict = pickle.load(open('./ML/model.pickle', 'rb'))
-model = model_dict['model']
+# Load the model
+try:
+    model_dict = pickle.load(open('./ML/model.pickle', 'rb'))
+    model = model_dict['model']
+except FileNotFoundError:
+    raise FileNotFoundError("Model file not found. Ensure './ML/model.pickle' exists.")
 
 # global variable that will save the predicted texts
 predicted_character = ''
 
+# Mediapipe setup
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
-
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
-labels_dict = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H',
-               8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P',
-               16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W', 23: 'X', 24: 'Y', 25: 'Z', }
-
+# Labels dictionary
+labels_dict = {i: chr(65 + i) for i in range(26)}  # A-Z
 
 def detect_hand_sign(frame):
+    """Detect hand signs in the given frame."""
     global predicted_character
 
     data_aux = []
@@ -49,75 +52,94 @@ def detect_hand_sign(frame):
                     hand_landmarks,  # model output
                     mp_hands.HAND_CONNECTIONS,  # hand connections
                     mp_drawing_styles.get_default_hand_landmarks_style(),
-                    mp_drawing_styles.get_default_hand_connections_style())
+                    mp_drawing_styles.get_default_hand_connections_style()
+                )
 
-            for hand_landmarks in results.multi_hand_landmarks:
-                for i in range(len(hand_landmarks.landmark)):
-                    x = hand_landmarks.landmark[i].x
-                    y = hand_landmarks.landmark[i].y
-                    data_aux.append(x)
-                    data_aux.append(y)
-                    x_.append(x)
-                    y_.append(y)
+                for hand_landmarks in results.multi_hand_landmarks:
+                    for i in range(len(hand_landmarks.landmark)):
+                        x = hand_landmarks.landmark[i].x
+                        y = hand_landmarks.landmark[i].y
+                        data_aux.append(x)
+                        data_aux.append(y)
+                        x_.append(x)
+                        y_.append(y)
 
             x1 = int(min(x_) * W) - 10
             y1 = int(min(y_) * H) - 10
             x2 = int(max(x_) * W) - 10
             y2 = int(max(y_) * H) - 10
 
-            prediction = model.predict([np.asarray(data_aux)])
+            try:
+                prediction = model.predict([np.asarray(data_aux)])
 
-            # character generated (output of gesture recognition)
-            predicted_character = labels_dict[int(prediction[0])]
+                # character generated (output of gesture recognition)
+                predicted_character = labels_dict[int(prediction[0])]
 
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
-            cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
+                cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
+            except Exception as e:
+                print(f"Prediction error: {e}")
+
+
+            
 
     return frame
 
 
 def generate_frames():
+    """Generate video frames from the webcam."""
     cap = cv2.VideoCapture(0)
 
     while True:
-        success, frame = cap.read()
-        if not success:
+        try:
+            success, frame = cap.read()
+            if not success:
+                break
+
+            frame = detect_hand_sign(frame)
+
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        except Exception as e:
+            print(f"Error in video feed: {e}")
             break
-
-        frame = detect_hand_sign(frame)
-
-        ret, buffer = cv2.imencode('.jpg', frame)
-        frame = buffer.tobytes()
-
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    cap.release()
         
 def text_speech():
-    #initialize the library
-    text_speech = pyttsx3.init()
+    """Convert the predicted text to speech."""
+    if not predicted_character:
+        print("No text to convert to speech.")
+        return
+    
+    try:
+        #initialize the library
+        text_speech = pyttsx3.init()
 
-    # print("Enter your text to be converted to speech: ")
-    # text = input()
+        text = predicted_character
 
-    text = predicted_character
+        #get the speech rate property
+        rate = text_speech.getProperty('rate')
 
-    #get the speech rate property
-    rate = text_speech.getProperty('rate')
+        # Set a slower speech rate
+        text_speech.setProperty('rate', rate - 70)  # adjust the number to increase or decrease speech rate
 
-    # Set a slower speech rate
-    text_speech.setProperty('rate', rate - 70)  # adjust the number to increase or decrease speech rate
-
-    text_speech.say(text) #voice out the text
-    text_speech.runAndWait() #Waits for speech to finish before continuing
+        text_speech.say(text) #voice out the text
+        text_speech.runAndWait() #Waits for speech to finish before continuing
+    except Exception as e:
+        print(f"Text to speech error: {e}")
 
     #if continuous running of the program needed then put the code block in a while true loop
 
 def speech_text():
+    """Convert speech to text."""
     recognizer = speech_recognition.Recognizer()
 
     while True:
         try:
-            with speech_recognition.Microphone() as mic:
+            with speech_recognition.Microphone as mic:
                 print("Speak please: \n")
 
                 #accessing microphone
@@ -130,10 +152,12 @@ def speech_text():
 
                 print(f"Recognized: {text}")
 
-        except speech_recognition.UnknownValueError():
+        except speech_recognition.UnknownValueError:
             #if we get some error we will make the recognizer object again and proceed as required
             recognizer = speech_recognition.Recognizer()
             continue
+        except Exception as e:
+            print(f"Speech-to-text error: {e}")
 
 
 @app.route('/camera')
