@@ -403,42 +403,42 @@
                 </div>
             </div>
             <div class="translation-actions">
-                <button class="translation-btn" id="start-translation-btn">Start Translation</button>
+                <!-- <button class="translation-btn" id="start-translation-btn">Start Translation</button> -->
                 <button class="translation-btn clear" id="clear-translation-btn">Clear History</button>
             </div>
         </div>
     </div>
 
     <div class="controls">
-        <button class="control-btn" id="mic-button">
+        <!-- <button class="control-btn" id="mic-button">
             <i class="fas fa-microphone"></i>
-        </button>
+        </button> -->
         <button class="control-btn" id="camera-button">
             <i class="fas fa-video"></i>
         </button>
-        <button class="control-btn" id="translation-button">
+        <!-- <button class="control-btn" id="translation-button">
             <i class="fas fa-language"></i>
-        </button>
-        <button class="control-btn" id="screenshot-button">
+        </button> -->
+        <!-- <button class="control-btn" id="screenshot-button">
             <i class="fas fa-camera"></i>
-        </button>
+        </button> -->
         <button class="control-btn" id="pip-button">
             <i class="fas fa-expand"></i>
         </button>
-        <button class="control-btn leave-btn" id="end-call-button">
+        <!-- <button class="control-btn leave-btn" id="end-call-button">
             <i class="fas fa-phone-slash"></i>
-        </button>
+        </button> -->
     </div>
 
     <script>
         const video = document.getElementById('video');
         const placeholder = document.getElementById('placeholder');
         const cameraButton = document.getElementById('camera-button');
-        const micButton = document.getElementById('mic-button');
-        const endCallButton = document.getElementById('end-call-button');
+        //const micButton = document.getElementById('mic-button');
+        //const endCallButton = document.getElementById('end-call-button');
         const captureButton = document.getElementById('capture-button');
-        const screenshotButton = document.getElementById('screenshot-button');
-        const pipButton = document.getElementById('pip-button');
+        //const screenshotButton = document.getElementById('screenshot-button');
+        //const pipButton = document.getElementById('pip-button');
         const sidePanel = document.getElementById('side-panel');
         const photoPreview = document.getElementById('photo-preview');
         const currentTimeElement = document.getElementById('current-time').querySelector('span');
@@ -449,12 +449,12 @@
         const translationStatus = document.getElementById('translation-status');
         const translationText = document.getElementById('translation-text');
         const translationHistoryList = document.getElementById('translation-history-list');
-        const startTranslationBtn = document.getElementById('start-translation-btn');
+        //const startTranslationBtn = document.getElementById('start-translation-btn');
         const clearTranslationBtn = document.getElementById('clear-translation-btn');
 
         let stream = null;
         let cameraActive = false;
-        let micActive = false;
+        //let micActive = false;
         let translationVisible = true;
         let translationActive = false;
         let translationInterval = null;
@@ -563,54 +563,54 @@
         });
 
         // Toggle microphone
-        micButton.addEventListener('click', async () => {
-            if (!micActive) {
-                try {
-                    if (!stream) {
-                        stream = await navigator.mediaDevices.getUserMedia({ 
-                            audio: true,
-                            video: cameraActive 
-                        });
-                        video.srcObject = stream;
-                    } else {
-                        const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                        const audioTrack = audioStream.getAudioTracks()[0];
-                        stream.addTrack(audioTrack);
-                    }
-                    micButton.innerHTML = '<i class="fas fa-microphone"></i>';
-                    micActive = true;
-                } catch (err) {
-                    console.error('Error accessing microphone:', err);
-                    alert('Could not access microphone. Please check permissions.');
-                }
-            } else {
-                if (stream) {
-                    stream.getTracks().forEach(track => {
-                        if (track.kind === 'audio') {
-                            track.stop();
-                        }
-                    });
-                }
-                micButton.innerHTML = '<i class="fas fa-microphone-slash"></i>';
-                micActive = false;
-            }
-        });
+        // micButton.addEventListener('click', async () => {
+        //     if (!micActive) {
+        //         try {
+        //             if (!stream) {
+        //                 stream = await navigator.mediaDevices.getUserMedia({ 
+        //                     audio: true,
+        //                     video: cameraActive 
+        //                 });
+        //                 video.srcObject = stream;
+        //             } else {
+        //                 const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        //                 const audioTrack = audioStream.getAudioTracks()[0];
+        //                 stream.addTrack(audioTrack);
+        //             }
+        //             micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+        //             micActive = true;
+        //         } catch (err) {
+        //             console.error('Error accessing microphone:', err);
+        //             alert('Could not access microphone. Please check permissions.');
+        //         }
+        //     } else {
+        //         if (stream) {
+        //             stream.getTracks().forEach(track => {
+        //                 if (track.kind === 'audio') {
+        //                     track.stop();
+        //                 }
+        //             });
+        //         }
+        //         micButton.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+        //         micActive = false;
+        //     }
+        // });
 
         // End call button
-        endCallButton.addEventListener('click', () => {
-            if (stream) {
-                stream.getTracks().forEach(track => {
-                    track.stop();
-                });
-                video.srcObject = null;
-                placeholder.style.display = 'flex';
-            }
-            cameraButton.innerHTML = '<i class="fas fa-video-slash"></i>';
-            micButton.innerHTML = '<i class="fas fa-microphone-slash"></i>';
-            cameraActive = false;
-            micActive = false;
-            stopTranslation();
-        });
+        // endCallButton.addEventListener('click', () => {
+        //     if (stream) {
+        //         stream.getTracks().forEach(track => {
+        //             track.stop();
+        //         });
+        //         video.srcObject = null;
+        //         placeholder.style.display = 'flex';
+        //     }
+        //     cameraButton.innerHTML = '<i class="fas fa-video-slash"></i>';
+        //     micButton.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+        //     cameraActive = false;
+        //     micActive = false;
+        //     stopTranslation();
+        // });
 
         // Capture photo
         captureButton.addEventListener('click', () => {
@@ -626,20 +626,20 @@
         });
 
         // Screenshot button
-        screenshotButton.addEventListener('click', () => {
-            if (cameraActive) {
-                const canvas = document.createElement('canvas');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                canvas.getContext('2d').drawImage(video, 0, 0);
+        // screenshotButton.addEventListener('click', () => {
+        //     if (cameraActive) {
+        //         const canvas = document.createElement('canvas');
+        //         canvas.width = video.videoWidth;
+        //         canvas.height = video.videoHeight;
+        //         canvas.getContext('2d').drawImage(video, 0, 0);
                 
-                // Create a temporary link to download the image
-                const link = document.createElement('a');
-                link.download = 'screenshot.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            }
-        });
+        //         // Create a temporary link to download the image
+        //         const link = document.createElement('a');
+        //         link.download = 'screenshot.png';
+        //         link.href = canvas.toDataURL('image/png');
+        //         link.click();
+        //     }
+        // });
 
         // Picture-in-Picture
         pipButton.addEventListener('click', () => {
@@ -675,23 +675,23 @@
         translationToggle.addEventListener('click', toggleTranslation);
 
         // Start translation
-        startTranslationBtn.addEventListener('click', () => {
-            if (!cameraActive) {
-                translationStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Camera must be active to detect sign language';
-                translationStatus.style.color = '#ea4335';
-                return;
-            }
+        // startTranslationBtn.addEventListener('click', () => {
+        //     if (!cameraActive) {
+        //         translationStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Camera must be active to detect sign language';
+        //         translationStatus.style.color = '#ea4335';
+        //         return;
+        //     }
 
-            if (!translationActive) {
-                startTranslation();
-                startTranslationBtn.textContent = 'Pause Translation';
-                startTranslationBtn.style.background = '#ea4335';
-            } else {
-                stopTranslation();
-                startTranslationBtn.textContent = 'Start Translation';
-                startTranslationBtn.style.background = '#1b73e8';
-            }
-        });
+        //     if (!translationActive) {
+        //         startTranslation();
+        //         startTranslationBtn.textContent = 'Pause Translation';
+        //         startTranslationBtn.style.background = '#ea4335';
+        //     } else {
+        //         stopTranslation();
+        //         startTranslationBtn.textContent = 'Start Translation';
+        //         startTranslationBtn.style.background = '#1b73e8';
+        //     }
+        // });
 
         // Clear translation history
         clearTranslationBtn.addEventListener('click', () => {
