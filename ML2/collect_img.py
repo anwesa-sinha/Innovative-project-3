@@ -5,16 +5,17 @@ DATA_DIR = './data'
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
-number_of_signs = 26
-dataset_size = 50
+number_of_signs = 19
+dataset_size = 60
 
 cap = cv2.VideoCapture(0)
 for j in range(number_of_signs):
     if not os.path.exists(os.path.join(DATA_DIR, str(j))):
         os.makedirs(os.path.join(DATA_DIR, str(j)))
-    print('Collecting data for class {}'.format(chr(ord('A') + j )))
+    print('Collecting data for class {}'.format(j))
 
     done = False
+
     while True:
         ret, frame = cap.read()
         cv2.putText(frame, 'If Ready Press "q" ', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3,cv2.LINE_AA)
