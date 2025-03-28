@@ -15,8 +15,10 @@ mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
-labels_dict =    {0: 'A',1: 'B',2: 'C',3: 'D',4: 'E',5: 'F',6: 'G',7: 'H',
-                  8: 'I',9: 'J',}
+labels_dict =    {0: 'i',1: 'you',2: 'call',3: 'name',4: 'fine',
+                  5: 'help',6: 'hi',7: 'bad', 8: 'eat',9: 'going',
+                  10: "worry",11: "what",12:"enjoy",13: "Thank you",14:"0",
+                  15:"1",16:"2",17:"3",18:"4",}
 print("Label assigned")
 no_of_frames = 0
 each_frame_output = []
