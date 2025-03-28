@@ -65,37 +65,38 @@
         }
 
         .main-content {
-            position: relative;
             flex: 1;
-            display: block;  /* We’ll place elements vertically in the DOM */
-            height: calc(100vh - 130px);
-            overflow: hidden; /* Or auto if you prefer scrolling */
+            display: flex;
+            position: relative;
+            height: calc(100vh - 130px); /* Account for header and footer */
         }
 
         .video-container {
-            position: relative;
-            width: 80%;              /* Let it occupy most of the horizontal space */
-            max-width: 1000px;
-            margin: 12px auto 0 130px; /* top=30, bottom=0, left=130px, auto for right */
+            flex: 1;
             display: flex;
-            justify-content: left;
-            /* align-items: center; */
+            height: 35pc;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 2%;
         }
 
         #video {
-            width: 50vw;
+            width: 90%;
+            max-width: 1000px;
+            height: auto;
             max-height: calc(100vh - 180px);
             border-radius: 10px;
             background: #333;
             transform: scaleX(-1);
             object-fit: cover;
-            margin-right: 0;  /* Remove extra margin if not needed */
+            margin: auto;
         }
 
         .placeholder {
             position: absolute;
             top: 50%;
-            left: 25vw;
+            left: 50%;
             transform: translate(-50%, -50%);
             display: flex;
             flex-direction: column;
@@ -111,7 +112,7 @@
 
         .controls {
             background: rgba(0, 0, 0, 0.6);
-            padding: 10px;
+            padding: 15px;
             display: flex;
             justify-content: center;
             gap: 20px;
@@ -163,9 +164,9 @@
         .capture-btn {
             background: #fff;
             position: absolute;
-            top: 100px;
-            /* left: 50%;*/
-            transform: translate(-274%, -32%); 
+            /* bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%); */
             z-index: 50;
         }
 
@@ -197,158 +198,140 @@
             object-fit: cover;
         }
 
-        /* Translation panel styles - Updated */
-        .translation-panels {
-            position: absolute;
-            top: 12px;     /* Align roughly with top of the video */
-            right: 90px;
+        /* Translation panel styles */
+        .translation-container {
+            width: 300px;
+            height: calc(100% - 80px);
+            background: #202124;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            width: 315px;
-            z-index: 10;
+            border-left: 1px solid #3c4043;
+            transition: width 0.3s ease;
         }
 
-        .translation-box {
-            background: rgba(32, 33, 36, 0.9);
-            border-radius: 8px;
+        .translation-header {
             padding: 15px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-            border: 1px solid #3c4043;
-        }
-
-        .translation-box-header {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 10px; /* Increased margin */
-            color: #8ab4f8;
+            background: #2d2e31;
+            font-weight: bold;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .translation-box-header i {
-            margin-right: 6px;
+        .translation-header button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
         }
 
-        .current-translation-box {
-            width: 50vw;
-            max-width: 1000px;
-            margin: 6px auto 0 130px; /* same left margin as video, some top margin from the video */
-        }
-        
-        /* The translation-box can be reused here. 
-        If you want a different style, you can override it. */
-        .current-translation-box .translation-box {
-            background: rgba(32, 33, 36, 0.9);
-            border-radius: 8px;
+        .translation-content {
+            flex: 1;
             padding: 15px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-            border: 1px solid #3c4043;
-        }
-
-        .current-translation {
-            font-size: 16px;
-            line-height: 1.4;
-            min-height: 50px; /* Increased height */
-            padding: 10px; /* Increased padding */
-            background: rgba(60, 64, 67, 0.3);
-            border-radius: 4px;
-        }
-
-        .recent-translations {
-            max-height: 180px; /* Increased height */
             overflow-y: auto;
-            margin-bottom: 10px;
-        }
-
-        .recent-translation-item {
-            font-size: 14px; /* Slightly larger font */
-            padding: 8px 0; /* Increased padding */
-            border-bottom: 1px solid rgba(60, 64, 67, 0.5);
             display: flex;
-        }
-
-        .recent-translation-item:last-child {
-            border-bottom: none;
-        }
-
-        .recent-translation-time {
-            color: #9aa0a6;
-            margin-right: 10px; /* Increased margin */
-            flex-shrink: 0;
-            width: 45px; /* Fixed width for alignment */
-        }
-
-        .recent-translation-text {
-            flex-grow: 1;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .translation-status {
-            font-size: 12px;
+            padding: 15px;
+            background: #3c4043;
+            color: #8ab4f8;
+            font-size: 14px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .translation-text {
+            padding: 15px;
+            background: #3c4043;
+            border-radius: 8px;
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .translation-history {
+            margin-top: 20px;
+        }
+
+        .history-item {
+            padding: 10px;
+            background: rgba(60, 64, 67, 0.6);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
             color: #e8eaed;
-            margin-top: 10px; /* Increased margin */
+        }
+
+        .translation-actions {
+            padding: 15px;
             display: flex;
-            align-items: center;
+            gap: 10px;
+            background: #2d2e31;
+            border-top: 1px solid #3c4043;
         }
 
-        .translation-status i {
-            margin-right: 6px;
-        }
-
-        .clear-history-btn {
-            background: transparent;
+        .translation-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 20px;
             border: none;
-            color: #9aa0a6;
-            font-size: 12px;
+            background: #1b73e8;
+            color: white;
             cursor: pointer;
-            padding: 2px 6px;
-            border-radius: 4px;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            font-weight: 500;
         }
 
-        .clear-history-btn:hover {
-            color: #e8eaed;
-            background: rgba(60, 64, 67, 0.5);
+        .translation-btn:hover {
+            background: #1967d2;
         }
 
-        /* Scrollbar styling */
-        .recent-translations::-webkit-scrollbar {
-            width: 6px;
+        .translation-btn.clear {
+            background: #3c4043;
         }
 
-        .recent-translations::-webkit-scrollbar-track {
-            background: rgba(60, 64, 67, 0.3);
-            border-radius: 3px;
-        }
-
-        .recent-translations::-webkit-scrollbar-thumb {
+        .translation-btn.clear:hover {
             background: #5f6368;
-            border-radius: 3px;
+        }
+
+        .translation-hidden {
+            width: 0;
+            border: none;
+            padding: 0;
+            overflow: hidden;
         }
 
         @media (max-width: 768px) {
-            .translation-panels {
-                width: 240px;
-                right: 15px;
-                bottom: 110px;
+            .main-content {
+                flex-direction: column;
             }
-            
-            .current-translation {
-                font-size: 15px;
+
+            .translation-container {
+                width: 100%;
+                height: 300px;
+                border-left: none;
+                border-top: 1px solid #3c4043;
+                position: absolute;
+                bottom: 80px;
+                left: 0;
+                right: 0;
             }
-            
-            .recent-translation-item {
-                font-size: 13px;
+
+            .translation-hidden {
+                height: 0;
+                width: 100%;
+            }
+
+            .control-btn {
+                width: 45px;
+                height: 45px;
             }
         }
 
         @media (max-width: 600px) {
-            .translation-panels {
-                width: 200px;
-                bottom: 100px;
-            }
-            
             .control-btn {
                 width: 40px;
                 height: 40px;
@@ -379,12 +362,16 @@
                 <i class="far fa-clock"></i>
                 <span>00:00:00</span>
             </div>
+            <!-- <div class="control-btn">
+                <i class="fas fa-ellipsis-v"></i>
+            </div> -->
         </div>
     </header>
 
     <div class="main-content">
         <div class="video-container">
-            <video id="video" autoplay playsinline></video>
+            <img id="video_feed" src="{{ url_for('video_feed') }}" width="640" height="480">
+            <!-- <video id="video" autoplay playsinline></video> -->
             <div class="placeholder" id="placeholder">
                 <i class="fas fa-video"></i>
                 <p>Click the camera icon to start</p>
@@ -397,43 +384,50 @@
             </div>
         </div>
 
-        <!-- NEW: Current Translation box below the video -->
-        <div class="current-translation-box">
-            <div class="translation-box">
-                <div class="translation-box-header">
-                    <span><i class="fas fa-hands"></i> Current Translation</span>
-                </div>
-                <div class="current-translation" id="current-translation">
-                    No signs detected yet
-                </div>
+        <div class="translation-container" id="translation-container">
+            <div class="translation-header">
+                <span>Sign Language Translation</span>
+                <button id="translation-toggle"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="translation-content" id="translation-content">
                 <div class="translation-status" id="translation-status">
-                    <i class="fas fa-circle-notch fa-spin"></i> Monitoring for signs...
+                    <i class="fas fa-circle-notch fa-spin"></i> <p id="text-box">Waiting for sign language...</p>
+                </div>
+                <div class="translation-text" id="translation-text">
+                    No signs detected yet. Please ensure your hands are visible in the camera.
+                </div>
+                <div class="translation-history">
+                    <h3>Recent Translations</h3>
+                    <div id="translation-history-list">
+                        <!-- Translation history will be added here -->
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Keep the Recent Translations in the top-right panel -->
-        <div class="translation-panels">
-            <div class="translation-box">
-                <div class="translation-box-header">
-                    <span><i class="fas fa-history"></i> Recent Translations</span>
-                    <button class="clear-history-btn" id="clear-history-btn" title="Clear history">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-                <div class="recent-translations" id="recent-translations">
-                    <!-- Recent translations will appear here -->
-                </div>
+            <div class="translation-actions">
+                <button class="translation-btn" id="start-translation-btn">Start Translation</button>
+                <button class="translation-btn clear" id="clear-translation-btn">Clear History</button>
             </div>
         </div>
     </div>
 
     <div class="controls">
+        <button class="control-btn" id="mic-button">
+            <i class="fas fa-microphone"></i>
+        </button>
         <button class="control-btn" id="camera-button">
             <i class="fas fa-video"></i>
         </button>
+        <button class="control-btn" id="translation-button">
+            <i class="fas fa-language"></i>
+        </button>
+        <button class="control-btn" id="screenshot-button">
+            <i class="fas fa-camera"></i>
+        </button>
         <button class="control-btn" id="pip-button">
             <i class="fas fa-expand"></i>
+        </button>
+        <button class="control-btn leave-btn" id="end-call-button">
+            <i class="fas fa-phone-slash"></i>
         </button>
     </div>
 
@@ -441,17 +435,29 @@
         const video = document.getElementById('video');
         const placeholder = document.getElementById('placeholder');
         const cameraButton = document.getElementById('camera-button');
+        const micButton = document.getElementById('mic-button');
+        const endCallButton = document.getElementById('end-call-button');
         const captureButton = document.getElementById('capture-button');
+        const screenshotButton = document.getElementById('screenshot-button');
+        const pipButton = document.getElementById('pip-button');
         const sidePanel = document.getElementById('side-panel');
         const photoPreview = document.getElementById('photo-preview');
         const currentTimeElement = document.getElementById('current-time').querySelector('span');
-        const currentTranslationElement = document.getElementById('current-translation');
-        const recentTranslationsElement = document.getElementById('recent-translations');
-        const translationStatusElement = document.getElementById('translation-status');
-        const clearHistoryButton = document.getElementById('clear-history-btn');
+        const translationButton = document.getElementById('translation-button');
+        const translationContainer = document.getElementById('translation-container');
+        const translationToggle = document.getElementById('translation-toggle');
+        const translationContent = document.getElementById('translation-content');
+        const translationStatus = document.getElementById('translation-status');
+        const translationText = document.getElementById('translation-text');
+        const translationHistoryList = document.getElementById('translation-history-list');
+        const startTranslationBtn = document.getElementById('start-translation-btn');
+        const clearTranslationBtn = document.getElementById('clear-translation-btn');
 
         let stream = null;
         let cameraActive = false;
+        let micActive = false;
+        let translationVisible = true;
+        let translationActive = false;
         let translationInterval = null;
 
         // Sample sign language phrases for demonstration
@@ -469,6 +475,7 @@
             "What time is it?",
             "Where is the bathroom?",
             "I'm hungry",
+            // "My name is John",
             "I love sign language"
         ];
 
@@ -486,23 +493,29 @@
         updateCurrentTime(); // Initial call
 
         function updateCaptureButtonPosition() {
+            // Get the video element's position and dimensions
             const videoRect = video.getBoundingClientRect();
             const buttonHeight = captureButton.offsetHeight;
             const buttonWidth = captureButton.offsetWidth;
             
+            // Use your updated offset (75px) for the vertical positioning
             captureButton.style.top = (videoRect.bottom - buttonHeight - 75) + 'px';
+            // Position 10px from the video’s right edge
             captureButton.style.left = (videoRect.right - buttonWidth - 10) + 'px';
         }
         
+        // Update position when the video metadata is loaded or window is resized
         video.addEventListener('loadedmetadata', updateCaptureButtonPosition);
         window.addEventListener('resize', updateCaptureButtonPosition);
         window.addEventListener('load', updateCaptureButtonPosition);
         
+        // Use a ResizeObserver to catch layout changes (e.g. closing/hiding the side panel)
         if (typeof ResizeObserver !== 'undefined') {
             const observer = new ResizeObserver(() => {
                 updateCaptureButtonPosition();
             });
             observer.observe(video);
+            // Optionally, also observe the video container if its layout may change
             observer.observe(document.querySelector('.video-container'));
         }
         
@@ -514,27 +527,90 @@
                         video: {
                             width: { ideal: 1280 },
                             height: { ideal: 720 }
-                        }
+                        },
+                        audio: micActive 
                     });
                     video.srcObject = stream;
                     placeholder.style.display = 'none';
                     cameraButton.innerHTML = '<i class="fas fa-video"></i>';
                     cameraActive = true;
-                    startTranslation();
                 } catch (err) {
                     console.error('Error accessing camera:', err);
                     alert('Could not access camera. Please check permissions.');
                 }
             } else {
                 if (stream) {
-                    stream.getTracks().forEach(track => track.stop());
-                    video.srcObject = null;
+                    stream.getTracks().forEach(track => {
+                        if (track.kind === 'video') {
+                            track.stop();
+                        }
+                    });
+                    if (!micActive) {
+                        video.srcObject = null;
+                    } else {
+                        // Keep audio only
+                        navigator.mediaDevices.getUserMedia({ audio: true })
+                            .then(audioStream => {
+                                video.srcObject = audioStream;
+                                stream = audioStream;
+                            });
+                    }
+                    placeholder.style.display = 'flex';
                 }
-                placeholder.style.display = 'flex';
                 cameraButton.innerHTML = '<i class="fas fa-video-slash"></i>';
                 cameraActive = false;
                 stopTranslation();
             }
+        });
+
+        // Toggle microphone
+        micButton.addEventListener('click', async () => {
+            if (!micActive) {
+                try {
+                    if (!stream) {
+                        stream = await navigator.mediaDevices.getUserMedia({ 
+                            audio: true,
+                            video: cameraActive 
+                        });
+                        video.srcObject = stream;
+                    } else {
+                        const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        const audioTrack = audioStream.getAudioTracks()[0];
+                        stream.addTrack(audioTrack);
+                    }
+                    micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                    micActive = true;
+                } catch (err) {
+                    console.error('Error accessing microphone:', err);
+                    alert('Could not access microphone. Please check permissions.');
+                }
+            } else {
+                if (stream) {
+                    stream.getTracks().forEach(track => {
+                        if (track.kind === 'audio') {
+                            track.stop();
+                        }
+                    });
+                }
+                micButton.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+                micActive = false;
+            }
+        });
+
+        // End call button
+        endCallButton.addEventListener('click', () => {
+            if (stream) {
+                stream.getTracks().forEach(track => {
+                    track.stop();
+                });
+                video.srcObject = null;
+                placeholder.style.display = 'flex';
+            }
+            cameraButton.innerHTML = '<i class="fas fa-video-slash"></i>';
+            micButton.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+            cameraActive = false;
+            micActive = false;
+            stopTranslation();
         });
 
         // Capture photo
@@ -547,6 +623,22 @@
                 const dataUrl = canvas.toDataURL('image/png');
                 photoPreview.src = dataUrl;
                 sidePanel.classList.add('active');
+            }
+        });
+
+        // Screenshot button
+        screenshotButton.addEventListener('click', () => {
+            if (cameraActive) {
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0);
+                
+                // Create a temporary link to download the image
+                const link = document.createElement('a');
+                link.download = 'screenshot.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
             }
         });
 
@@ -569,31 +661,51 @@
             video.style.transform = 'scaleX(-1)';
         });
 
-        // Clear history button
-        clearHistoryButton.addEventListener('click', () => {
-            recentTranslationsElement.innerHTML = '';
-            currentTranslationElement.textContent = 'No signs detected yet';
-            translationStatusElement.innerHTML = '<i class="fas fa-info-circle"></i> History cleared';
-            
-            // Reset status after 2 seconds
-            setTimeout(() => {
-                if (cameraActive) {
-                    translationStatusElement.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Monitoring for signs...';
-                } else {
-                    translationStatusElement.innerHTML = '<i class="fas fa-pause-circle"></i> Translation paused';
-                }
-            }, 2000);
+        // Toggle translation panel
+        function toggleTranslation() {
+            if (translationVisible) {
+                translationContainer.classList.add('translation-hidden');
+                translationVisible = false;
+            } else {
+                translationContainer.classList.remove('translation-hidden');
+                translationVisible = true;
+            }
+        }
+
+        translationButton.addEventListener('click', toggleTranslation);
+        translationToggle.addEventListener('click', toggleTranslation);
+
+        // Start translation
+        startTranslationBtn.addEventListener('click', () => {
+            if (!cameraActive) {
+                translationStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Camera must be active to detect sign language';
+                translationStatus.style.color = '#ea4335';
+                return;
+            }
+
+            if (!translationActive) {
+                startTranslation();
+                startTranslationBtn.textContent = 'Pause Translation';
+                startTranslationBtn.style.background = '#ea4335';
+            } else {
+                stopTranslation();
+                startTranslationBtn.textContent = 'Start Translation';
+                startTranslationBtn.style.background = '#1b73e8';
+            }
+        });
+
+        // Clear translation history
+        clearTranslationBtn.addEventListener('click', () => {
+            translationHistoryList.innerHTML = '';
+            translationText.textContent = 'Translation history cleared. Ready for new signs.';
         });
 
         // Simulated translation function
         function startTranslation() {
-            translationStatusElement.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Monitoring for signs...';
-            
-            // Clear any existing interval
-            if (translationInterval) {
-                clearInterval(translationInterval);
-            }
-            
+            translationActive = true;
+            translationStatus.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Actively monitoring for sign language...';
+            translationStatus.style.color = '#8ab4f8';
+
             // Simulate random sign language detection at intervals
             translationInterval = setInterval(() => {
                 if (Math.random() > 0.4) { // 60% chance to detect a sign
@@ -607,35 +719,54 @@
             if (translationInterval) {
                 clearInterval(translationInterval);
             }
-            translationStatusElement.innerHTML = '<i class="fas fa-pause-circle"></i> Translation paused';
+            translationActive = false;
+            translationStatus.innerHTML = '<i class="fas fa-pause-circle"></i> Translation paused';
+            translationStatus.style.color = '#e8eaed';
         }
 
         function updateTranslation(text) {
             // Update current translation
-            currentTranslationElement.textContent = text;
+            translationText.textContent = text;
             
-            // Add to recent translations
+            // Add to history
+            const historyItem = document.createElement('div');
+            historyItem.classList.add('history-item');
+            
             const now = new Date();
             const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             
-            const translationItem = document.createElement('div');
-            translationItem.classList.add('recent-translation-item');
-            translationItem.innerHTML = `
-                <span class="recent-translation-time">${timeString}</span>
-                <span class="recent-translation-text">${text}</span>
-            `;
+            historyItem.textContent = `[${timeString}] ${text}`;
+            translationHistoryList.prepend(historyItem);
             
-            // Add new item at the top
-            recentTranslationsElement.insertBefore(translationItem, recentTranslationsElement.firstChild);
-            
-            // Limit to 5 recent items
-            if (recentTranslationsElement.children.length > 5) {
-                recentTranslationsElement.removeChild(recentTranslationsElement.lastChild);
+            // Limit history items
+            if (translationHistoryList.children.length > 10) {
+                translationHistoryList.removeChild(translationHistoryList.lastChild);
             }
-            
-            // Update status to show last detection time
-            translationStatusElement.innerHTML = `<i class="fas fa-check-circle"></i> Last detected: ${timeString}`;
         }
+    </script>
+    <script>
+        function updateText() {
+            // Make an AJAX request to the Flask backend
+            fetch('/get_text')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the HTML content with the received text
+                    document.getElementById('text-box').textContent = data.sign_text;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        
+        // Initial text update
+        updateText();
+        
+        // Automatically update video feed and text
+        const videoFeed = document.getElementById('video_feed');
+        setInterval(() => {
+            videoFeed.src = "{{ url_for('video_feed') }}?time=" + new Date().getTime();
+            updateText();
+        }, 1000); // Update every 1 second
     </script>
 </body>
 </html>
