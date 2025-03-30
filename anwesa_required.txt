@@ -1,0 +1,772 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Translator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #202124;
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: #2d2e31;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .logo i {
+            margin-right: 12px;
+            font-size: 24px;
+        }
+
+        .meeting-details {
+            display: flex;
+            align-items: center;
+        }
+
+        .meeting-time {
+            margin-right: 20px;
+            font-size: 14px;
+            background-color: rgba(60, 64, 67, 0.6);
+            padding: 8px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .meeting-time i {
+            margin-right: 8px;
+            color: #8ab4f8;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            position: relative;
+            height: calc(100vh - 130px); /* Account for header and footer */
+        }
+
+        .video-container {
+            flex: 1;
+            display: flex;
+            height: 35pc;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 2%;
+        }
+
+        #video {
+            width: 90%;
+            max-width: 1000px;
+            height: auto;
+            max-height: calc(100vh - 180px);
+            border-radius: 10px;
+            background: #333;
+            transform: scaleX(-1);
+            object-fit: cover;
+            margin: auto;
+        }
+
+        .placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #e8eaed;
+        }
+
+        .placeholder i {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .controls {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .control-btn {
+            background: #3c4043;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .control-btn:hover {
+            background: #5f6368;
+        }
+
+        .control-btn.active {
+            background-color: #ea4335;
+        }
+
+        .control-btn.active:hover {
+            background-color: #d93025;
+        }
+
+        .leave-btn {
+            background: #ea4335;
+        }
+
+        .leave-btn:hover {
+            background: #d33828;
+        }
+
+        .capture-btn {
+            background: #fff;
+            position: absolute;
+            /* bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%); */
+            z-index: 50;
+        }
+
+        .capture-btn i {
+            color: #3c4043;
+        }
+
+        .side-panel {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 180px;
+            height: 120px;
+            background-color: #3c4043;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 20;
+        }
+
+        .side-panel.active {
+            display: block;
+        }
+
+        #photo-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Translation panel styles */
+        .translation-container {
+            width: 300px;
+            height: calc(100% - 80px);
+            background: #202124;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #3c4043;
+            transition: width 0.3s ease;
+        }
+
+        .translation-header {
+            padding: 15px;
+            background: #2d2e31;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .translation-header button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .translation-content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .translation-status {
+            padding: 15px;
+            background: #3c4043;
+            color: #8ab4f8;
+            font-size: 14px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .translation-text {
+            padding: 15px;
+            background: #3c4043;
+            border-radius: 8px;
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .translation-history {
+            margin-top: 20px;
+        }
+
+        .history-item {
+            padding: 10px;
+            background: rgba(60, 64, 67, 0.6);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #e8eaed;
+        }
+
+        .translation-actions {
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            background: #2d2e31;
+            border-top: 1px solid #3c4043;
+        }
+
+        .translation-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            background: #1b73e8;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .translation-btn:hover {
+            background: #1967d2;
+        }
+
+        .translation-btn.clear {
+            background: #3c4043;
+        }
+
+        .translation-btn.clear:hover {
+            background: #5f6368;
+        }
+
+        .translation-hidden {
+            width: 0;
+            border: none;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .translation-container {
+                width: 100%;
+                height: 300px;
+                border-left: none;
+                border-top: 1px solid #3c4043;
+                position: absolute;
+                bottom: 80px;
+                left: 0;
+                right: 0;
+            }
+
+            .translation-hidden {
+                height: 0;
+                width: 100%;
+            }
+
+            .control-btn {
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .control-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .control-btn i {
+                font-size: 16px;
+            }
+
+            .logo {
+                font-size: 16px;
+            }
+
+            .logo i {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-sign-language"></i>
+            Sign Language Translator
+        </div>
+        <div class="meeting-details">
+            <div class="meeting-time" id="current-time">
+                <i class="far fa-clock"></i>
+                <span>00:00:00</span>
+            </div>
+            <!-- <div class="control-btn">
+                <i class="fas fa-ellipsis-v"></i>
+            </div> 
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="video-container">
+            <img id="video_feed" src="{{ url_for('video_feed') }}" width="640" height="480">
+            <!-- <video id="video" autoplay playsinline></video> 
+            <div class="placeholder" id="placeholder">
+                <i class="fas fa-video"></i>
+                <p>Click the camera icon to start</p>
+            </div>
+            <button class="control-btn capture-btn" id="capture-button">
+                <i class="fas fa-circle"></i>
+            </button>
+            <div class="side-panel" id="side-panel">
+                <img id="photo-preview" src="/api/placeholder/180/120" alt="Captured photo">
+            </div>
+        </div>
+
+        <div class="translation-container" id="translation-container">
+            <div class="translation-header">
+                <span>Sign Language Translation</span>
+                <button id="translation-toggle"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="translation-content" id="translation-content">
+                <div class="translation-status" id="translation-status">
+                    <i class="fas fa-circle-notch fa-spin"></i> <p id="text-box">Waiting for sign language...</p>
+                </div>
+                <div class="translation-text" id="translation-text">
+                    No signs detected yet. Please ensure your hands are visible in the camera.
+                </div>
+                <div class="translation-history">
+                    <h3>Recent Translations</h3>
+                    <div id="translation-history-list">
+                        <!-- Translation history will be added here 
+                    </div>
+                </div>
+            </div>
+            <div class="translation-actions">
+                <button class="translation-btn" id="start-translation-btn">Start Translation</button>
+                <button class="translation-btn clear" id="clear-translation-btn">Clear History</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" id="mic-button">
+            <i class="fas fa-microphone"></i>
+        </button>
+        <button class="control-btn" id="camera-button">
+            <i class="fas fa-video"></i>
+        </button>
+        <button class="control-btn" id="translation-button">
+            <i class="fas fa-language"></i>
+        </button>
+        <button class="control-btn" id="screenshot-button">
+            <i class="fas fa-camera"></i>
+        </button>
+        <button class="control-btn" id="pip-button">
+            <i class="fas fa-expand"></i>
+        </button>
+        <button class="control-btn leave-btn" id="end-call-button">
+            <i class="fas fa-phone-slash"></i>
+        </button>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const placeholder = document.getElementById('placeholder');
+        const cameraButton = document.getElementById('camera-button');
+        const micButton = document.getElementById('mic-button');
+        const endCallButton = document.getElementById('end-call-button');
+        const captureButton = document.getElementById('capture-button');
+        const screenshotButton = document.getElementById('screenshot-button');
+        const pipButton = document.getElementById('pip-button');
+        const sidePanel = document.getElementById('side-panel');
+        const photoPreview = document.getElementById('photo-preview');
+        const currentTimeElement = document.getElementById('current-time').querySelector('span');
+        const translationButton = document.getElementById('translation-button');
+        const translationContainer = document.getElementById('translation-container');
+        const translationToggle = document.getElementById('translation-toggle');
+        const translationContent = document.getElementById('translation-content');
+        const translationStatus = document.getElementById('translation-status');
+        const translationText = document.getElementById('translation-text');
+        const translationHistoryList = document.getElementById('translation-history-list');
+        const startTranslationBtn = document.getElementById('start-translation-btn');
+        const clearTranslationBtn = document.getElementById('clear-translation-btn');
+
+        let stream = null;
+        let cameraActive = false;
+        let micActive = false;
+        let translationVisible = true;
+        let translationActive = false;
+        let translationInterval = null;
+
+        // Sample sign language phrases for demonstration
+        const signPhrases = [
+            "Hello, how are you?",
+            "Nice to meet you",
+            "Thank you",
+            "I understand",
+            "Please wait",
+            "Can you help me?",
+            "Yes",
+            "No",
+            "I need assistance",
+            "Good morning",
+            "What time is it?",
+            "Where is the bathroom?",
+            "I'm hungry",
+            // "My name is John",
+            "I love sign language"
+        ];
+
+        // Update current time
+        function updateCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            currentTimeElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // Call updateCurrentTime every second
+        setInterval(updateCurrentTime, 1000);
+        updateCurrentTime(); // Initial call
+
+        function updateCaptureButtonPosition() {
+            // Get the video element's position and dimensions
+            const videoRect = video.getBoundingClientRect();
+            const buttonHeight = captureButton.offsetHeight;
+            const buttonWidth = captureButton.offsetWidth;
+            
+            // Use your updated offset (75px) for the vertical positioning
+            captureButton.style.top = (videoRect.bottom - buttonHeight - 75) + 'px';
+            // Position 10px from the video’s right edge
+            captureButton.style.left = (videoRect.right - buttonWidth - 10) + 'px';
+        }
+        
+        // Update position when the video metadata is loaded or window is resized
+        video.addEventListener('loadedmetadata', updateCaptureButtonPosition);
+        window.addEventListener('resize', updateCaptureButtonPosition);
+        window.addEventListener('load', updateCaptureButtonPosition);
+        
+        // Use a ResizeObserver to catch layout changes (e.g. closing/hiding the side panel)
+        if (typeof ResizeObserver !== 'undefined') {
+            const observer = new ResizeObserver(() => {
+                updateCaptureButtonPosition();
+            });
+            observer.observe(video);
+            // Optionally, also observe the video container if its layout may change
+            observer.observe(document.querySelector('.video-container'));
+        }
+        
+        // Toggle camera
+        cameraButton.addEventListener('click', async () => {
+            if (!cameraActive) {
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: {
+                            width: { ideal: 1280 },
+                            height: { ideal: 720 }
+                        },
+                        audio: micActive 
+                    });
+                    video.srcObject = stream;
+                    placeholder.style.display = 'none';
+                    cameraButton.innerHTML = '<i class="fas fa-video"></i>';
+                    cameraActive = true;
+                } catch (err) {
+                    console.error('Error accessing camera:', err);
+                    alert('Could not access camera. Please check permissions.');
+                }
+            } else {
+                if (stream) {
+                    stream.getTracks().forEach(track => {
+                        if (track.kind === 'video') {
+                            track.stop();
+                        }
+                    });
+                    if (!micActive) {
+                        video.srcObject = null;
+                    } else {
+                        // Keep audio only
+                        navigator.mediaDevices.getUserMedia({ audio: true })
+                            .then(audioStream => {
+                                video.srcObject = audioStream;
+                                stream = audioStream;
+                            });
+                    }
+                    placeholder.style.display = 'flex';
+                }
+                cameraButton.innerHTML = '<i class="fas fa-video-slash"></i>';
+                cameraActive = false;
+                stopTranslation();
+            }
+        });
+
+        // Toggle microphone
+        micButton.addEventListener('click', async () => {
+            if (!micActive) {
+                try {
+                    if (!stream) {
+                        stream = await navigator.mediaDevices.getUserMedia({ 
+                            audio: true,
+                            video: cameraActive 
+                        });
+                        video.srcObject = stream;
+                    } else {
+                        const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        const audioTrack = audioStream.getAudioTracks()[0];
+                        stream.addTrack(audioTrack);
+                    }
+                    micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                    micActive = true;
+                } catch (err) {
+                    console.error('Error accessing microphone:', err);
+                    alert('Could not access microphone. Please check permissions.');
+                }
+            } else {
+                if (stream) {
+                    stream.getTracks().forEach(track => {
+                        if (track.kind === 'audio') {
+                            track.stop();
+                        }
+                    });
+                }
+                micButton.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+                micActive = false;
+            }
+        });
+
+        // End call button
+        endCallButton.addEventListener('click', () => {
+            if (stream) {
+                stream.getTracks().forEach(track => {
+                    track.stop();
+                });
+                video.srcObject = null;
+                placeholder.style.display = 'flex';
+            }
+            cameraButton.innerHTML = '<i class="fas fa-video-slash"></i>';
+            micButton.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+            cameraActive = false;
+            micActive = false;
+            stopTranslation();
+        });
+
+        // Capture photo
+        captureButton.addEventListener('click', () => {
+            if (cameraActive) {
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0);
+                const dataUrl = canvas.toDataURL('image/png');
+                photoPreview.src = dataUrl;
+                sidePanel.classList.add('active');
+            }
+        });
+
+        // Screenshot button
+        screenshotButton.addEventListener('click', () => {
+            if (cameraActive) {
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0);
+                
+                // Create a temporary link to download the image
+                const link = document.createElement('a');
+                link.download = 'screenshot.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }
+        });
+
+        // Picture-in-Picture
+        pipButton.addEventListener('click', () => {
+            if (document.pictureInPictureElement) {
+                document.exitPictureInPicture();
+            } else if (video !== document.pictureInPictureElement && cameraActive) {
+                video.requestPictureInPicture();
+            }
+        });
+
+        // Remove flip when entering PiP mode
+        video.addEventListener('enterpictureinpicture', () => {
+            video.style.transform = 'none';
+        });
+        
+        // Reapply flip when exiting PiP mode
+        video.addEventListener('leavepictureinpicture', () => {
+            video.style.transform = 'scaleX(-1)';
+        });
+
+        // Toggle translation panel
+        function toggleTranslation() {
+            if (translationVisible) {
+                translationContainer.classList.add('translation-hidden');
+                translationVisible = false;
+            } else {
+                translationContainer.classList.remove('translation-hidden');
+                translationVisible = true;
+            }
+        }
+
+        translationButton.addEventListener('click', toggleTranslation);
+        translationToggle.addEventListener('click', toggleTranslation);
+
+        // Start translation
+        startTranslationBtn.addEventListener('click', () => {
+            if (!cameraActive) {
+                translationStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Camera must be active to detect sign language';
+                translationStatus.style.color = '#ea4335';
+                return;
+            }
+
+            if (!translationActive) {
+                startTranslation();
+                startTranslationBtn.textContent = 'Pause Translation';
+                startTranslationBtn.style.background = '#ea4335';
+            } else {
+                stopTranslation();
+                startTranslationBtn.textContent = 'Start Translation';
+                startTranslationBtn.style.background = '#1b73e8';
+            }
+        });
+
+        // Clear translation history
+        clearTranslationBtn.addEventListener('click', () => {
+            translationHistoryList.innerHTML = '';
+            translationText.textContent = 'Translation history cleared. Ready for new signs.';
+        });
+
+        // Simulated translation function
+        function startTranslation() {
+            translationActive = true;
+            translationStatus.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Actively monitoring for sign language...';
+            translationStatus.style.color = '#8ab4f8';
+
+            // Simulate random sign language detection at intervals
+            translationInterval = setInterval(() => {
+                if (Math.random() > 0.4) { // 60% chance to detect a sign
+                    const randomSign = signPhrases[Math.floor(Math.random() * signPhrases.length)];
+                    updateTranslation(randomSign);
+                }
+            }, 3000);
+        }
+
+        function stopTranslation() {
+            if (translationInterval) {
+                clearInterval(translationInterval);
+            }
+            translationActive = false;
+            translationStatus.innerHTML = '<i class="fas fa-pause-circle"></i> Translation paused';
+            translationStatus.style.color = '#e8eaed';
+        }
+
+        function updateTranslation(text) {
+            // Update current translation
+            translationText.textContent = text;
+            
+            // Add to history
+            const historyItem = document.createElement('div');
+            historyItem.classList.add('history-item');
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            historyItem.textContent = `[${timeString}] ${text}`;
+            translationHistoryList.prepend(historyItem);
+            
+            // Limit history items
+            if (translationHistoryList.children.length > 10) {
+                translationHistoryList.removeChild(translationHistoryList.lastChild);
+            }
+        }
+    </script>
+    <script>
+        function updateText() {
+            // Make an AJAX request to the Flask backend
+            fetch('/get_text')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the HTML content with the received text
+                    document.getElementById('text-box').textContent = data.sign_text;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        
+        // Initial text update
+        updateText();
+        
+        // Automatically update video feed and text
+        const videoFeed = document.getElementById('video_feed');
+        setInterval(() => {
+            videoFeed.src = "{{ url_for('video_feed') }}?time=" + new Date().getTime();
+            updateText();
+        }, 1000); // Update every 1 second
+    </script>
+</body>
+</html> -->
