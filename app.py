@@ -10,6 +10,8 @@ from google import genai
 #to install library - pip3 install pyttsx3
 #to install library - pip3 install speechrecognition 
 #to install library - pip3 install pyaudio
+#to install gemini - python.exe -m pip install --upgrade pip
+
 import speech_recognition
 import pyttsx3
 
@@ -209,7 +211,7 @@ def get_text():
     # text_speech.say(predicted_character)
     # text_speech.runAndWait()
     # Function to dynamically generate or fetch the text
-    return jsonify({'text': predicted_character})
+    return jsonify({'text': sentence})
 
 @app.route('/')
 def index():
