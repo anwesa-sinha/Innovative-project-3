@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -385,7 +385,7 @@
     <div class="main-content">
         <div class="video-container">
             <img id="video_feed" src="{{ url_for('video_feed') }}" width="640" height="480">
-            <!-- <video id="video" autoplay playsinline></video> -->
+            <!-- <video id="video" autoplay playsinline></video> 
             <div class="placeholder" id="placeholder">
                 <i class="fas fa-video"></i>
                 <p>Click the camera icon to start</p>
@@ -398,7 +398,7 @@
             </div>
         </div>
 
-        <!-- NEW: Current Translation box below the video -->
+        <!-- NEW: Current Translation box below the video 
         <div class="current-translation-box">
             <div class="translation-box">
                 <div class="translation-box-header">
@@ -413,7 +413,7 @@
             </div>
         </div>
 
-        <!-- Keep the Recent Translations in the top-right panel -->
+        <!-- Keep the Recent Translations in the top-right panel 
         <div class="translation-panels">
             <div class="translation-box">
                 <div class="translation-box-header">
@@ -423,7 +423,7 @@
                     </button>
                 </div>
                 <div class="recent-translations" id="recent-translations">
-                    <!-- Recent translations will appear here -->
+                    <!-- Recent translations will appear here 
                 </div>
             </div>
         </div>
@@ -638,5 +638,595 @@
             translationStatusElement.innerHTML = `<i class="fas fa-check-circle"></i> Last detected: ${timeString}`;
         }
     </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Translator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #202124;
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: #2d2e31;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .logo i {
+            margin-right: 12px;
+            font-size: 24px;
+        }
+
+        .meeting-details {
+            display: flex;
+            align-items: center;
+        }
+
+        .meeting-time {
+            margin-right: 20px;
+            font-size: 14px;
+            background-color: rgba(60, 64, 67, 0.6);
+            padding: 8px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .meeting-time i {
+            margin-right: 8px;
+            color: #8ab4f8;
+        }
+
+        .main-content {
+            position: relative;
+            flex: 1;
+            display: block;  /* We’ll place elements vertically in the DOM */
+            height: calc(100vh - 130px);
+            overflow: hidden; /* Or auto if you prefer scrolling */
+        }
+
+        .video-container {
+            position: relative;
+            width: 80%;              /* Let it occupy most of the horizontal space */
+            max-width: 1000px;
+            margin: 12px auto 0 130px; /* top=30, bottom=0, left=130px, auto for right */
+            display: flex;
+            justify-content: left;
+            /* align-items: center; */
+        }
+
+        #video {
+            width: 50vw;
+            max-height: calc(100vh - 180px);
+            border-radius: 10px;
+            background: #333;
+            transform: scaleX(-1);
+            object-fit: cover;
+            margin-right: 0;  /* Remove extra margin if not needed */
+        }
+
+        .placeholder {
+            position: absolute;
+            top: 50%;
+            left: 32%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #e8eaed;
+        }
+
+        .placeholder i {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .controls {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .control-btn {
+            background: #3c4043;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .control-btn:hover {
+            background: #5f6368;
+        }
+
+        .control-btn.active {
+            background-color: #ea4335;
+        }
+
+        .control-btn.active:hover {
+            background-color: #d93025;
+        }
+
+        .leave-btn {
+            background: #ea4335;
+        }
+
+        .leave-btn:hover {
+            background: #d33828;
+        }
+
+        .capture-btn {
+            background: #fff;
+            position: absolute;
+            top: 100px;
+            /* left: 50%;*/
+            transform: translate(-274%, -32%); 
+            z-index: 50;
+        }
+
+        .capture-btn i {
+            color: #3c4043;
+        }
+
+        .side-panel {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 180px;
+            height: 120px;
+            background-color: #3c4043;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 20;
+        }
+
+        .side-panel.active {
+            display: block;
+        }
+
+        #photo-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Translation panel styles - Updated */
+        .translation-panels {
+            position: absolute;
+            top: 12px;     /* Align roughly with top of the video */
+            right: 90px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 315px;
+            z-index: 10;
+        }
+
+        .translation-box {
+            background: rgba(32, 33, 36, 0.9);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid #3c4043;
+        }
+
+        .translation-box-header {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 10px; /* Increased margin */
+            color: #8ab4f8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .translation-box-header i {
+            margin-right: 6px;
+        }
+
+        .current-translation-box {
+            width: 640px;
+            /* max-width: 1000px; */
+            margin: 6px auto 0 130px; /* same left margin as video, some top margin from the video */
+        }
+        
+        /* The translation-box can be reused here. 
+        If you want a different style, you can override it. */
+        .current-translation-box .translation-box {
+            background: rgba(32, 33, 36, 0.9);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid #3c4043;
+        }
+
+        .current-translation {
+            font-size: 16px;
+            line-height: 1.4;
+            min-height: 50px; /* Increased height */
+            padding: 10px; /* Increased padding */
+            background: rgba(60, 64, 67, 0.3);
+            border-radius: 4px;
+        }
+
+        .recent-translations {
+            max-height: 180px; /* Increased height */
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .recent-translation-item {
+            font-size: 14px; /* Slightly larger font */
+            padding: 8px 0; /* Increased padding */
+            border-bottom: 1px solid rgba(60, 64, 67, 0.5);
+            display: flex;
+        }
+
+        .recent-translation-item:last-child {
+            border-bottom: none;
+        }
+
+        .recent-translation-time {
+            color: #9aa0a6;
+            margin-right: 10px; /* Increased margin */
+            flex-shrink: 0;
+            width: 45px; /* Fixed width for alignment */
+        }
+
+        .recent-translation-text {
+            flex-grow: 1;
+        }
+
+        .translation-status {
+            font-size: 12px;
+            color: #e8eaed;
+            margin-top: 10px; /* Increased margin */
+            display: flex;
+            align-items: center;
+        }
+
+        .translation-status i {
+            margin-right: 6px;
+        }
+
+        .clear-history-btn {
+            background: transparent;
+            border: none;
+            color: #9aa0a6;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .clear-history-btn:hover {
+            color: #e8eaed;
+            background: rgba(60, 64, 67, 0.5);
+        }
+
+        /* Scrollbar styling */
+        .recent-translations::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .recent-translations::-webkit-scrollbar-track {
+            background: rgba(60, 64, 67, 0.3);
+            border-radius: 3px;
+        }
+
+        .recent-translations::-webkit-scrollbar-thumb {
+            background: #5f6368;
+            border-radius: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .translation-panels {
+                width: 240px;
+                right: 15px;
+                bottom: 110px;
+            }
+            
+            .current-translation {
+                font-size: 15px;
+            }
+            
+            .recent-translation-item {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .translation-panels {
+                width: 200px;
+                bottom: 100px;
+            }
+            
+            .control-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .control-btn i {
+                font-size: 16px;
+            }
+
+            .logo {
+                font-size: 16px;
+            }
+
+            .logo i {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-sign-language"></i><a style="text-decoration: none; color: #fff;" href="/#home">
+                SignSage
+            </a>
+        </div>
+        <div class="meeting-details">
+            <div class="meeting-time" id="current-time">
+                <i class="far fa-clock"></i>
+                <span>00:00:00</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="video-container">
+            <img id="video_feed" src="{{ url_for('video_feed') }}" width="640" height="480">
+            <!-- <video id="video" autoplay playsinline></video> -->
+            <div class="placeholder" id="placeholder">
+                <i class="fas fa-video"></i>
+                <p>Click the camera icon to start</p>
+            </div>
+            <!-- <button class="control-btn capture-btn" id="capture-button">
+                <i class="fas fa-circle"></i>
+            </button> -->
+            <div class="side-panel" id="side-panel">
+                <img id="photo-preview" src="/api/placeholder/180/120" alt="Captured photo">
+            </div>
+        </div>
+
+        <!-- NEW: Current Translation box below the video -->
+        <div class="current-translation-box">
+            <div class="translation-box">
+                <div class="translation-box-header">
+                    <span id="text-box"><i class="fas fa-hands"></i> Current Translation</span>
+                </div>
+                <div class="current-translation" id="current-translation">
+                    No signs detected yet
+                </div>
+                <div class="translation-status" id="translation-status">
+                    <i class="fas fa-circle-notch fa-spin"></i> Monitoring for signs...
+                </div>
+            </div>
+        </div>
+
+        <!-- Keep the Recent Translations in the top-right panel -->
+        <div class="translation-panels">
+            <div class="translation-box">
+                <div class="translation-box-header">
+                    <span><i class="fas fa-history"></i> Recent Translations</span>
+                    <button class="clear-history-btn" id="clear-history-btn" title="Clear history">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+                <div class="recent-translations" id="recent-translations">
+                    <!-- Recent translations will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" id="camera-button">
+            <i class="fas fa-video"></i>
+        </button>
+        <button class="control-btn" id="pip-button">
+            <i class="fas fa-expand"></i>
+        </button>
+    </div>
+
+    <script>
+        // Elements from the DOM
+        const videoFeed = document.getElementById('video_feed'); // The live feed element (unchanged in HTML)
+        const placeholder = document.getElementById('placeholder');
+        const cameraButton = document.getElementById('camera-button');
+        const currentTimeElement = document.getElementById('current-time').querySelector('span');
+        const currentTranslationElement = document.getElementById('current-translation');
+        const recentTranslationsElement = document.getElementById('recent-translations');
+        const translationStatusElement = document.getElementById('translation-status');
+        const clearHistoryButton = document.getElementById('clear-history-btn');
+    
+        // State variables
+        let cameraActive = false;
+        let translationInterval = null;
+    
+        // Sample sign language phrases for demonstration
+        const signPhrases = [
+            "Hello, how are you?",
+            "Nice to meet you",
+            "Thank you",
+            "I understand",
+            "Please wait",
+            "Can you help me?",
+            "Yes",
+            "No",
+            "I need assistance",
+            "Good morning",
+            "What time is it?",
+            "Where is the bathroom?",
+            "I'm hungry",
+            "I love sign language"
+        ];
+    
+        // On page load, remove the src attribute so the camera feed doesn't load automatically,
+        // and set the videoFeed's background to black.
+        window.addEventListener('load', () => {
+            videoFeed.removeAttribute('src');
+            videoFeed.style.backgroundColor = "black";
+        });
+    
+        // Function to update current time every second
+        function updateCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            currentTimeElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+    
+        // Start updating time immediately and then every second
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 1000);
+    
+        // Camera toggle functionality: starts/stops translation simulation and sets/unsets the camera feed.
+        cameraButton.addEventListener('click', () => {
+            if (!cameraActive) {
+                // Activate camera:
+                // Set the src to start the live feed, remove the black background,
+                // hide placeholder, update button icon, and start translation.
+                videoFeed.src = "{{ url_for('video_feed') }}";
+                videoFeed.style.backgroundColor = "";
+                placeholder.style.display = 'none';
+                cameraButton.innerHTML = '<i class="fas fa-video"></i>';
+                cameraActive = true;
+                startTranslation();
+            } else {
+                // Deactivate camera:
+                // Remove the src to stop the live feed, reset the black background,
+                // show placeholder, update button icon, and stop translation.
+                videoFeed.removeAttribute('src');
+                videoFeed.style.backgroundColor = "black";
+                placeholder.style.display = 'flex';
+                cameraButton.innerHTML = '<i class="fas fa-video-slash"></i>';
+                cameraActive = false;
+                stopTranslation();
+            }
+        });
+    
+        // Start the simulated translation: randomly updates the translation every 3 seconds.
+        function startTranslation() {
+            translationStatusElement.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Monitoring for signs...';
+            if (translationInterval) {
+                clearInterval(translationInterval);
+            }
+            translationInterval = setInterval(() => {
+                if (Math.random() > 0.4) { // 60% chance to detect a sign.
+                    const randomSign = signPhrases[Math.floor(Math.random() * signPhrases.length)];
+                    updateTranslation(randomSign);
+                }
+            }, 3000);
+        }
+    
+        // Stop the translation simulation.
+        function stopTranslation() {
+            if (translationInterval) {
+                clearInterval(translationInterval);
+            }
+            translationStatusElement.innerHTML = '<i class="fas fa-pause-circle"></i> Translation paused';
+        }
+    
+        // Update the translation UI with the detected sign and update recent history.
+        function updateTranslation(text) {
+            // Update current translation.
+            currentTranslationElement.textContent = text;
+    
+            // Get current time for the translation record.
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+            // Create a new translation item.
+            const translationItem = document.createElement('div');
+            translationItem.classList.add('recent-translation-item');
+            translationItem.innerHTML = `
+                <span class="recent-translation-time">${timeString}</span>
+                <span class="recent-translation-text">${text}</span>
+            `;
+    
+            // Insert new translation at the top.
+            recentTranslationsElement.insertBefore(translationItem, recentTranslationsElement.firstChild);
+    
+            // Limit the recent translations to 5 items.
+            if (recentTranslationsElement.children.length > 5) {
+                recentTranslationsElement.removeChild(recentTranslationsElement.lastChild);
+            }
+    
+            // Update the status to reflect the last detected sign.
+            translationStatusElement.innerHTML = `<i class="fas fa-check-circle"></i> Last detected: ${timeString}`;
+        }
+    
+        // Clear the recent translations history and reset current translation.
+        clearHistoryButton.addEventListener('click', () => {
+            recentTranslationsElement.innerHTML = '';
+            currentTranslationElement.textContent = 'No signs detected yet';
+            translationStatusElement.innerHTML = '<i class="fas fa-info-circle"></i> History cleared';
+            
+            // Reset status after 2 seconds based on camera state.
+            setTimeout(() => {
+                if (cameraActive) {
+                    translationStatusElement.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Monitoring for signs...';
+                } else {
+                    translationStatusElement.innerHTML = '<i class="fas fa-pause-circle"></i> Translation paused';
+                }
+            }, 2000);
+        });
+    </script>
+    
 </body>
 </html>
