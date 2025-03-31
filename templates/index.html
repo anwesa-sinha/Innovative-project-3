@@ -1,283 +1,637 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-      rel="stylesheet"
-    />
- 
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>SignSage</title>
+    <style>
+        *{
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
 
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
-
-    <link rel="apple-touch-icon" sizes="180x180" href="./assets/ico/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/ico/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./assets/ico/favicon-16x16.png">
-    <link rel="manifest" href="./assets/ico/site.webmanifest">
-  </head>
-
-  <body>
-    <header>
-      <div class="logo">
-        <img src="{{ url_for('static', filename='assets/logo.webp') }}" alt="Logo">
-      </div>
-      <nav>
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#about">About</a></li>
-        </ul>
-      </nav>
-      <div class="right-buttons"></div>    <!-- keeping it otherwise the "nav ul li a" alignemnt is getting messed up -->
+<body>
+    <div class="bg-white">
+        <header class="absolute inset-x-0 top-0 z-50">
+            <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+                <div class="flex lg:flex-1">
+                    <a href="#" class="-m-1.5 p-1.5">
+                        <span class="sr-only">SignSage</span>
+                        <!-- <img class="h-8 w-auto" src="{{ url_for('static', filename='assets/logo.webp') }}" alt="Logo"> -->
+                        <img class="h-10 w-auto" src="/static/assets/logo.webp" alt="Logo" />
+                    </a>
+                </div>
+                <div class="flex lg:hidden">
+                    <button type="button"
+                        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            aria-hidden="true" data-slot="icon">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="hidden lg:flex lg:gap-x-12">
+                    <a href="#home" class="text-base/5 font-semibold text-gray-900">Home</a>
+                    <a href="#features" class="text-base/5 font-semibold text-gray-900">Features</a>
+                    <a href="#about" class="text-base/5 font-semibold text-gray-900">About</a>
+                </div>
+                <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+                    <!-- <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a> -->
+                </div>
+            </nav>
+            <!-- Mobile menu, show/hide based on menu open state. -->
+            <div class="lg:hidden" role="dialog" aria-modal="true">
+                <!-- Background backdrop, show/hide based on slide-over state. -->
+                <!-- <div class="fixed inset-0 z-50"></div>
+                <div
+                    class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"> -->
+                <!-- <div class="flex items-center justify-between">
+                        <a href="#" class="-m-1.5 p-1.5">
+                            <span class="sr-only">Your Company</span>
+                            <img class="h-8 w-auto"
+                                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                                alt="" />
+                        </a>
+                        <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                            <span class="sr-only">Close menu</span>
+                            <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                aria-hidden="true" data-slot="icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div> -->
+                <!-- <div class="mt-6 flow-root">
+                        <div class="-my-6 divide-y divide-gray-500/10">
+                            <div class="space-y-2 py-6">
+                                <a href="#"
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Product</a>
+                                <a href="#"
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Features</a>
+                                <a href="#"
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Marketplace</a>
+                                <a href="#"
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Company</a>
+                            </div>
+                            <div class="py-6">
+                                <a href="#"
+                                    class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Log
+                                    in</a>
+                            </div>
+                        </div>
+                    </div> -->
+            </div>
+    </div>
     </header>
-      
-    <div class="container">
 
-      <!-- home -->
+    <section id="home">
+    <div class="relative isolate px-6 pt-14 lg:px-8">
+        <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+            aria-hidden="true">
+            <div class="relative left-[calc(50%-11rem)] aspect-1155/678 w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+                style="
+              clip-path: polygon(
+                74.1% 44.1%,
+                100% 61.6%,
+                97.5% 26.9%,
+                85.5% 0.1%,
+                80.7% 2%,
+                72.5% 32.5%,
+                60.2% 62.4%,
+                52.4% 68.1%,
+                47.5% 58.3%,
+                45.2% 34.5%,
+                27.5% 76.7%,
+                0.1% 64.9%,
+                17.9% 100%,
+                27.6% 76.8%,
+                76.1% 97.7%,
+                74.1% 44.1%
+              );
+            "></div>
+        </div>
 
-      <section id="home">
-        <div class="containerHome">
-            <div class="left">
-                <h1>Welcome to<br><span>SignSage</span></h1>
-                <p class="p-text">Our user-friendly interface makes it easy for anyone to utilize our sign language detection tool that translate your gestures into real-time spoken words.</p><br>
-                <button type="button" class="cameraBtn"><a href="{{ url_for('camera') }}">Open Camera</a></button>  <!-- redirects to the camera page -->
-            </div>
-            <div class="right">
-                <img src="{{ url_for('static', filename='assets/doctor.png') }}" alt="vector-art">
+        <div class="relative overflow-hidden">
+            <div class="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">
+                <div class="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
+                    <div class="sm:max-w-lg">
+                        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                            Welcome to <span style="color: #1abc9c">SignSage</span>
+                        </h1>
+                        <p class="mt-4 text-xl text-gray-500">
+                            Our user-friendly interface makes it easy for anyone to
+                            utilize our sign language detection tool that translate your
+                            gestures into real-time spoken words.
+                        </p>
+                    </div>
+                    <div>
+                        <div class="mt-10">
+                            <!-- Decorative image grid -->
+                            <div aria-hidden="true"
+                                class="pointer-events-none lg:absolute lg:inset-y-0 lg:mx-auto lg:w-full lg:max-w-7xl">
+                                <div
+                                    class="absolute transform sm:top-0 sm:left-1/2 sm:translate-x-8 lg:top-1/2 lg:left-1/2 lg:-translate-y-1/2 lg:translate-x-8">
+                                    <!-- <img src="{{ url_for('static', filename='assets/doctor.png') }}" alt="vector-art"> -->
+                                    <img src="/static/assets/doctor.png" alt="vector-art" />
+                                </div>
+                            </div>
+
+                            <a href="{{ url_for('camera') }}"
+                                class="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-center font-medium text-white hover:bg-indigo-700">Open
+                                Camera</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-      </section>
 
-      <!-- features -->
+        <!-- -------------------------------------------- -->
 
-      <section id="features">
-        <div class="containerFeatures">
-            <div class="left">
-                <h1>Features</h1>
-                <p class="p-text">SignSage integrates ASL to text conversion with innovative features to bridge the communication gap between the Deaf and hearing communities. It promotes inclusivity in digital interactions and empowers individuals with diverse communication needs. Discover our cutting-edge functionalities for effective communication.</p><br>
-            </div>
-            <img src="{{ url_for('static', filename='assets/features-demo.png') }}" class="features-demo" alt="features">
+        <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+            aria-hidden="true">
+            <div class="relative left-[calc(50%+3rem)] aspect-1155/678 w-[36.125rem] -translate-x-1/2 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+                style="
+              clip-path: polygon(
+                74.1% 44.1%,
+                100% 61.6%,
+                97.5% 26.9%,
+                85.5% 0.1%,
+                80.7% 2%,
+                72.5% 32.5%,
+                60.2% 62.4%,
+                52.4% 68.1%,
+                47.5% 58.3%,
+                45.2% 34.5%,
+                27.5% 76.7%,
+                0.1% 64.9%,
+                17.9% 100%,
+                27.6% 76.8%,
+                76.1% 97.7%,
+                74.1% 44.1%
+              );
+            "></div>
         </div>
-      </section>
+    </div>
+    </div>
+</section>
 
-      <!-- about us -->
+    <!-- 2nd section -->
 
-      <section id="about">
-        <div class="about-us">
-          <h1>About Us</h1>
-          <div class="abt-img">
-            <ul class="carousel">
-              <li class="card">
-                <img src="{{ url_for('static', filename='assets/carousel1-wobg.png') }}" alt="img">
-              </li>
-              <li class="card">
-                <img src="{{ url_for('static', filename='assets/carousel2-wobg.png') }}" alt="img">
-              </li>
-              <li class="card">
-                <img src="{{ url_for('static', filename='assets/carousel3-wobg.png') }}" alt="img">
-              </li>
-              <li class="card">
-                <img src="{{ url_for('static', filename='assets/carousel4-wobg.png') }}" alt="img">
-              </li>
+    <section id="features">
+    <div class="relative isolate overflow-hidden bg-transparent px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
+        <div
+            class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10">
+            <div
+                class="lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
+                <div class="lg:pr-4">
+                    <div class="lg:max-w-lg">
+                        <p class="text-base/7 font-semibold text-indigo-600">
+                            Know How We Work
+                        </p>
+                        <h1 class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
+                            Features
+                        </h1>
+                        <p class="mt-6 text-xl/8 text-gray-700">
+                            SignSage integrates ASL to text conversion with innovative
+                            features to bridge the communication gap between the Deaf and
+                            hearing communities. It promotes inclusivity in digital
+                            interactions and empowers individuals with diverse communication
+                            needs. Discover our cutting-edge functionalities for effective
+                            communication.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="-mt-12 -ml-12 p-12 lg:sticky lg:top-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden">
+                <!-- <img class="w-[48rem] max-w-none rounded-xl bg-gray-900 ring-1 shadow-xl ring-gray-400/10 sm:w-[57rem]"
+                    src="https://tailwindcss.com/plus-assets/img/component-images/dark-project-app-screenshot.png"
+                    alt="" /> -->
+                <img class="w-[48rem] max-w-none rounded-xl bg-gray-900 ring-1 shadow-xl ring-gray-400/10 sm:w-[57rem]"
+                    src="/static/assets/app-screenshot.png"
+                    alt="" />
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- 3rd section -->
+
+    <section id="about">
+    <div class="relative isolate py-24 sm:py-32">
+
+        <div class="absolute inset-x-0 top-0 -z-10 transform-gpu overflow-hidden blur-3xl sm:top-10"
+            aria-hidden="true">
+            <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-purple-500 to-pink-600 opacity-15 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+            style="
+              clip-path: polygon(
+            74.1% 44.1%,
+            100% 61.6%,
+            97.5% 26.9%,
+            85.5% 0.1%,
+            80.7% 2%,
+            72.5% 32.5%,
+            60.2% 62.4%,
+            52.4% 68.1%,
+            47.5% 58.3%,
+            45.2% 34.5%,
+            27.5% 76.7%,
+            0.1% 64.9%,
+            17.9% 100%,
+            27.6% 76.8%,
+            76.1% 97.7%,
+            74.1% 44.1%
+              );
+            "></div>
+        </div>
+
+        <div class="relative overflow-hidden">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <div class="mx-auto max-w-2xl lg:text-center">
+                    <h2 class="text-base/7 font-semibold text-indigo-600">
+                        Know About Our Team
+                    </h2>
+                    <p
+                        class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
+                        About Us
+                    </p>
+                </div>
+                <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+                    <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+                        <div class="relative pl-16">
+                            <dt class="text-base/7 font-semibold text-gray-900">
+                                <div
+                                    class="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-indigo-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                                    </svg>
+                                </div>
+                                About the project
+                            </dt>
+                            <dd class="mt-2 text-base/7 text-gray-600">
+                                SignSage is a pioneering initiative dedicated to fostering
+                                inclusivity and empowerment. Rooted in the mission to bridge
+                                communication divides between disabled minorities and the
+                                digital landscape, SignSage leverages cutting-edge technology to
+                                dismantle barriers. Our unwavering objective is to ensure
+                                equitable opportunities for all to seamlessly connect,
+                                communicate, and flourish within social and virtual spheres.
+                                With SignSage, we are championing a future defined by
+                                accessibility and inclusiveness.
+                            </dd>
+                        </div>
+                        <div class="relative pl-16">
+                            <dt class="text-base/7 font-semibold text-gray-900">
+                                <div
+                                    class="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-indigo-600">
+                                    <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                    </svg>
+                                </div>
+                                Who we are
+                            </dt>
+                            <dd class="mt-2 text-base/7 text-gray-600">
+                                "We" are a professional team driving SignSage forward. As
+                                innovators, advocates, and allies, we're committed to empowering
+                                disabled minorities in the digital sphere.
+                            </dd>
+                        </div>
+                        <div class="relative pl-16">
+                            <dt class="text-base/7 font-semibold text-gray-900">
+                                <div
+                                    class="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-indigo-600">
+                                    <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                    </svg>
+                                </div>
+                                What we do
+                            </dt>
+                            <dd class="mt-2 text-base/7 text-gray-600">
+                                Our mission revolves around the development and implementation
+                                of SignSage, a comprehensive solution designed to address the
+                                communication challenges faced by disabled minorities within
+                                virtual environments.
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <!-- 4th section -->
+
+    <div class="py-24 sm:py-32 bg-gradient-to-b from-white via-indigo-50 to-white">
+        <div class="mx-auto grid max-w-7xl gap-20 px-6 lg:px-8 xl:grid-cols-3">
+            <div class="max-w-xl">
+                <h2 class="text-3xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-4xl">
+                    Meet our members
+                </h2>
+                <p class="mt-6 text-lg/8 text-gray-600">
+                    We’re a dynamic group of individuals who are passionate about what
+                    we do and dedicated to delivering the best results.
+                </p>
+            </div>
+            <ul role="list" class="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2 relative">
+                <li>
+                    <div class="flex items-center gap-x-6">
+                        <img class="size-18 rounded-full" src="/static/assets/about-us/anwesa.webp" alt="" />
+                        <div>
+                            <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">
+                                Anwesa Sinha
+                            </h3>
+                            <p class="text-sm/6 font-semibold text-indigo-600">
+                                Team Lead
+                            </p>
+                            <p class="mt-1 truncate text-xs/5 text-gray-500 flex items-center">
+                                <a href="mailto:sinhaanwesa@gmail.com">sinhaanwesa@gmail.com</a>&emsp13;|&emsp13;<a
+                                    href="https://www.linkedin.com/in/anwesa-sinha-035168229/"><img
+                                        src="/static/assets/linkedin.png" alt="" class="h-5"></a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center gap-x-6">
+                        <img class="size-18 rounded-full" src="/static/assets/about-us/draksha.webp" alt="" />
+                        <div>
+                            <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">
+                                Draksha
+                            </h3>
+                            <p class="text-sm/6 font-semibold text-indigo-600">
+                                ML Lead
+                            </p>
+                            <p class="mt-1 truncate text-xs/5 text-gray-500 flex items-center">
+                                <a href="mailto:draksha138@gmail.com">draksha138@gmail.com</a>&emsp13;|&emsp13;<a
+                                    href="http://www.linkedin.com/in/draksha-aa3164227/"><img
+                                        src="/static/assets/linkedin.png" alt="" class="h-5"></a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center gap-x-6">
+                        <img class="size-18 rounded-full" src="/static/assets/about-us/satyaki.webp" alt="" />
+                        <div>
+                            <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">
+                                Satyaki Dawn
+                            </h3>
+                            <p class="text-sm/6 font-semibold text-indigo-600">
+                                Web Developer
+                            </p>
+                            <p class="mt-1 truncate text-xs/5 text-gray-500 flex items-center">
+                                <a href="mailto:satyakidawn@gmail.com">satyakidawn@gmail.com</a>&emsp13;|&emsp13;<a
+                                    href="https://www.linkedin.com/in/satyaki-dawn-116420230/"><img
+                                        src="/static/assets/linkedin.png" alt="" class="h-5"></a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center gap-x-6">
+                        <img class="size-18 rounded-full" src="/static/assets/about-us/anubhab.webp" alt="" />
+                        <div>
+                            <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">
+                                Anubhab Pal
+                            </h3>
+                            <p class="text-sm/6 font-semibold text-indigo-600">
+                                Designer / Web Developer
+                            </p>
+                            <p class="mt-1 truncate text-xs/5 text-gray-500 flex items-center">
+                                <a href="mailto:anubhabpal1@gmail.com">anubhabpal1@gmail.com</a>&emsp13;|&emsp13;<a
+                                    href="https://www.linkedin.com/in/therandomuser03/"><img
+                                        src="/static/assets/linkedin.png" alt="" class="h-5"></a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center gap-x-6">
+                        <img class="size-18 rounded-full" src="/static/assets/about-us/subhadip.webp" alt="" />
+                        <div>
+                            <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">
+                                Subhadip Das
+                            </h3>
+                            <p class="text-sm/6 font-semibold text-indigo-600">
+                                ML Engineer
+                            </p>
+                            <p class="mt-1 truncate text-xs/5 text-gray-500 flex items-center">
+                                <a href="mailto:subhadipd2003@gmail.com">subhadipd2003@gmail.com</a>&emsp13;|&emsp13;<a
+                                    href="https://www.linkedin.com/in/subhadip-das-7a150319b/"><img
+                                        src="/static/assets/linkedin.png" alt="" class="h-5"></a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center gap-x-6">
+                        <img class="size-18 rounded-full" src="/static/assets/about-us/samriddhi.webp" alt="" />
+                        <div>
+                            <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">
+                                Samriddhi Dubey
+                            </h3>
+                            <p class="text-sm/6 font-semibold text-indigo-600">
+                                API Integration Specialist
+                            </p>
+                            <p class="mt-1 truncate text-xs/5 text-gray-500 flex items-center">
+                                <a
+                                    href="mailto:samriddhidubey798@gmail.com">samriddhidubey798@gmail.com</a>&emsp13;|&emsp13;<a
+                                    href="https://www.linkedin.com/in/samriddhi-dubey/"><img
+                                        src="/static/assets/linkedin.png" alt="" class="h-5"></a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center gap-x-6">
+                        <img class="size-18 rounded-full" src="/static/assets/about-us/arijit.webp" alt="" />
+                        <div>
+                            <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">
+                                Arijit Dey
+                            </h3>
+                            <p class="text-sm/6 font-semibold text-indigo-600">
+                                Middleware Engineer
+                            </p>
+                            <p class="mt-1 truncate text-xs/5 text-gray-500 flex items-center">
+                                <a href="mailto:deyarijit212@gmail.com">deyarijit212@gmail.com</a>&emsp13;|&emsp13;<a
+                                    href="https://www.linkedin.com/in/arijit-dey-22931621b/"><img
+                                        src="/static/assets/linkedin.png" alt="" class="h-5"></a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center gap-x-6">
+                        <img class="size-18 rounded-full" src="/static/assets/about-us/asmita.webp" alt="" />
+                        <div>
+                            <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">
+                                Asmita Sarkhel
+                            </h3>
+                            <p class="text-sm/6 font-semibold text-indigo-600">
+                                Data Management Specialist
+                            </p>
+                            <p class="mt-1 truncate text-xs/5 text-gray-500 flex items-center">
+                                <a
+                                    href="mailto:asmitasarkhel005@gmail.com">asmitasarkhel005@gmail.com</a>&emsp13;|&emsp13;<a
+                                    href="http://linkedin.com/in/asmita-s-b55817218"><img
+                                        src="/static/assets/linkedin.png" alt="" class="h-5"></a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center gap-x-6">
+                        <img class="size-18 rounded-full" src="/static/assets/about-us/adrija.webp" alt="" />
+                        <div>
+                            <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">
+                                Adrija Nag
+                            </h3>
+                            <p class="text-sm/6 font-semibold text-indigo-600">
+                                Middleware Engineer
+                            </p>
+                            <p class="mt-1 truncate text-xs/5 text-gray-500 flex items-center">
+                                <a href="mailto:adrijanag2003@gmail.com">adrijanag2003@gmail.com</a>&emsp13;|&emsp13;<a
+                                    href="https://www.linkedin.com/in/adrija-nag-0a01b8301/"><img
+                                        src="/static/assets/linkedin.png" alt="" class="h-5"></a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center gap-x-6">
+                        <img class="size-18 rounded-full" src="/static/assets/about-us/pramit.webp" alt="" />
+                        <div>
+                            <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">
+                                Pramit Roy
+                            </h3>
+                            <p class="text-sm/6 font-semibold text-indigo-600">
+                                Extra
+                            </p>
+                            <p class="mt-1 truncate text-xs/5 text-gray-500 flex items-center">
+                                <a href="mailto:roypramit600@gmail.com">roypramit600@gmail.com</a>&emsp13;|&emsp13;<a
+                                    href="https://www.linkedin.com/in/pramit-roy-a4581b227/"><img
+                                        src="/static/assets/linkedin.png" alt="" class="h-5"></a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
             </ul>
-          </div>
-
-          <div class="text">
-            <div class="child left-text">
-              <h3>About the project</h3>
-              <hr><br>
-              <p>SignSage is a pioneering initiative dedicated to fostering inclusivity and empowerment. Rooted in the mission to bridge communication divides between disabled minorities and the digital landscape, SignSage leverages cutting-edge technology to dismantle barriers. Our unwavering objective is to ensure equitable opportunities for all to seamlessly connect, communicate, and flourish within social and virtual spheres. With SignSage, we are championing a future defined by accessibility and inclusiveness.</p>
-            </div>
-            <div class="child right-text">
-              <div id="what1">
-                <h3>Who We Are</h3>
-                <hr><br>
-                <p>"We" are a professional team driving SignSage forward. As innovators, advocates, and allies, we're committed to empowering disabled minorities in the digital sphere.</p>
-              </div>
-              <br>
-              <div id="what2">
-                <h3>What We Do</h3>
-                <hr><br>
-                <p>Our mission revolves around the development and implementation of SignSage, a comprehensive solution designed to address the communication challenges faced by disabled minorities within virtual environments.</p>
-              </div>
-            </div>
-          </div>
         </div>
-
-       <!-- Members -->
-
-        <div class="members">
-          <h1>Our Members</h1>
-          <div class="member-rows">
-            <div class="row row1">
-              <div class="item">
-                <div class="item-img">
-                  <img src="{{ url_for('static', filename='assets/members/anwesa.webp') }}" alt="Anwesa Sinha" style="width:100%">
-                </div>
-                <div class="item-text">
-                  <h4>Anwesa Sinha</h4>
-                  <p>Team Lead</p>
-                  <a href="mailto:sinhaanwesa@gmail.com" target="_blank" class="email">Email</a>&emsp;
-                  <a href="https://www.linkedin.com/in/anwesa-sinha-035168229/" target="_blank" class="linkedin">LinkedIn</a>
-                </div>
-              </div>
-              <div class="item">
-                <div class="item-img">
-                  <img src="{{ url_for('static', filename='assets/members/satyaki.webp') }}" alt="Satyaki Dawn" style="width:100%">
-                </div>
-                <div class="item-text">
-                  <h4>Satyaki Dawn</h4>
-                  <p>Web Developer</p>
-                  <a href="mailto:satyakidawn@gmail.com" target="_blank" class="email">Email</a>&emsp;
-                  <a href="https://www.linkedin.com/in/satyaki-dawn-116420230/" target="_blank" class="linkedin">LinkedIn</a>
-                </div>
-              </div>
-              <div class="item">
-                <div class="item-img">
-                  <img src="{{ url_for('static', filename='assets/members/samriddhi.webp') }}" alt="Samriddhi Dubey" style="width:100%">
-                </div>
-                <div class="item-text">
-                  <h4>Samriddhi Dubey</h4>
-                    <p>App Developer</p>
-                    <a href="mailto:samriddhidubey798@gmail.com" target="_blank" class="email">Email</a>&emsp;
-                    <a href="https://www.linkedin.com/in/samriddhi-dubey/" target="_blank" class="linkedin">LinkedIn</a>
-                </div>
-              </div>
-              <div class="item">
-                <div class="item-img">
-                  <img src="{{ url_for('static', filename='assets/members/anubhab.webp') }}" alt="Anubhab Pal" style="width:100%">
-                </div>
-                <div class="item-text">
-                  <h4>Anubhab Pal</h4>
-                  <p>UI/UX Designer</p>
-                  <a href="mailto:anubhabpal1@gmail.com" target="_blank" class="email">Email</a>&emsp;
-                  <a href="https://www.linkedin.com/in/therandomuser03/" target="_blank" class="linkedin">LinkedIn</a>
-                </div>
-              </div>
-              <div class="item">
-                <div class="item-img">
-                  <img src="{{ url_for('static', filename='assets/members/draksha.webp') }}" alt="Draksha" style="width:100%">
-                </div>
-                <div class="item-text">
-                  <h4>Draksha</h4>
-                  <p>ML Lead</p>
-                  <a href="mailto:draksha138@gmail.com" target="_blank" class="email">Email</a>&emsp;
-                  <a href="http://www.linkedin.com/in/draksha-aa3164227" target="_blank" class="linkedin">LinkedIn</a>
-                </div>
-              </div>
-            </div>
-              
-            <div class="row row2">
-              <div class="item">
-                <div class="item-img">
-                  <img src="{{ url_for('static', filename='assets/members/subhadip.webp') }}" alt="Subhadip Das" style="width:100%">
-                </div>
-                <div class="item-text">
-                  <h4>Subhadip Das</h4>
-                  <p>ML Engineer</p>
-                  <a href="mailto:subhadipd2003@gmail.com" target="_blank" class="email">Email</a>&emsp;
-                  <a href="https://www.linkedin.com/in/subhadip-das-7a150319b/" target="_blank" class="linkedin">LinkedIn</a>
-                </div>
-              </div>
-              <div class="item">
-                <div class="item-img">
-                  <img src="{{ url_for('static', filename='assets/members/asmita.webp') }}" alt="Asmita Sarkhel" style="width:100%">
-                </div>
-                <div class="item-text">
-                  <h4>Asmita Sarkhel</h4>
-                  <p>Frontend</p>
-                  <a href="mailto:asmitasarkhel005@gmail.com" target="_blank" class="email">Email</a>&emsp;
-                  <a href="http://linkedin.com/in/asmita-s-b55817218" target="_blank" class="linkedin">LinkedIn</a>
-                </div>
-              </div>
-              <div class="item">
-                <div class="item-img">
-                  <img src="{{ url_for('static', filename='assets/members/arijit.webp') }}" alt="Arijit Dey" style="width:100%">
-                </div>
-                <div class="item-text">
-                  <h4>Arijit Dey</h4>
-                  <p>Frontend</p>
-                  <a href="mailto:deyarijit212@gmail.com" target="_blank" class="email">Email</a>&emsp;
-                  <a href="https://www.linkedin.com/in/arijit-dey-22931621b/" target="_blank" class="linkedin">LinkedIn</a>
-                </div>
-              </div>
-              <div class="item">
-                <div class="item-img">
-                  <img src="{{ url_for('static', filename='assets/members/adrija.webp') }}" alt="Adrija Nag" style="width:100%">
-                </div>
-                <div class="item-text">
-                  <h4>Adrija Nag</h4>
-                  <p>Frontend</p>
-                  <a href="mailto:adrijanag2003@gmail.com" target="_blank" class="email">Email</a>&emsp;
-                  <a href="https://www.linkedin.com/in/adrija-nag-0a01b8301/" target="_blank" class="linkedin">LinkedIn</a>
-                </div>
-              </div>
-              <div class="item">
-                <div class="item-img">
-                  <img src="{{ url_for('static', filename='assets/members/pramit.webp') }}" alt="Pramit Roy" style="width:100%">
-                </div>
-                <div class="item-text">
-                  <h4>Pramit Roy</h4>
-                  <p>Frontend</p>
-                  <a href="mailto:roypramit600@gmail.com" target="_blank" class="email">Email</a>&emsp;
-                  <a href="https://www.linkedin.com/in/pramit-roy-a4581b227/" target="_blank" class="linkedin">LinkedIn</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- footer -->
-
-      <footer class="footer">
-        <div class="logo">
-          <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="logo">
-        </div>
-        <div class="about">
-          <h2>ABOUT SIGNSAGE</h2>
-          <div class="aboutBody">
-            <a href="#home">Home</a><br>
-            <a href="#">Get In Touch</a><br>
-            <a href="./error.html">Support Us</a>
-          </div>
-        </div>
-        <div class="product">
-          <h2>PRODUCT</h2>
-          <div class="productBody">
-            <a href="./error.html">Testimonials</a><br>
-            <a href="./error.html">How it Works</a><br>
-          </div>
-        </div>
-        <div class="line">
-
-        </div>
-        <div class="form">
-          <form action="" method="POST">
-            <h2>WANT TO KNOW MORE?</h2>
-            <h2>REACH OUT TO US!</h2>
-            <input type="text" placeholder="Name" required name="name"><br>
-            <input type="email" placeholder="Email" required name="email"><br>
-            <input type="text" placeholder="Subject" required name="subject"><br>
-            <input type="text" placeholder="Message" required name="Message"><br>
-            <button type="submit" name="submit">Submit</button>
-          </form>
-        </div>
-        <h3>Copyright © 2024. All Rights Reserved</h3>
-      </footer>
-    
     </div>
 
-  </body>
+    <!-- footer -->
+
+    <div class="relative isolate overflow-hidden bg-gray-900 py-16 sm:py-24 lg:py-32">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+                <div class="max-w-xl lg:max-w-lg">
+                    <h2 class="text-4xl font-semibold tracking-tight text-white">
+                        Subscribe to our newsletter
+                    </h2>
+                    <p class="mt-4 text-lg text-gray-300">
+                        Want to know more?
+                        Reach out to us!
+                    </p>
+                    <div class="mt-6 flex max-w-md gap-x-4">
+                        <label for="email-address" class="sr-only">Email address</label>
+                        <input id="email-address" name="email" type="email" autocomplete="email" required
+                            class="min-w-0 flex-auto rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                            placeholder="Enter your email" />
+                        <button type="submit"
+                            class="flex-none rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+                <dl class="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2">
+                    <div class="flex flex-col items-start">
+                        <div class="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
+                            <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" aria-hidden="true" data-slot="icon">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+                            </svg>
+                        </div>
+                        <dt class="mt-4 text-base font-semibold text-white">
+                            Weekly articles
+                        </dt>
+                        <dd class="mt-2 text-base/7 text-gray-400">
+                            Get insightful articles delivered to your inbox every week. Stay informed with industry
+                            news, tips, and trends curated just for you.
+                        </dd>
+                    </div>
+                    <div class="flex flex-col items-start">
+                        <div class="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
+                            <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" aria-hidden="true" data-slot="icon">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M10.05 4.575a1.575 1.575 0 1 0-3.15 0v3m3.15-3v-1.5a1.575 1.575 0 0 1 3.15 0v1.5m-3.15 0 .075 5.925m3.075.75V4.575m0 0a1.575 1.575 0 0 1 3.15 0V15M6.9 7.575a1.575 1.575 0 1 0-3.15 0v8.175a6.75 6.75 0 0 0 6.75 6.75h2.018a5.25 5.25 0 0 0 3.712-1.538l1.732-1.732a5.25 5.25 0 0 0 1.538-3.712l.003-2.024a.668.668 0 0 1 .198-.471 1.575 1.575 0 1 0-2.228-2.228 3.818 3.818 0 0 0-1.12 2.687M6.9 7.575V12m6.27 4.318A4.49 4.49 0 0 1 16.35 15m.002 0h-.002" />
+                            </svg>
+                        </div>
+                        <dt class="mt-4 text-base font-semibold text-white">No spam</dt>
+                        <dd class="mt-2 text-base/7 text-gray-400">
+                            We respect your privacy—your email is safe with us. Expect only valuable content, and you
+                            can unsubscribe anytime.
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+        <div class="absolute top-0 left-1/2 -z-10 -translate-x-1/2 blur-3xl xl:-top-6" aria-hidden="true">
+            <div class="aspect-1155/678 w-[72.1875rem] bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30" style="
+            clip-path: polygon(
+              74.1% 44.1%,
+              100% 61.6%,
+              97.5% 26.9%,
+              85.5% 0.1%,
+              80.7% 2%,
+              72.5% 32.5%,
+              60.2% 62.4%,
+              52.4% 68.1%,
+              47.5% 58.3%,
+              45.2% 34.5%,
+              27.5% 76.7%,
+              0.1% 64.9%,
+              17.9% 100%,
+              27.6% 76.8%,
+              76.1% 97.7%,
+              74.1% 44.1%
+            );
+          "></div>
+        </div>
+    </div>
+
+    <!-- footer ends -->
+</body>
+<script>
+    // Toggle the dropdown when clicking the profile button
+    document
+        .getElementById("user-menu-button")
+        .addEventListener("click", function (event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById("user-menu-dropdown");
+            dropdown.classList.toggle("hidden");
+        });
+
+    // Hide the dropdown if clicking outside
+    document.addEventListener("click", function () {
+        const dropdown = document.getElementById("user-menu-dropdown");
+        if (!dropdown.classList.contains("hidden")) {
+            dropdown.classList.add("hidden");
+        }
+    });
+</script>
+
 </html>
