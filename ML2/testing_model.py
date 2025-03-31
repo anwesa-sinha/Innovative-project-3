@@ -1,8 +1,21 @@
+# set TF_ENABLE_ONEDNN_OPTS=0
+
 import pickle
 import cv2
 import mediapipe as mp
 import numpy as np
 import statistics
+from google import genai
+
+
+def sentence_formation(words):
+#    client = genai.Client(api_key="AIzaSyBmMv7minae9QdQg7QjwEQ490CLdVzo2uE")
+#    response = client.models.generate_content(
+#    model="gemini-2.0-flash", 
+#    contents=f"A mute person is showing me hand signs {{{', '.join(words)}}}. Give a simplest sentence or context he is trying to say.max token 10"
+#    )
+#    return(response.text)
+   return("sentence formed")
 
 model_dict = pickle.load(open('./model.pickle', 'rb'))
 model = model_dict['model']
@@ -23,8 +36,8 @@ print("Label assigned")
 no_of_frames = 0
 each_frame_output = []
 words = []
+sentence = ""
 while True:
-    
     if(no_of_frames == 15):        
         
         if each_frame_output:  # This checks if the list is not empty
@@ -44,13 +57,18 @@ while True:
     results = hands.process(frame_rgb)
 
     if results.multi_hand_landmarks:
-        if ( len(results.multi_hand_landmarks) >1):
-            cv2.imshow('frame', frame)
+        if ( len(results.multi_hand_landmarks) >1):            
             if(words):
                 print(words)
-            words.clear()
+                sentence= sentence_formation(words)
+                print(sentence)
+            
+            cv2.putText(frame, sentence, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+            cv2.imshow('frame', frame)
+            words.clear()                
             cv2.waitKey(1)
             continue
+        sentence = ""
         no_of_frames = no_of_frames + 1
         for hand_landmarks in results.multi_hand_landmarks:
             mp_drawing.draw_landmarks(
@@ -82,7 +100,10 @@ while True:
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
         cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,cv2.LINE_AA)
         cv2.putText(frame, str(no_of_frames), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
-
+    
+    elif sentence:
+        cv2.putText(frame, sentence, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        
     cv2.imshow('frame', frame)
     cv2.waitKey(1)
 cap.release()
