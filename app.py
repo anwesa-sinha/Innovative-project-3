@@ -15,10 +15,10 @@ app = Flask(__name__)
 
 # Load the model
 try:
-    model_dict = pickle.load(open('./ML/model.pickle', 'rb'))
+    model_dict = pickle.load(open('./ML2/model.pickle', 'rb'))
     model = model_dict['model']
 except FileNotFoundError:
-    raise FileNotFoundError("Model file not found. Ensure './ML/model.pickle' exists.")
+    raise FileNotFoundError("Model file not found. Ensure './ML2/model.pickle' exists.")
 
 # global variable that will save the predicted texts
 predicted_character = ''

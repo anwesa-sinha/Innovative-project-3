@@ -403,9 +403,9 @@
         <div class="current-translation-box">
             <div class="translation-box">
                 <div class="translation-box-header">
-                    <span id="text-box"><i class="fas fa-hands"></i> Current Translation</span>
+                    <span><i class="fas fa-hands"></i> Current Translation</span>
                 </div>
-                <div class="current-translation" id="current-translation">
+                <div class="current-translation" id="text-box">
                     No signs detected yet
                 </div>
                 <div class="translation-status" id="translation-status">
@@ -584,6 +584,17 @@
             }, 2000);
         });
     </script>
+    <script>
+        function fetchPredictedText() {
+            fetch('/get_text')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('text-box').innerText = data.text;
+                })
+                .catch(error => console.error('Error fetching text:', error));
+        }
     
+        setInterval(fetchPredictedText, 1000); // Fetch every second
+    </script>
 </body>
 </html>
