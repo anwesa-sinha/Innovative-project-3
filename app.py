@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 import pickle
 import mediapipe as mp
+import statistics
+from google import genai
 
 #to install library - pip3 install pyttsx3
 #to install library - pip3 install speechrecognition 
@@ -12,6 +14,16 @@ import speech_recognition
 import pyttsx3
 
 app = Flask(__name__)
+
+def sentence_formation(words):
+#    client = genai.Client(api_key="AIzaSyBmMv7minae9QdQg7QjwEQ490CLdVzo2uE")
+#    response = client.models.generate_content(
+#    model="gemini-2.0-flash", 
+#    contents=f"A mute person is showing me hand signs {{{', '.join(words)}}}. Give a simplest sentence or context he is trying to say.max token 10"
+#    )
+#    return(response.text)
+   return("sentence formed")
+
 
 # Load the model
 try:
@@ -30,11 +42,23 @@ mp_drawing_styles = mp.solutions.drawing_styles
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
 # Labels dictionary
-labels_dict = {i: chr(65 + i) for i in range(26)}  # A-Z
-
+labels_dict =    {0: 'i',1: 'you',2: 'call',3: 'name',4: 'fine',
+                  5: 'help',6: 'hi',7: 'bad', 8: 'eat',9: 'going',
+                  10: "worry",11: "what",12:"enjoy",13: "Thank you",14:"0",
+                  15:"1",16:"2",17:"3",18:"4",}
+no_of_frames = 0
+each_frame_output = []
+words = []
+sentence = ""
 def detect_hand_sign(frame):
     """Detect hand signs in the given frame."""
-    global predicted_character
+    global predicted_character, no_of_frames,sentence
+    if(no_of_frames == 15):                
+        if each_frame_output:  # This checks if the list is not empty
+            mode_val = statistics.mode(each_frame_output)
+            words.append(mode_val)
+        each_frame_output.clear()
+        no_of_frames = 0
 
     data_aux = []
     x_ = []
@@ -42,10 +66,19 @@ def detect_hand_sign(frame):
 
     H, W, _ = frame.shape
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
     results = hands.process(frame_rgb)
+
     if results.multi_hand_landmarks:
-        if ( len(results.multi_hand_landmarks) <=1):
+        if ( len(results.multi_hand_landmarks) > 1):
+            if(words):
+                sentence= sentence_formation(words)
+                print(sentence)
+            cv2.putText(frame, sentence, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+            words.clear()   
+        
+        else:
+            sentence = ""
+            no_of_frames = no_of_frames + 1
             for hand_landmarks in results.multi_hand_landmarks:
                 mp_drawing.draw_landmarks(
                     frame,  # image to draw
@@ -74,14 +107,18 @@ def detect_hand_sign(frame):
 
                 # character generated (output of gesture recognition)
                 predicted_character = labels_dict[int(prediction[0])]
+                each_frame_output.append(predicted_character)
 
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
                 cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
+                cv2.putText(frame, str(no_of_frames), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
             except Exception as e:
                 print(f"Prediction error: {e}")
 
 
-            
+    elif sentence:
+        cv2.putText(frame, sentence, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+      
 
     return frame
 
