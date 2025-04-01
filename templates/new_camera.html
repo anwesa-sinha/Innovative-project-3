@@ -596,5 +596,27 @@
     
         setInterval(fetchPredictedText, 1000); // Fetch every second
     </script>
+    <script>
+        function fetchText() {
+            fetch('/get_text')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('text-box').innerText = data.text;
+        
+                    let historyDiv = document.getElementById('recent-translations');
+                    historyDiv.innerHTML = ""; // Clear previous content
+        
+                    data.history.forEach(text => {
+                        let p = document.createElement('p');
+                        p.innerText = text;
+                        historyDiv.appendChild(p);
+                    });
+                })
+                .catch(error => console.error('Error fetching translation:', error));
+        }
+        
+        // Fetch translation periodically
+        setInterval(fetchText, 2000);
+    </script>
 </body>
 </html>
