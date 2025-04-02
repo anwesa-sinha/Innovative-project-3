@@ -63,6 +63,7 @@ To install and set up SignSage on your local machine, follow these steps:
 
 3. Run the project
 ```bash
+   set TF_ENABLE_ONEDNN_OPTS=0
    python app.py
 ```
 4. Open your web browser and access the application at:

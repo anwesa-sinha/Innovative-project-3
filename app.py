@@ -16,7 +16,7 @@ def sentence_formation(words):
     # client = genai.Client(api_key="AIzaSyBmMv7minae9QdQg7QjwEQ490CLdVzo2uE")
     # response = client.models.generate_content(
     # model="gemini-2.0-flash", 
-    # contents = f"A mute person is showing me hand signs: {{{', '.join(words)}}}. Based on these signs, generate a simplest sentence that conveys the intended message in the most natural way. Keep it concise, within 10 words."
+    # contents = f"A mute person is showing me hand signs: {{{', '.join(words)}}}. Based on these signs generate a simplest sentence that conveys the intended message . Keep it concise, within 10 words."
     #     )
     # return(response.text)
     global ctr
