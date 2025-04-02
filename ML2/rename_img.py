@@ -18,6 +18,7 @@ def rename_images(folder_path):
 
 
 
-DATA_DIR = './data5'
+DATA_DIR = '../../data5'
+print(DATA_DIR)
 for dir_ in os.listdir(DATA_DIR):
     rename_images(os.path.join(DATA_DIR, dir_))
