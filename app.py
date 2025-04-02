@@ -13,15 +13,15 @@ app = Flask(__name__)
 
 ctr=0
 def sentence_formation(words):
-#    client = genai.Client(api_key="AIzaSyBmMv7minae9QdQg7QjwEQ490CLdVzo2uE")
-#    response = client.models.generate_content(
-#    model="gemini-2.0-flash", 
-#    contents=f"A mute person is showing me hand signs {{{', '.join(words)}}}. Give a simplest sentence or context he is trying to say.max token 10"
-#    )
-#    return(response.text)
-   global ctr
-   ctr+=1
-   return("sentence formed"+str(ctr))
+    # client = genai.Client(api_key="AIzaSyBmMv7minae9QdQg7QjwEQ490CLdVzo2uE")
+    # response = client.models.generate_content(
+    # model="gemini-2.0-flash", 
+    # contents = f"A mute person is showing me hand signs: {{{', '.join(words)}}}. Based on these signs, generate a simplest sentence that conveys the intended message in the most natural way. Keep it concise, within 10 words."
+    #     )
+    # return(response.text)
+    global ctr
+    ctr+=1
+    return("sentence formed"+str(ctr))
 
 
 # Load the model
