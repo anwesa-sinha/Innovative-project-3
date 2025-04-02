@@ -1,18 +1,11 @@
 from flask import Flask, render_template, Response, jsonify
-# import time
 import cv2
 import numpy as np
 import pickle
 import mediapipe as mp
 import statistics
 from google import genai
-
-#to install library - pip3 install pyttsx3
-#to install library - pip3 install speechrecognition 
-#to install library - pip3 install pyaudio
-#to install gemini - python.exe -m pip install --upgrade pip
-
-import speech_recognition
+import threading
 import pyttsx3
 
 app = Flask(__name__)
@@ -34,8 +27,6 @@ try:
 except FileNotFoundError:
     raise FileNotFoundError("Model file not found. Ensure './ML2/model.pickle' exists.")
 
-# global variable that will save the predicted texts
-predicted_character = ''
 
 # Mediapipe setup
 mp_hands = mp.solutions.hands
@@ -48,6 +39,8 @@ labels_dict =    {0: 'i',1: 'you',2: 'call',3: 'name',4: 'fine',
                   5: 'help',6: 'hi',7: 'bad', 8: 'eat',9: 'going',
                   10: "worry",11: "what",12:"enjoy",13: "Thank you",14:"0",
                   15:"1",16:"2",17:"3",18:"4",}
+# global variable that will save the predicted texts
+predicted_character = ''
 no_of_frames = 0
 each_frame_output = []
 words = []
@@ -63,6 +56,7 @@ def detect_hand_sign(frame):
         no_of_frames = 0
 
     data_aux = []
+    # position of hand on screen
     x_ = []
     y_ = []
 
@@ -75,6 +69,7 @@ def detect_hand_sign(frame):
             if(words):
                 sentence= sentence_formation(words)
                 print(sentence)
+                # text_speech()
             cv2.putText(frame, sentence, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
             words.clear()   
         
@@ -82,13 +77,13 @@ def detect_hand_sign(frame):
             sentence = ""
             no_of_frames = no_of_frames + 1
             for hand_landmarks in results.multi_hand_landmarks:
-                mp_drawing.draw_landmarks(
-                    frame,  # image to draw
-                    hand_landmarks,  # model output
-                    mp_hands.HAND_CONNECTIONS,  # hand connections
-                    mp_drawing_styles.get_default_hand_landmarks_style(),
-                    mp_drawing_styles.get_default_hand_connections_style()
-                )
+                # mp_drawing.draw_landmarks(
+                #     frame,  # image to draw
+                #     hand_landmarks,  # model output
+                #     mp_hands.HAND_CONNECTIONS,  # hand connections
+                #     mp_drawing_styles.get_default_hand_landmarks_style(),
+                #     mp_drawing_styles.get_default_hand_connections_style()
+                # )
 
                 for hand_landmarks in results.multi_hand_landmarks:
                     for i in range(len(hand_landmarks.landmark)):
@@ -106,22 +101,18 @@ def detect_hand_sign(frame):
 
             try:
                 prediction = model.predict([np.asarray(data_aux)])
-
-                # character generated (output of gesture recognition)
-                predicted_character = labels_dict[int(prediction[0])]
-                each_frame_output.append(predicted_character)
+                predicted_word = labels_dict[int(prediction[0])]
+                each_frame_output.append(predicted_word)
 
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
-                cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
-                cv2.putText(frame, str(no_of_frames), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+                cv2.putText(frame, predicted_word, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
+                cv2.putText(frame, str(no_of_frames), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             except Exception as e:
                 print(f"Prediction error: {e}")
-
 
     elif sentence:
         cv2.putText(frame, sentence, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
       
-
     return frame
 
 
@@ -149,66 +140,40 @@ def generate_frames():
         
 def text_speech():
     """Convert the predicted text to speech."""
-    if not predicted_character:
-        print("No text to convert to speech.")
+    if not sentence:
+        print("No sentence to convert to speech.")
         return
-    
-    try:
-        #initialize the library
-        text_speech = pyttsx3.init()
+    def speak ():
+        try:
+            #initialize the library
+            text_speech = pyttsx3.init()
 
-        text = predicted_character
+            text = sentence
 
-        #get the speech rate property
-        rate = text_speech.getProperty('rate')
+            #get the speech rate property
+            rate = text_speech.getProperty('rate')
 
-        # Set a slower speech rate
-        text_speech.setProperty('rate', rate - 70)  # adjust the number to increase or decrease speech rate
+            # Set a slower speech rate
+            text_speech.setProperty('rate', rate - 70)  # adjust the number to increase or decrease speech rate
 
-        text_speech.say(text) #voice out the text
-        text_speech.runAndWait() #Waits for speech to finish before continuing
-    except Exception as e:
-        print(f"Text to speech error: {e}")
+            text_speech.say(text) #voice out the text
+            text_speech.runAndWait() #Waits for speech to finish before continuing
+        except Exception as e:
+            print(f"Text to speech error: {e}")
 
     #if continuous running of the program needed then put the code block in a while true loop
-
-def speech_text():
-    """Convert speech to text."""
-    recognizer = speech_recognition.Recognizer()
-
-    while True:
-        try:
-            with speech_recognition.Microphone as mic:
-                print("Speak please: \n")
-
-                #accessing microphone
-                recognizer.adjust_for_ambient_noise(mic, duration = 0.1)  #Duration for the amount of time it will take to recognize the speech
-                audio = recognizer.listen(mic, timeout=3)  #if the mic does not hear any voices ... it times out in 3 secs (subject to change)
-
-                #google supported english recognition
-                text = recognizer.recognize_google(audio)
-                text = text.lower()  #make all the text lowercase to handle grammatical errors.
-
-                print(f"Recognized: {text}")
-
-        except speech_recognition.UnknownValueError:
-            #if we get some error we will make the recognizer object again and proceed as required
-            recognizer = speech_recognition.Recognizer()
-            continue
-        except Exception as e:
-            print(f"Speech-to-text error: {e}")
-
+    speech_thread = threading.Thread(target=speak)
+    speech_thread.start()
 
 @app.route('/camera')
 def camera():
-    return render_template('new_camera.html')                   # for testing purpose. camera.html needs to be updated
+    return render_template('new_camera.html') 
 
 translation_history = [] 
 
 @app.route('/get_text')
 def get_text():
     global sentence
-
     return jsonify({'text': sentence})
 
 @app.route('/')
@@ -223,11 +188,6 @@ def video_feed():
 def text_to_speech_route():
     text_speech()
     return 'Text to speech initiated'
-
-# @app.route('/display',methods=['POST'])
-# def display_text():
-#     text = "Hello, world!"  # Replace this with the text you want to display
-#     return render_template('camera.html', text=text)
 
 
 if __name__ == '__main__':
