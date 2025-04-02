@@ -203,14 +203,12 @@ def speech_text():
 def camera():
     return render_template('new_camera.html')                   # for testing purpose. camera.html needs to be updated
 
+translation_history = [] 
+
 @app.route('/get_text')
 def get_text():
-    # text_speech = pyttsx3.init()
-    # rate = text_speech.getProperty('rate')
-    # text_speech.setProperty('rate', rate - 70) 
-    # text_speech.say(predicted_character)
-    # text_speech.runAndWait()
-    # Function to dynamically generate or fetch the text
+    global sentence
+
     return jsonify({'text': sentence})
 
 @app.route('/')
