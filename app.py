@@ -10,6 +10,7 @@ import pyttsx3
 
 app = Flask(__name__)
 
+ctr=0
 def sentence_formation(words):
 #    client = genai.Client(api_key="AIzaSyBmMv7minae9QdQg7QjwEQ490CLdVzo2uE")
 #    response = client.models.generate_content(
@@ -17,7 +18,9 @@ def sentence_formation(words):
 #    contents=f"A mute person is showing me hand signs {{{', '.join(words)}}}. Give a simplest sentence or context he is trying to say.max token 10"
 #    )
 #    return(response.text)
-   return("sentence formed")
+   global ctr
+   ctr+=1
+   return("sentence formed"+str(ctr))
 
 
 # Load the model
@@ -69,8 +72,8 @@ def detect_hand_sign(frame):
             if(words):
                 sentence= sentence_formation(words)
                 print(sentence)
-                # text_speech()
-            cv2.putText(frame, sentence, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+                text_speech()
+            cv2.putText(frame, sentence, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             words.clear()   
         
         else:
@@ -105,13 +108,13 @@ def detect_hand_sign(frame):
                 each_frame_output.append(predicted_word)
 
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
-                cv2.putText(frame, predicted_word, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
-                cv2.putText(frame, str(no_of_frames), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+                cv2.putText(frame, predicted_word, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (255, 0, 0), 3, cv2.LINE_AA)
+                cv2.putText(frame, str(no_of_frames), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
             except Exception as e:
                 print(f"Prediction error: {e}")
 
     elif sentence:
-        cv2.putText(frame, sentence, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.putText(frame, sentence, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
       
     return frame
 
@@ -175,7 +178,9 @@ translation_history = []
 def get_text():
     global sentence
     if sentence:
-        translation_history.append(sentence)
+        if not translation_history or translation_history[-1] != sentence:
+            translation_history.append(sentence)
+
         if len(translation_history) > 15:  # Keep only last 5 translations
             translation_history.pop(0)
     return jsonify({'text': sentence, 'history': translation_history})
