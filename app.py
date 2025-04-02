@@ -208,8 +208,12 @@ translation_history = []
 @app.route('/get_text')
 def get_text():
     global sentence
+    if sentence:
+        translation_history.append(sentence)
+        if len(translation_history) > 15:  # Keep only last 5 translations
+            translation_history.pop(0)
 
-    return jsonify({'text': sentence})
+    return jsonify({'text': sentence, 'history': translation_history})
 
 @app.route('/')
 def index():
