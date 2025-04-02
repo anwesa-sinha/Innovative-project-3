@@ -18,12 +18,12 @@ import pyttsx3
 app = Flask(__name__)
 
 def sentence_formation(words):
-   client = genai.Client(api_key="AIzaSyBmMv7minae9QdQg7QjwEQ490CLdVzo2uE")
-   response = client.models.generate_content(
-   model="gemini-2.0-flash", 
-   contents=f"A mute person is showing me hand signs {{{', '.join(words)}}}. Give a simplest sentence or context he is trying to say.max token 10"
-   )
-   return(response.text)
+#    client = genai.Client(api_key="AIzaSyBmMv7minae9QdQg7QjwEQ490CLdVzo2uE")
+#    response = client.models.generate_content(
+#    model="gemini-2.0-flash", 
+#    contents=f"A mute person is showing me hand signs {{{', '.join(words)}}}. Give a simplest sentence or context he is trying to say.max token 10"
+#    )
+#    return(response.text)
    return("sentence formed")
 
 
@@ -208,14 +208,8 @@ translation_history = []
 @app.route('/get_text')
 def get_text():
     global sentence
-    if sentence:
-        # Store the latest translation
-        translation_history.append(sentence)
-        # Keep only the last 10 translations (adjustable)
-        if len(translation_history) > 10:
-            translation_history.pop(0)
 
-    return jsonify({'text': sentence, 'history': translation_history})
+    return jsonify({'text': sentence})
 
 @app.route('/')
 def index():
