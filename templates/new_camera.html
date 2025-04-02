@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Language Translator</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SignSage - Camera</title>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
     <style>
         * {
             margin: 0;
@@ -91,6 +94,27 @@
             object-fit: cover;
             margin-right: 0;  /* Remove extra margin if not needed */
         }
+
+        /* new changes for full screen */
+
+        /* When the video container is in fullscreen mode */
+        .video-container:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        /* Ensure the video feed resizes to fit within the container without cropping */
+        .video-container:fullscreen #video_feed {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Changed from cover to contain */
+        }
+
+        /* new changes for full screen - ends*/
 
         .placeholder {
             position: absolute;
@@ -218,7 +242,7 @@
         }
 
         .translation-box-header {
-            font-size: 14px;
+            font-size: 18px;
             font-weight: 500;
             margin-bottom: 10px; /* Increased margin */
             color: #8ab4f8;
@@ -248,7 +272,7 @@
         }
 
         .current-translation {
-            font-size: 16px;
+            font-size: 20px;
             line-height: 1.4;
             min-height: 50px; /* Increased height */
             padding: 10px; /* Increased padding */
@@ -257,7 +281,7 @@
         }
 
         .recent-translations {
-            max-height: 180px; /* Increased height */
+            max-height: 70%; /* Increased height */
             overflow-y: auto;
             margin-bottom: 10px;
         }
@@ -275,7 +299,7 @@
 
         .recent-translation-time {
             color: #9aa0a6;
-            margin-right: 10px; /* Increased margin */
+            margin-right: 14px; /* Increased margin */
             flex-shrink: 0;
             width: 45px; /* Fixed width for alignment */
         }
@@ -300,7 +324,7 @@
             background: transparent;
             border: none;
             color: #9aa0a6;
-            font-size: 12px;
+            font-size: 15px;
             cursor: pointer;
             padding: 2px 6px;
             border-radius: 4px;
@@ -434,7 +458,7 @@
         <button class="control-btn" id="camera-button">
             <i class="fas fa-video"></i>
         </button>
-        <button class="control-btn" id="pip-button">
+        <button class="control-btn" id="fullscreen-button">
             <i class="fas fa-expand"></i>
         </button>
     </div>
@@ -444,6 +468,8 @@
         const videoFeed = document.getElementById('video_feed'); // The live feed element (unchanged in HTML)
         const placeholder = document.getElementById('placeholder');
         const cameraButton = document.getElementById('camera-button');
+        const fullscreenButton = document.getElementById("fullscreen-button");
+        const videoContainer = document.querySelector(".video-container");
         const currentTimeElement = document.getElementById('current-time').querySelector('span');
         const currentTranslationElement = document.getElementById('current-translation');
         const recentTranslationsElement = document.getElementById('recent-translations');
@@ -454,23 +480,23 @@
         let cameraActive = false;
         let translationInterval = null;
     
-        // Sample sign language phrases for demonstration
-        const signPhrases = [
-            "Hello, how are you?",
-            "Nice to meet you",
-            "Thank you",
-            "I understand",
-            "Please wait",
-            "Can you help me?",
-            "Yes",
-            "No",
-            "I need assistance",
-            "Good morning",
-            "What time is it?",
-            "Where is the bathroom?",
-            "I'm hungry",
-            "I love sign language"
-        ];
+        // // Sample sign language phrases for demonstration
+        // const signPhrases = [
+        //     "Hello, how are you?",
+        //     "Nice to meet you",
+        //     "Thank you",
+        //     "I understand",
+        //     "Please wait",
+        //     "Can you help me?",
+        //     "Yes",
+        //     "No",
+        //     "I need assistance",
+        //     "Good morning",
+        //     "What time is it?",
+        //     "Where is the bathroom?",
+        //     "I'm hungry",
+        //     "I love sign language"
+        // ];
     
         // On page load, remove the src attribute so the camera feed doesn't load automatically,
         // and set the videoFeed's background to black.
@@ -532,13 +558,29 @@
         // }
     
         // Stop the translation simulation.
-        
+
         function stopTranslation() {
             if (translationInterval) {
                 clearInterval(translationInterval);
             }
             translationStatusElement.innerHTML = '<i class="fas fa-pause-circle"></i> Translation paused';
         }
+
+        // Full screen toggle for the camera window
+      fullscreenButton.addEventListener("click", () => {
+        // If not in fullscreen, request fullscreen on the video container
+        if (!document.fullscreenElement) {
+          videoContainer.requestFullscreen().catch((err) => {
+            console.error(
+              `Error attempting to enable full-screen mode: ${err.message}`
+            );
+          });
+        } else {
+          // Exit fullscreen if already in fullscreen mode
+          document.exitFullscreen();
+        }
+      });
+
     
         // Update the translation UI with the detected sign and update recent history.
         // function updateTranslation(text) {
@@ -603,22 +645,27 @@
             .then(response => response.json())
             .then(data => {
                 // Update the current sentence display
-                document.getElementById('text-box').innerText = data.text;
+                document.getElementById('text-box').innerText = data.text || "No translation yet";
 
-                // Update the translation history
                 let historyContainer = document.getElementById('recent-translations');
                 historyContainer.innerHTML = ''; // Clear old history
 
-                data.history.forEach((item, index) => {
-                    let listItem = document.createElement('li');
-                    listItem.textContent = item;
-                    historyContainer.appendChild(listItem);
+                // Loop through history and create styled translation boxes
+                data.history.forEach(item => {
+                    const translationItem = document.createElement('div');
+                    translationItem.classList.add('recent-translation-item');
+                    translationItem.innerHTML = `
+                        <span class="recent-translation-time">${item.timestamp}</span>
+                        <span class="recent-translation-text">${item.text}</span>
+                    `;
+
+                    historyContainer.prepend(translationItem); // Add new translations at the top
                 });
             })
             .catch(error => console.error('Error fetching text:', error));
         }
 
-        // Call updateText every few seconds to keep it fresh
+        // Call updateText every 2 seconds
         setInterval(updateText, 2000);
 
     </script>

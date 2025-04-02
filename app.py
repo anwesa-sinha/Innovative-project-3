@@ -7,6 +7,7 @@ import statistics
 from google import genai
 import threading
 import pyttsx3
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -178,11 +179,13 @@ translation_history = []
 def get_text():
     global sentence
     if sentence:
-        if not translation_history or translation_history[-1] != sentence:
-            translation_history.append(sentence)
+        # Check if it's a new sentence before adding
+        if not translation_history or translation_history[-1]["text"] != sentence:
+            translation_history.append({"text": sentence, "timestamp": datetime.now().strftime("%H:%M:%S")})
 
-        if len(translation_history) > 15:  # Keep only last 5 translations
-            translation_history.pop(0)
+        # Keep only the last 15 translations
+        translation_history[:] = translation_history[-15:]
+
     return jsonify({'text': sentence, 'history': translation_history})
 
 @app.route('/')
