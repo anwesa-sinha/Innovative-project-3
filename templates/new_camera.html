@@ -518,20 +518,21 @@
         });
     
         // Start the simulated translation: randomly updates the translation every 3 seconds.
-        function startTranslation() {
-            translationStatusElement.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Monitoring for signs...';
-            if (translationInterval) {
-                clearInterval(translationInterval);
-            }
-            translationInterval = setInterval(() => {
-                if (Math.random() > 0.4) { // 60% chance to detect a sign.
-                    const randomSign = signPhrases[Math.floor(Math.random() * signPhrases.length)];
-                    updateTranslation(randomSign);
-                }
-            }, 3000);
-        }
+        // function startTranslation() {
+        //     translationStatusElement.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Monitoring for signs...';
+        //     if (translationInterval) {
+        //         clearInterval(translationInterval);
+        //     }
+        //     translationInterval = setInterval(() => {
+        //         if (Math.random() > 0.4) { // 60% chance to detect a sign.
+        //             const randomSign = signPhrases[Math.floor(Math.random() * signPhrases.length)];
+        //             updateTranslation(randomSign);
+        //         }
+        //     }, 3000);
+        // }
     
         // Stop the translation simulation.
+        
         function stopTranslation() {
             if (translationInterval) {
                 clearInterval(translationInterval);
@@ -540,33 +541,33 @@
         }
     
         // Update the translation UI with the detected sign and update recent history.
-        function updateTranslation(text) {
-            // Update current translation.
-            currentTranslationElement.textContent = text;
+        // function updateTranslation(text) {
+        //     // Update current translation.
+        //     currentTranslationElement.textContent = text;
     
-            // Get current time for the translation record.
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        //     // Get current time for the translation record.
+        //     const now = new Date();
+        //     const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     
-            // Create a new translation item.
-            const translationItem = document.createElement('div');
-            translationItem.classList.add('recent-translation-item');
-            translationItem.innerHTML = `
-                <span class="recent-translation-time">${timeString}</span>
-                <span class="recent-translation-text">${text}</span>
-            `;
+        //     // Create a new translation item.
+        //     const translationItem = document.createElement('div');
+        //     translationItem.classList.add('recent-translation-item');
+        //     translationItem.innerHTML = `
+        //         <span class="recent-translation-time">${timeString}</span>
+        //         <span class="recent-translation-text">${text}</span>
+        //     `;
     
-            // Insert new translation at the top.
-            recentTranslationsElement.insertBefore(translationItem, recentTranslationsElement.firstChild);
+        //     // Insert new translation at the top.
+        //     recentTranslationsElement.insertBefore(translationItem, recentTranslationsElement.firstChild);
     
-            // Limit the recent translations to 5 items.
-            if (recentTranslationsElement.children.length > 5) {
-                recentTranslationsElement.removeChild(recentTranslationsElement.lastChild);
-            }
+        //     // Limit the recent translations to 5 items.
+        //     if (recentTranslationsElement.children.length > 10) {
+        //         recentTranslationsElement.removeChild(recentTranslationsElement.lastChild);
+        //     }
     
-            // Update the status to reflect the last detected sign.
-            translationStatusElement.innerHTML = `<i class="fas fa-check-circle"></i> Last detected: ${timeString}`;
-        }
+        //     // Update the status to reflect the last detected sign.
+        //     translationStatusElement.innerHTML = `<i class="fas fa-check-circle"></i> Last detected: ${timeString}`;
+        // }
     
         // Clear the recent translations history and reset current translation.
         clearHistoryButton.addEventListener('click', () => {
@@ -595,6 +596,31 @@
         }
     
         setInterval(fetchPredictedText, 1000); // Fetch every second
+    </script>
+    <script>
+        function updateText() {
+            fetch('/get_text')
+            .then(response => response.json())
+            .then(data => {
+                // Update the current sentence display
+                document.getElementById('text-box').innerText = data.text;
+
+                // Update the translation history
+                let historyContainer = document.getElementById('recent-translations');
+                historyContainer.innerHTML = ''; // Clear old history
+
+                data.history.forEach((item, index) => {
+                    let listItem = document.createElement('li');
+                    listItem.textContent = item;
+                    historyContainer.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error fetching text:', error));
+        }
+
+        // Call updateText every few seconds to keep it fresh
+        setInterval(updateText, 2000);
+
     </script>
 </body>
 </html>
